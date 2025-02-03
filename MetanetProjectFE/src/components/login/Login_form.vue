@@ -1,6 +1,6 @@
 <template>
   <div class="text-center mb-11">
-    <h1 class="text-gray-900 fw-bolder mb-3">회원가입</h1>
+    <h1 class="text-gray-900 fw-bolder mb-3">로그인</h1>
   </div>
 
   <div class="separator separator-content my-14">
