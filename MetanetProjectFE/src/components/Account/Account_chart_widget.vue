@@ -104,9 +104,7 @@
         <!--end::Header-->
         <!--begin::Body-->
         <div class="card-body pt-5 ps-6">
-          <div id="kt_charts_widget_5" class="min-h-auto" style="min-height: 365px">
-            <div id="apexchartsaj0mdmgi" class="apexcharts-canvas apexchartsaj0mdmgi apexcharts-theme-light" style="width: 779px; height: 350px" />
-          </div>
+          <div id="kt_charts_widget" class="min-h-auto"></div>
         </div>
         <!--end::Body-->
       </div>
@@ -122,12 +120,22 @@
           <!--begin::Heading-->
           <div class="mb-2">
             <!--begin::Title-->
-            <h1 class="fw-semibold text-gray-800 text-center lh-lg">Have you tried <br />new <span class="fw-bolder">Mobile Application ?</span></h1>
+            <h1 class="fw-semibold text-gray-800 text-center lh-lg">
+              Have you tried <br />new <span class="fw-bolder">Mobile Application ?</span>
+            </h1>
             <!--end::Title-->
             <!--begin::Illustration-->
             <div class="py-10 text-center">
-              <img src="../../../public/assets/media/svg/illustrations/easy/1.svg" class="theme-light-show w-200px" alt="" />
-              <img src="../../../public/assets/media/svg/illustrations/easy/1-dark.svg" class="theme-dark-show w-200px" alt="" />
+              <img
+                src="../../../public/assets/media/svg/illustrations/easy/1.svg"
+                class="theme-light-show w-200px"
+                alt=""
+              />
+              <img
+                src="../../../public/assets/media/svg/illustrations/easy/1-dark.svg"
+                class="theme-dark-show w-200px"
+                alt=""
+              />
             </div>
             <!--end::Illustration-->
           </div>
@@ -135,7 +143,9 @@
           <!--begin::Links-->
           <div class="text-center mb-1">
             <!--begin::Link-->
-            <a class="btn btn-sm btn-primary me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">Try now</a>
+            <a class="btn btn-sm btn-primary me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal"
+              >Try now</a
+            >
             <!--end::Link-->
             <!--begin::Link-->
             <a class="btn btn-sm btn-light" href="apps/invoices/view/invoice-1.html">Learn more</a>
@@ -155,46 +165,64 @@
 export default {
   name: "Account_chart_widget",
   props: {
-    title: {
-      type: String,
-      default: "Top Selling Categories", // 기본값
-    },
-    subtitle: {
-      type: String,
-      default: "8k social visitors", // 기본값값
-    },
-    chartData: {
-      type: Array,
-      default: () => [15, 12, 10, 8, 7, 4, 3], // 기본값
-    },
-    categories: {
-      type: Array,
-      default: () => ["Phones", "Laptops", "Headsets", "Games", "Keyboards", "Monitors", "Speakers"], // 기본값
-    },
+    title: { type: String },
+    subtitle: { type: String },
+    chartData: { type: Array },
+    categories: { type: Array },
+  },
+  data() {
+    return {
+      chart: null,
+    };
   },
   mounted() {
+    console.log("Chart mounted");
     this.initChart();
   },
   methods: {
     initChart() {
+      if (this.chart) {
+        console.log("Destroying existing chart");
+        this.chart.destroy();
+      }
+
+      const maxDataValue = Math.max(...this.chartData);
+      const axisMax = isFinite(maxDataValue) ? Math.ceil(maxDataValue * 1.2) : 100;
+      console.log("Computed x-axis max:", axisMax);
+
+      const theme = document.documentElement.getAttribute("data-bs-theme");
+      const labelColor = theme === "light" ? "#181C32" : "#FFFFFF";
+
       const options = {
         chart: {
           type: "bar",
           height: 350,
+          id: "unique-chart-id",
         },
         plotOptions: {
           bar: {
             horizontal: true,
+            borderRadius: 4,
+            distributed: true,
+            barHeight: 25,
           },
         },
+        colors: ["#FF6B6B", "#FFA94D", "#FFD43B", "#51CF66", "#339AF0", "#5F3DC4", "#845EF7"],
         series: [
           {
             name: "Sales",
-            data: this.chartData, // props로 받은 데이터 사용
+            data: this.chartData,
           },
         ],
         xaxis: {
-          categories: this.categories, // props로 받은 데이터 사용
+          categories: this.categories,
+          labels: {
+            style: {
+              color: "white",
+            },
+          },
+          min: 0,
+          max: axisMax,
         },
         tooltip: {
           enabled: true,
@@ -202,9 +230,14 @@ export default {
         },
       };
 
-      const chart = new ApexCharts(document.querySelector("#apexchartsaj0mdmgi"), options);
-      chart.render();
+      this.chart = new ApexCharts(document.querySelector("#kt_charts_widget"), options);
+      this.chart.render();
     },
+  },
+  beforeUnmount() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
   },
 };
 </script>
