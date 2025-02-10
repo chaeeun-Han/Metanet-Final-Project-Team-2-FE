@@ -7,7 +7,8 @@
           <Account_myStudy v-if="currentComponent === 'myStudy'" />
           <Account_lecture v-if="currentComponent === 'myLecture'" />       
           <Account_paylist v-if="currentComponent === 'payList'" />
-          <Account_myStudyList v-if="currentComponent === 'myStudyList'" />       
+          <Account_myStudyList v-if="currentComponent === 'myStudyList'" /> 
+          <Account_ediltprofile v-if="currentComponent === 'editProfile'" />       
         </div>
       </div>
     </div>
@@ -20,6 +21,8 @@ import Account_myStudy from "./Account_mystudy.vue";
 import Account_lecture from "./Account_lecture.vue";
 import Account_paylist from "./Account_paylist.vue";
 import Account_myStudyList from "./Account_mystudylist.vue";
+import Account_ediltprofile from "./Account_editprofile.vue";
+
 export default {
   name: "Account_main",
   components: {
@@ -27,7 +30,8 @@ export default {
     Account_myStudy,
     Account_lecture,
     Account_paylist,
-    Account_myStudyList
+    Account_myStudyList,
+    Account_ediltprofile
   },
   data() {
     return {

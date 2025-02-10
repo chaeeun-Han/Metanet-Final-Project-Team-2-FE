@@ -44,7 +44,7 @@
               </div>
             </div>
             <div class="d-flex my-4">              
-              <router-link for="/account-detail" class="btn btn-sm btn-primary me-3">수정 </router-link>              
+              <a class="btn btn-sm btn-primary me-3" href="#" @click.prevent="changeComponent('editProfile')">수정</a>                        
             </div>
           </div>
           <div class="d-flex flex-wrap flex-stack">
