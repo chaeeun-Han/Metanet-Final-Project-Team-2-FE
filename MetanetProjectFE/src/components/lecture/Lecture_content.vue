@@ -9,7 +9,7 @@
         <li class="nav-item mt-2">
           <router-link
             class="nav-link text-active-primary ms-0 me-10 py-5"
-            :to="`/lecture/${$route.params.lectureId}`"
+            :to="`/lectures/${$route.params.lectureId}`"
             exact-active-class="active"
           >
             강의 소개
@@ -18,7 +18,7 @@
         <li class="nav-item mt-2">
           <router-link
             class="nav-link text-active-primary ms-0 me-10 py-5"
-            :to="`/lecture/${$route.params.lectureId}/QNA`"
+            :to="`/lectures/${$route.params.lectureId}/questions`"
             exact-active-class="active"
           >
             Q&A 게시판
@@ -27,7 +27,7 @@
         <li class="nav-item mt-2">
           <router-link
             class="nav-link text-active-primary ms-0 me-10 py-5"
-            :to="`/lecture/${$route.params.lectureId}/file`"
+            :to="`/lectures/${$route.params.lectureId}/file`"
             exact-active-class="active"
           >
             강의 자료

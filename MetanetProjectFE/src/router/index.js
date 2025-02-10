@@ -16,10 +16,10 @@ const routes = [
   { path: "/account", component: Account_main },
   { path: "/signup", component: Signup },
   { path: "/login", component: Login_main },
-  { path: "/questions", component: QnaList },
-  { path: "/questions/:questionId", component: QuestionDetail },
+  //{ path: "/questions", component: QnaList },
+  { path: "/lectures/:lectureId/questions/:questionId", component: QuestionDetail },
   {
-    path: "/lecture/:lectureId",
+    path: "/lectures/:lectureId",
     component: Lecture_content,
     children: [
       {
@@ -27,7 +27,7 @@ const routes = [
         component: Lecture_intro,
         props: true,
       },
-      { path: "QNA", component: Lecture_QnA },
+      { path: "questions", component: Lecture_QnA },
       { path: "file", component: Lecture_file },
     ],
   },

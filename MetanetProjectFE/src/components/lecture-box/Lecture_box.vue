@@ -2,7 +2,7 @@
   <div class="lecture-card">
     <div class="card-body">
       <!-- 이미지 클릭 시 강의 상세 페이지로 이동 -->
-      <router-link :to="`/lecture/${lectureId}`">
+      <router-link :to="`/lectures/${lectureId}`">
         <div class="img-container">
           <img :src="profile || 'assets/media/default-lecture.jpg'" alt="Lecture Image" />
         </div>
