@@ -9,13 +9,24 @@
     data-kt-sticky-animation="false"
   >
     <!-- Header Container -->
-    <div class="app-container container-fluid d-flex align-items-stretch justify-content-between" id="kt_app_header_container">
+    <div
+      class="app-container container-fluid d-flex align-items-stretch justify-content-between"
+      id="kt_app_header_container"
+    >
       <!-- Mobile Logo -->
       <div class="px-6" id="" style="display: flex; align-items: center; justify-self: center">
         <!--begin::Logo image-->
-        <a href="index.html">
-          <img alt="Logo" src="../../../public/assets/media/logos/default-dark.svg" class="h-25px app-sidebar-logo-default" />
-          <img alt="Logo" src="../../../public/assets/media/logos/default-small.svg" class="h-20px app-sidebar-logo-minimize" />
+        <a href="/">
+          <img
+            alt="Logo"
+            src="../../../public/assets/media/logos/default-dark.svg"
+            class="h-25px app-sidebar-logo-default"
+          />
+          <img
+            alt="Logo"
+            src="../../../public/assets/media/logos/default-small.svg"
+            class="h-20px app-sidebar-logo-minimize"
+          />
         </a>
       </div>
 
@@ -42,7 +53,11 @@
             data-kt-menu="true"
           >
             <!-- Menu Item: Pages -->
-            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item here show">
+            <div
+              data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+              data-kt-menu-placement="bottom-start"
+              class="menu-item here show"
+            >
               <span class="menu-link">
                 <span class="menu-title">Pages</span>
                 <span class="menu-arrow d-lg-none"></span>
@@ -52,7 +67,10 @@
                 <div class="menu-active-bg px-4 px-lg-0">
                   <!-- Tabs Nav -->
                   <div class="d-flex w-100 overflow-auto">
-                    <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1" role="tablist">
+                    <ul
+                      class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1"
+                      role="tablist"
+                    >
                       <li class="nav-item mx-lg-1" role="presentation">
                         <a
                           class="nav-link py-3 py-lg-6 active text-active-primary"
@@ -100,7 +118,11 @@
                           </div>
                         </div>
                         <div class="col-lg-7">
-                          <img src="../../../public/assets/media/stock/900x600/46.jpg" class="rounded mw-100" alt="Menu Image" />
+                          <img
+                            src="../../../public/assets/media/stock/900x600/46.jpg"
+                            class="rounded mw-100"
+                            alt="Menu Image"
+                          />
                         </div>
                       </div>
                     </div>
@@ -139,7 +161,11 @@
                           </div>
                         </div>
                         <div class="col-lg-8">
-                          <img src="../../../public/assets/media/stock/900x600/44.jpg" class="rounded mw-100" alt="Menu Image" />
+                          <img
+                            src="../../../public/assets/media/stock/900x600/44.jpg"
+                            class="rounded mw-100"
+                            alt="Menu Image"
+                          />
                         </div>
                       </div>
                     </div>
@@ -167,7 +193,12 @@
           </form>
 
           <!-- searchQuery 값이 있을 때만 표시 -->
-          <div v-if="searchQuery" style="position: absolute; width: 100%; height: 100px" id="kt_profile_details_view" class="card mb-5 mb-xl-10">
+          <div
+            v-if="searchQuery"
+            style="position: absolute; width: 100%; height: 100px"
+            id="kt_profile_details_view"
+            class="card mb-5 mb-xl-10"
+          >
             <div>asdfasfadfsdf</div>
           </div>
         </div>
@@ -190,7 +221,11 @@
                 <span class="path4"></span>
               </i>
             </div>
-            <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
+            <div
+              class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
+              data-kt-menu="true"
+              id="kt_menu_notifications"
+            >
               <div
                 class="d-flex flex-column bgi-no-repeat rounded-top"
                 :style="{ backgroundImage: 'url(../../../public/assets/media/misc/menu-header-bg.jpg)' }"
@@ -216,7 +251,12 @@
                 <div class="tab-pane fade show active" id="kt_topbar_notifications_1" role="tabpanel">
                   <div class="scroll-y mh-325px my-5 px-8">
                     <!-- notifications 배열을 v‑for로 렌더링 -->
-                    <div v-for="(item, index) in notifications" :key="index" class="d-flex flex-stack py-4">
+                    <div
+                      v-if="userData"
+                      v-for="(item, index) in notifications"
+                      :key="index"
+                      class="d-flex flex-stack py-4"
+                    >
                       <div class="d-flex align-items-center">
                         <div class="symbol symbol-35px me-4">
                           <span class="symbol-label bg-light-danger">
@@ -230,6 +270,7 @@
                       </div>
                       <span class="badge badge-light fs-8">{{ item.time }}</span>
                     </div>
+                    <div v-if="!userData">asdf</div>
                   </div>
                   <div class="py-3 text-center border-top"></div>
                 </div>
@@ -329,7 +370,7 @@
               </div>
               <div class="separator my-2"></div>
               <div class="menu-item px-5">
-                <a href="account/overview.html" class="menu-link px-5">내 프로필</a>
+                <router-link to="/account" class="menu-link px-5">내 프로필</router-link>
               </div>
               <div class="menu-item px-5">
                 <a href="apps/projects/list.html" class="menu-link px-5">
@@ -350,7 +391,11 @@
                     언어
                     <span class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">
                       {{ userData.language }}
-                      <img class="w-15px h-15px rounded-1 ms-2" src="../../../public/assets/media/flags/united-states.svg" alt="" />
+                      <img
+                        class="w-15px h-15px rounded-1 ms-2"
+                        src="../../../public/assets/media/flags/united-states.svg"
+                        alt=""
+                      />
                     </span>
                   </span>
                 </a>
@@ -408,14 +453,6 @@ export default {
     // 사용자 정보를 객체 형태로 전달받음 (부모(App.vue)에서 넘김)
     userData: {
       type: Object,
-      default: () => ({
-        name: "기본 이름름",
-        email: "기본 이메일일",
-        role: "기본 role",
-        profile: "프로필 주소",
-        courseCount: "*내가 수강한 강의 갯수*",
-        language: "영어 (선택)",
-      }),
     },
   },
   data() {

@@ -7,7 +7,6 @@
     <span class="w-125px text-gray-500 fw-semibold fs-7">이메일로 로그인</span>
   </div>
 
-  <!-- Login_input 컴포넌트에 필드 설정과 v-model 바인딩 -->
   <Login_input :fields="loginFormFields" v-model="loginFormData" @submit="handleSubmit" />
 
   <div class="text-gray-500 text-center fw-semibold fs-6">
@@ -20,6 +19,7 @@
 import axios from "axios";
 import { inject } from "vue";
 import Login_input from "./Login_input.vue";
+import { login } from "../../apis/apiService";
 
 export default {
   name: "Login_form",
@@ -75,8 +75,9 @@ export default {
         } else {
           console.warn("❌ 액세스 토큰이 없거나 올바르지 않음");
         }
+
       } catch (error) {
-        console.error("Error during login:", error.response ? error.response.data : error);
+        console.error("로그인 실패:", error.response ? error.response.data : error);
       }
     },
   },
