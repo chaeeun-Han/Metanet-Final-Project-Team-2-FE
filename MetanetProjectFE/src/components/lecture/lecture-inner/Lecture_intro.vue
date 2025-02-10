@@ -28,8 +28,7 @@
 
         <!-- 상세 강의 일정 -->
         <div class="text-muted">
-          <span class="fw-bold">상세 강의 일정 <br /></span> - {{ lectureData.startDate || "정보 없음" }} ~
-          {{ lectureData.endDate || "정보 없음" }}
+          <span class="fw-bold">상세 강의 일정 <br /></span> - {{ lectureData.startDate || "정보 없음" }} ~ {{ lectureData.endDate || "정보 없음" }}
           <ul class="mt-2 mb-0">
             <li v-for="(schedule, index) in lectureData.detailSchedule" :key="index">
               {{ schedule }}
@@ -49,18 +48,19 @@
     <div class="card card-flush mb-5 mb-xl-10" style="padding: 30px; margin-top: 30px">
       <div style="display: flex; align-items: center; justify-content: space-between">
         <h3 class="reviews-title">리뷰</h3>
-        <!-- 리뷰하기 버튼: 누르면 새 리뷰 입력 영역 표시 (상단에 위치) -->
-        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startNewReview">리뷰하기</span>
+        <!-- 리뷰하기 버튼 (상단에 위치) -->
+        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startNewReview"> 리뷰하기 </span>
       </div>
 
       <!-- 새 리뷰 입력 영역 -->
       <div v-if="isNewReview" style="margin-bottom: 16px">
         <input type="text" v-model="newReviewContent" style="margin-bottom: 10px" class="form-control" placeholder="리뷰 내용을 입력하세요" />
-        <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="submitNewReview">제출</span>
-        <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelNewReview">취소</span>
+        <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="submitNewReview"> 제출 </span>
+        <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelNewReview"> 취소 </span>
       </div>
 
-      <div v-if="reviewsLoaded && reviews.length">
+      <!-- 테이블 래퍼 -->
+      <div v-if="reviewsLoaded && reviews.length" class="table-responsive">
         <table class="table align-middle table-row-dashed fs-6 gy-5">
           <thead>
             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
@@ -68,13 +68,13 @@
               <th class="min-w-10%">사진</th>
               <th class="min-w-10%">멤버</th>
               <th class="min-w-60%">코멘트</th>
-              <th class="min-w-10% text-end">작성 시간</th>
+              <th class="review-time min-w-10% text-end">작성 시간</th>
               <th class="min-w-10% text-end">액션</th>
             </tr>
           </thead>
           <tbody>
-            <!-- 각 리뷰에 대해 review row와 추가 답변 입력 row (조건부) -->
-            <template v-for="review in reviews" :key="review.reviewId">
+            <!-- 각 리뷰에 대해 review row와 (조건부) 답변 입력 row -->
+            <template v-for="(review, index) in reviews" :key="review && review.reviewId ? review.reviewId : index">
               <tr>
                 <!-- 답글이면 '답글' 표시 -->
                 <td v-if="review.answerId">
@@ -100,7 +100,7 @@
                 <!-- 리뷰 내용: 편집 중이면 input, 아니면 텍스트 -->
                 <td class="fw-semibold text-gray-600">
                   <template v-if="editingReviewId === review.reviewId">
-                    <input type="text" v-model="editingContent" class="form-control" />
+                    <input style="min-width: 150px" type="text" v-model="editingContent" class="form-control" />
                   </template>
                   <template v-else>
                     {{ review.content }}
@@ -108,50 +108,60 @@
                 </td>
 
                 <!-- 작성 시간 -->
-                <td class="text-end">{{ formatDate(review.reviewDate) }}</td>
+                <td class="review-time text-end">{{ formatDate(review.reviewDate) }}</td>
 
                 <!-- 액션 버튼 -->
                 <td class="text-end">
-                  <!-- 관리자 (ROLE_Admin)인 경우: 모든 액션 버튼 표시 -->
-                  <template v-if="currentUserRole === 'ROLE_Admin'">
-                    <template v-if="editingReviewId === review.reviewId">
-                      <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)"
-                        >저장</span
-                      >
-                      <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelEdit"
-                        >취소</span
-                      >
-                    </template>
-                    <template v-else>
-                      <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)">수정</span>
-                      <span class="badge badge-light-danger" style="margin-right: 4px; cursor: pointer" @click="deleteReview(review)">삭제</span>
-                      <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">답변하기</span>
-                    </template>
-                  </template>
-                  <!-- 관리자가 아닌 경우 -->
-                  <template v-else>
-                    <!-- 본인 작성 리뷰: 수정, 삭제 -->
-                    <template v-if="review.memberId === currentUserId">
-                      <template v-if="editingReviewId !== review.reviewId">
-                        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)">수정</span>
-                        <span class="badge badge-light-danger" style="margin-right: 4px; cursor: pointer" @click="deleteReview(review)">삭제</span>
+                  <div class="action-container">
+                    <!-- 관리자 (ROLE_Admin)인 경우: 모든 액션 버튼 표시 -->
+                    <template v-if="currentUserRole === 'ROLE_Admin'">
+                      <template v-if="editingReviewId === review.reviewId">
+                        <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)">
+                          저장
+                        </span>
+                        <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelEdit">
+                          취소
+                        </span>
                       </template>
                       <template v-else>
-                        <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)"
-                          >저장</span
-                        >
-                        <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelEdit"
-                          >취소</span
-                        >
+                        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)"> 수정 </span>
+                        <span class="badge badge-light-danger" style="margin-right: 4px; cursor: pointer" @click="deleteReview(review)"> 삭제 </span>
+                        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">
+                          답변하기
+                        </span>
                       </template>
                     </template>
-                    <!-- 본인 작성이 아니고, 강사 (ROLE_Teacher)인 경우: 답변하기 -->
-                    <template v-else-if="currentUserRole === 'ROLE_Teacher'">
-                      <template v-if="replyReviewId !== review.reviewId">
-                        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">답변하기</span>
+                    <!-- 관리자가 아닌 경우 -->
+                    <template v-else>
+                      <!-- 본인 작성 리뷰: 수정, 삭제 -->
+                      <template v-if="review.memberId === currentUserId">
+                        <template v-if="editingReviewId !== review.reviewId">
+                          <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)">
+                            수정
+                          </span>
+                          <span class="badge badge-light-danger" style="margin-right: 4px; cursor: pointer" @click="deleteReview(review)">
+                            삭제
+                          </span>
+                        </template>
+                        <template v-else>
+                          <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)">
+                            저장
+                          </span>
+                          <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelEdit">
+                            취소
+                          </span>
+                        </template>
+                      </template>
+                      <!-- 본인 작성이 아니고, 강사 (ROLE_Teacher)이며 해당 강의의 선생인 경우에만 답변하기 가능 -->
+                      <template v-else-if="currentUserRole === 'ROLE_Teacher' && currentUserId === lectureData.memberId">
+                        <template v-if="replyReviewId !== review.reviewId">
+                          <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">
+                            답변하기
+                          </span>
+                        </template>
                       </template>
                     </template>
-                  </template>
+                  </div>
                 </td>
               </tr>
               <!-- 답변 입력 행: 해당 리뷰에 대해 replyReviewId가 설정되었을 때, 리뷰 아래에 추가 -->
@@ -164,10 +174,10 @@
                     style="width: auto; margin-right: 10px"
                     placeholder="답변 입력"
                   />
-                  <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="submitReply(review)"
-                    >완료</span
-                  >
-                  <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelReply">취소</span>
+                  <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="submitReply(review)">
+                    완료
+                  </span>
+                  <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelReply"> 취소 </span>
                 </td>
               </tr>
             </template>
@@ -244,7 +254,8 @@ export default {
     async fetchReviews() {
       try {
         const response = await api.get(`/lecture/${this.lectureData.lectureId}/reviews`);
-        this.reviews = response.data.data || [];
+        // undefined나 null 값은 필터링
+        this.reviews = (response.data.data || []).filter((review) => review);
         this.reviewsLoaded = true;
       } catch (error) {
         console.error("리뷰 데이터 가져오기 실패:", error);
@@ -297,12 +308,9 @@ export default {
     async submitReply(review) {
       try {
         const payload = { content: this.replyContent };
-        const response = await api.post(`/lecture/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
-        // 새로 등록된 답글을 reviews 배열에 추가 (API 응답 형식에 맞게 수정)
-        const newReply = response.data.data;
-        this.reviews.push(newReply);
-        this.replyReviewId = null;
-        this.replyContent = "";
+        await api.post(`/lecture/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
+        // 제출 성공 시 페이지 새로고침
+        window.location.reload();
       } catch (error) {
         console.error("답글 등록 실패:", error);
       }
@@ -319,11 +327,9 @@ export default {
     async submitNewReview() {
       try {
         const payload = { content: this.newReviewContent };
-        const response = await api.post(`/lecture/${this.lectureData.lectureId}/reviews`, payload);
-        const newReview = response.data.data;
-        this.reviews.unshift(newReview);
-        this.isNewReview = false;
-        this.newReviewContent = "";
+        await api.post(`/lecture/${this.lectureData.lectureId}/reviews`, payload);
+        // 제출 성공 시 페이지 새로고침
+        window.location.reload();
       } catch (error) {
         console.error("리뷰 추가 실패:", error);
       }
@@ -439,5 +445,45 @@ button:disabled {
 .large-action {
   font-size: 1rem !important;
   padding: 0.5em 1em !important;
+}
+
+/* 액션 버튼 컨테이너 모바일 스타일 */
+.action-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+@media (max-width: 768px) {
+  .action-container {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+  }
+  .action-container span {
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+}
+
+/* 테이블 반응형: 가로 스크롤 */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+/* 모바일에서 작성 시간 열 숨김 */
+@media (max-width: 576px) {
+  .review-time {
+    display: none;
+  }
+}
+
+/* 프로필 이미지 스타일: 왜곡 없이 채우기 */
+.symbol-label {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
