@@ -54,7 +54,7 @@
                 </div>
             </div>
             <textarea v-model="newAnswer" class="wide-textarea" placeholder="답변을 입력하세요"></textarea>
-            <button @click="insertAnswer" class="submit-btn">답변</button>
+            <button @click="insertAnswer" class="submit-btn">확인</button>
         </div>
 </div>
 </template>
