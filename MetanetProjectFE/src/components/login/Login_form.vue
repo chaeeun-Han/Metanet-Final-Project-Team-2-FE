@@ -18,12 +18,24 @@
 
 <script>
 import axios from "axios";
+import { inject } from "vue";
 import Login_input from "./Login_input.vue";
 
 export default {
   name: "Login_form",
   components: {
     Login_input,
+  },
+  setup() {
+    const connectWebSocket = inject("connectWebSocket"); // ✅ WebSocket 함수 가져오기
+
+    if (!connectWebSocket) {
+      console.error("❌ WebSocket 함수 로드 실패: connectWebSocket이 undefined입니다.");
+    }
+
+    return {
+      connectWebSocket,
+    };
   },
   data() {
     return {
@@ -39,11 +51,30 @@ export default {
       console.log("Submitting form data:", this.loginFormData.id, this.loginFormData.password);
       try {
         const response = await axios.post(
-          "http://localhost:8080/login",
+          "http://localhost:8080/auth/login",
           { id: this.loginFormData.id, password: this.loginFormData.password },
           { headers: { "Content-Type": "application/json; charset=UTF-8" } }
         );
         console.log("Response from server:", response.data);
+
+        const authHeader = response.headers["authorization"];
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+          const accessToken = authHeader.split(" ")[1];
+          console.log("Extracted Token:", accessToken);
+
+          localStorage.setItem("accessToken", accessToken);
+
+          axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+          // ✅ 로그인 성공 시 WebSocket 연결
+          if (this.connectWebSocket) {
+            this.connectWebSocket();
+          } else {
+            console.error("❌ WebSocket 연결 실패: connectWebSocket 함수가 존재하지 않음.");
+          }
+        } else {
+          console.warn("❌ 액세스 토큰이 없거나 올바르지 않음");
+        }
       } catch (error) {
         console.error("Error during login:", error.response ? error.response.data : error);
       }
@@ -51,7 +82,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* 필요한 스타일을 추가하세요 */
-</style>
