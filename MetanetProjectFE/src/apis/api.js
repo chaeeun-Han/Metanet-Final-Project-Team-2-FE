@@ -1,25 +1,38 @@
 import axios from "axios";
 
+function isPublicEndpoint(url) {
+  if (url === "/lectures/all") return true;
+  const parts = url.split("/");
+  if (parts[1] === "lecture" && parts.length === 3) {
+    return true;
+  }
+  return false;
+}
+
 const api = axios.create({
   baseURL: "http://localhost:8080",
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("jwtToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // 공개 엔드포인트가 아니라면 토큰 첨부
+    if (!isPublicEndpoint(config.url)) {
+      const token = localStorage.getItem("jwtToken");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// 응답 인터셉터: 403 응답 (토큰이 없거나 유효하지 않을 경우) 감지 시 로그인 페이지로 리다이렉트
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 403) {
+    const requestUrl = error.config && error.config.url;
+    // 403 에러이고, 요청 URL이 공개 엔드포인트가 아니라면 로그인 페이지로 리다이렉트
+    if (error.response && error.response.status === 403 && !isPublicEndpoint(requestUrl)) {
       window.location.href = "/login";
     }
     return Promise.reject(error);

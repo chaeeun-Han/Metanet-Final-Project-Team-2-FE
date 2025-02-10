@@ -7,7 +7,7 @@ import Lecture_content from "../components/lecture/Lecture_content.vue";
 
 import Lecture_QnA from "../components/lecture/lecture-inner/Lecture_QnA.vue";
 import Lecture_file from "../components/lecture/lecture-inner/Lecture_file.vue";
-import Lecture_Intro from "../components/lecture/lecture-inner/Lecture_Intro.vue";
+import Lecture_intro from "../components/lecture/lecture-inner/Lecture_intro.vue";
 
 const routes = [
   { path: "/", component: Main_main },
@@ -20,7 +20,7 @@ const routes = [
     children: [
       {
         path: "",
-        component: Lecture_Intro,
+        component: Lecture_intro,
         props: true,
       },
       { path: "QNA", component: Lecture_QnA },
