@@ -208,7 +208,7 @@ export default {
       isLiked: false, // 좋아요 여부
       reviews: [], // 리뷰 목록
       reviewsLoaded: false, // 리뷰 로딩 여부
-      defaultProfile: "assets/media/default-profile.jpg", // 기본 프로필 이미지
+      defaultProfile: "/public/assets/media/default-profile.jpg", // 기본 프로필 이미지
 
       // 리뷰 수정/답변 관련 상태값
       editingReviewId: null,

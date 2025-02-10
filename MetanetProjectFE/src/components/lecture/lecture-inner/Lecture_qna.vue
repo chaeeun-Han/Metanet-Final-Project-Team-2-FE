@@ -69,6 +69,9 @@ export default {
       maxVisiblePages: 5,
     };
   },
+  props: {
+    lectureData: Object,
+  },
   computed: {
     totalPages() {
       return Math.ceil(this.questions.length / this.pageSize);
@@ -119,7 +122,8 @@ export default {
       }
     },
     handleClick() {
-        
+        const lectureId = this.$route.params.lectureId;
+        this.$router.push(`/lectures/${lectureId}/questions/write`);
     },
   },
   mounted() {
