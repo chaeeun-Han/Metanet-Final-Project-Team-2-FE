@@ -329,7 +329,7 @@
               </div>
               <div class="separator my-2"></div>
               <div class="menu-item px-5">
-                <a href="account/overview.html" class="menu-link px-5">내 프로필</a>
+                <router-link to="/account" class="menu-link px-5">내 프로필</router-link>
               </div>
               <div class="menu-item px-5">
                 <a href="apps/projects/list.html" class="menu-link px-5">

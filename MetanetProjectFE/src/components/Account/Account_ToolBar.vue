@@ -2,104 +2,121 @@
   <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
     <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
       <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-        <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Account Overview</h1>
-        <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-          <li class="breadcrumb-item text-muted"><a href="index.html" class="text-muted text-hover-primary">Home</a></li>
-          <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
-          <li class="breadcrumb-item text-muted">Account</li>
-        </ul>
+        <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">마이페이지</h1>
       </div>
-      <div class="d-flex align-items-center gap-2 gap-lg-3">
-        <div class="m-0">
-          <a href="#" class="btn btn-sm btn-flex btn-secondary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
-            ><i class="ki-duotone ki-filter fs-6 text-muted me-1"><span class="path1"></span><span class="path2"></span></i>Filter</a
-          >
-          <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_65a1214c95399">
-            <div class="px-7 py-5"><div class="fs-5 text-gray-900 fw-bold">Filter Options</div></div>
-            <div class="separator border-gray-200"></div>
-            <div class="px-7 py-5">
-              <div class="mb-10">
-                <label class="form-label fw-semibold">Status:</label>
-                <div>
-                  <select
-                    multiple=""
-                    class="form-select form-select-solid select2-hidden-accessible"
-                    data-kt-select2="true"
-                    data-close-on-select="false"
-                    data-placeholder="Select option"
-                    data-dropdown-parent="#kt_menu_65a1214c95399"
-                    data-allow-clear="true"
-                    data-select2-id="select2-data-7-udry"
-                    tabindex="-1"
-                    aria-hidden="true"
-                    data-kt-initialized="1"
-                  >
-                    <option></option>
-                    <option value="1">Approved</option>
-                    <option value="2">Pending</option>
-                    <option value="2">In Process</option>
-                    <option value="2">Rejected</option></select
-                  ><span
-                    class="select2 select2-container select2-container--bootstrap5"
-                    dir="ltr"
-                    data-select2-id="select2-data-8-5a0u"
-                    style="width: 100%"
-                    ><span class="selection"
-                      ><span
-                        class="select2-selection select2-selection--multiple form-select form-select-solid"
-                        role="combobox"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        tabindex="-1"
-                        aria-disabled="false"
-                        ><ul class="select2-selection__rendered" id="select2-q48f-container"></ul>
-                        <span class="select2-search select2-search--inline">
-                          <textarea
-                            class="select2-search__field"
-                            type="search"
-                            tabindex="0"
-                            autocorrect="off"
-                            autocapitalize="none"
-                            spellcheck="false"
-                            role="searchbox"
-                            aria-autocomplete="list"
-                            autocomplete="off"
-                            aria-label="Search"
-                            aria-describedby="select2-q48f-container"
-                            placeholder="Select option"
-                            style="width: 100%"
-                          ></textarea></span></span></span
-                    ><span class="dropdown-wrapper" aria-hidden="true"></span
-                  ></span>
-                </div>
+    </div>  
+  </div>
+  <div class="card mb-5 mb-xl-10">
+    <div class="card-body pt-9 pb-0">
+      <div class="d-flex flex-wrap flex-sm-nowrap">
+        <div class="me-7 mb-4">
+          <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+            <img :src="userData.profileImage" alt="Profile Image" />
+            <div
+              class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-body h-20px w-20px"
+            ></div>
+          </div>
+        </div>
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+            <div class="d-flex flex-column">
+              <div class="d-flex align-items-center mb-2">
+                <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ userData.name }}</a>
+                
+                <a href="#">
+                  <i class="ki-duotone ki-verify fs-1 text-primary">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </a>
+                <a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                  <i class="ki-duotone ki-profile-circle fs-4 me-1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                  </i>
+                  {{ userData.role }}
+                </a>
               </div>
-              <div class="mb-10">
-                <label class="form-label fw-semibold">Member Type:</label>
-                <div class="d-flex">
-                  <label class="form-check form-check-sm form-check-custom form-check-solid me-5"
-                    ><input class="form-check-input" type="checkbox" value="1" /><span class="form-check-label">Author</span></label
-                  ><label class="form-check form-check-sm form-check-custom form-check-solid"
-                    ><input class="form-check-input" type="checkbox" checked="" value="2" /><span class="form-check-label">Customer</span></label
-                  >
-                </div>
+              <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                
+                
               </div>
-              <div class="mb-10">
-                <label class="form-label fw-semibold">Notifications:</label>
-                <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                  <input class="form-check-input" type="checkbox" name="notifications" checked="" value="" /><label class="form-check-label"
-                    >Enabled</label
-                  >
-                </div>
+            </div>
+            <div class="d-flex my-4">              
+              <router-link for="/account-detail" class="btn btn-sm btn-primary me-3">수정 </router-link>              
+            </div>
+          </div>
+          <div class="d-flex flex-wrap flex-stack">
+            <div class="d-flex flex-column flex-grow-1 pe-8">
+              <div class="d-flex flex-wrap">
+                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                  이메일 : {{ userData.email }}
+                </span>
               </div>
-              <div class="d-flex justify-content-end">
-                <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button
-                ><button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+              <div class="d-flex flex-wrap">
+                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                  전화번호 : {{ userData.phone }}
+                </span>
+              </div>
+              <div class="d-flex flex-wrap">
+                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                  생년월일 : {{ userData.birth }}
+                </span>
+              </div>
+              <div class="d-flex flex-wrap">
+                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                  입금계좌 : {{ userData.pay }}
+                </span>              
               </div>
             </div>
           </div>
         </div>
-        <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a>
       </div>
+      <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+        <li class="nav-item mt-2">
+          <a class="nav-link text-active-primary ms-0 me-10 py-5" href="#" @click.prevent="changeComponent('myStudy')">내 학습률</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-active-primary ms-0 me-10 py-5" href="#" @click.prevent="changeComponent('myStudyList')">내 학습</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-active-primary ms-0 me-10 py-5" href="#" @click.prevent="changeComponent('payList')">결제 내역 조회</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-active-primary ms-0 me-10 py-5" href="#" >매출</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-active-primary ms-0 me-10 py-5" href="#" @click.prevent="changeComponent('myLecture')">강의</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
+<script>
+export default {
+  name: "Account_ToolBar",
+  methods :{
+    changeComponent(componentName){
+      this.$emit("changeComponent", componentName);
+    }
+  },
+  props: {
+    userData: {
+      type: Object,
+      required: true,
+      default: () => ({
+        password: "password123",        
+        email: "user@example.com",
+        phone: "123-456-7890",
+        name: "고범준",
+        birth: "2002-08-30",
+        role: "Developer",
+        pay :"1234-1234-123",
+        profileImage: "../../../public/assets/media/avatars/300-1.jpg",
+      }),
+    },
+  },
+};
+
+</script>
