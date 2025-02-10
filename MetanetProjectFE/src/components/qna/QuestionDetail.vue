@@ -19,9 +19,9 @@
                     <span class="fw-bold text-gray-500">{{ formattedDate }}</span>
                 </div>
             </div>
-            <div class="top-right" v-if="isOwner">
+            <div class="top-right" v-if="isWriter">
                 <div class="text-button">수정</div>
-                <div class="text-button">삭제</div>
+                <div class="text-button" @click="deleteQuestion">삭제</div>
             </div>
         </div>
         <p class="question-title">{{ response.questionTitle }}</p>
@@ -35,9 +35,26 @@
                 <img class="profile" v-if="answer.profile" :src="answer.profile">
                 <img class="profile" v-else src="../../../public/assets/media/profile.png">
                 <div class="answer-content">
-                    <p>{{ answer.content }}</p>
+                    <div class="answer-content-top">
+                        <div class="answer-writer">{{ answer.writerId }}</div>
+                        <div class="top-right" v-if="isAnswerWriter(answer.writerId)">
+                            <div class="text-button" @click="toggleEdit(answer.answerId, answer.content)">수정</div>
+                            <div class="text-button" @click="deleteAnswer(answer.answerId)">삭제</div>
+                        </div>
+                    </div>
+                    <p v-if="editingAnswerId !== answer.answerId">
+                        {{ answer.content }}
+                    </p>
+                    <div v-else class="edit-container">
+                        <textarea v-model="updatedAnswer" class="wide-textarea"></textarea>
+                        <button @click="updateAnswer(answer.answerId)" class="submit-btn">수정</button>
+                        <button @click="cancelEdit" class="cancel-btn">취소</button>
+                    </div>
+                    <!-- <p>{{ answer.content }}</p> -->
                 </div>
             </div>
+            <textarea v-model="newAnswer" class="wide-textarea" placeholder="답변을 입력하세요"></textarea>
+            <button @click="insertAnswer" class="submit-btn">답변</button>
         </div>
 </div>
 </template>
@@ -58,6 +75,9 @@ export default {
         images: [],
         answerDetails: [],
         },
+        newAnswer: "",
+        updatedAnswer: "",
+        editingAnswerId: null,
     };
   },
   computed: {
@@ -95,6 +115,106 @@ export default {
             console.error("Failed to fetch question details:", error);
         }
     },
+    async insertAnswer() {
+        if (!this.newAnswer.trim()) {
+            alert("답변을 입력하세요.");
+            return;
+        }
+
+        try {
+            const questionId = this.$route.params.questionId;
+            const token = localStorage.getItem("accessToken");
+            const response = await axios.post(
+                `http://localhost:8080/lectures/40/questions/${questionId}/answers`,
+                { content: this.newAnswer },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log(this.newAnswer);
+            console.log("Answer added successfully:", response.data);
+
+            this.newAnswer = "";
+            this.fetchQuestionDetail();
+
+        } catch (error) {
+            console.error("Failed to insert answer:", error.response?.data || error.message);
+        }
+    },
+    async deleteQuestion() {
+        try {
+            const questionId = this.$route.params.questionId;
+            const token = localStorage.getItem("accessToken");
+            const response = await axios.delete(
+                `http://localhost:8080/lectures/40/questions/${questionId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            this.$router.back();
+
+        } catch (error) {
+            console.error("Failed to delete question:", error.response?.data || error.message);
+        }
+    },
+    async deleteAnswer(answerId) {
+        try {
+            console.log("##### 답변 아이디 : " + answerId);
+            const questionId = this.$route.params.questionId;
+            const token = localStorage.getItem("accessToken");
+            const response = await axios.delete(
+                `http://localhost:8080/lectures/40/questions/${questionId}/answers/${answerId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            this.fetchQuestionDetail();
+
+        } catch (error) {
+            console.error("Failed to delete question:", error.response?.data || error.message);
+        }
+    },
+    async updateAnswer(answerId) {
+        if (!this.updatedAnswer.trim()) {
+            alert("답변을 입력하세요.");
+            return;
+        }
+
+        try {
+            const questionId = this.$route.params.questionId;
+            const token = localStorage.getItem("accessToken");
+            const response = await axios.put(
+                `http://localhost:8080/lectures/40/questions/${questionId}/answers/${answerId}`,
+                { content: this.updatedAnswer },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log(this.updatedAnswer);
+            console.log("Answer updated successfully:", response.data);
+
+            this.updatedAnswer = "";
+            this.editingAnswerId = null;
+            this.fetchQuestionDetail();
+
+        } catch (error) {
+            console.error("Failed to insert answer:", error.response?.data || error.message);
+        }
+    },
     getEmailFromToken(token) {
         try {
             const decoded = jwtDecode(token);
@@ -103,7 +223,32 @@ export default {
             console.error("Invalid Token:", error);
             return null;
         }
-    }
+    },
+    isAnswerWriter(answerWriter) {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return false;
+
+        try {
+            const decoded = jwtDecode(token);
+            return decoded.sub === answerWriter;
+        } catch (error) {
+            console.error("Invalid JWT Token:", error);
+            return false;
+        }
+    },
+    toggleEdit(answerId, content) {
+        if (this.editingAnswerId === answerId) {
+        this.editingAnswerId = null; // 취소 기능
+        this.updatedAnswer = "";
+        } else {
+        this.editingAnswerId = answerId;
+        this.updatedAnswer = content; // 기존 내용 미리 세팅
+        }
+    },
+    cancelEdit() {
+        this.editingAnswerId = null;
+        this.updatedAnswer = "";
+    },
   },
   mounted() {
     this.fetchQuestionDetail();
@@ -182,6 +327,7 @@ export default {
     font-size: 17px;
     font-weight: 600;
     margin-top: 30px;
+    margin-bottom: 15px;
 }
 .question-title {
     font-size: 17px;
@@ -197,9 +343,64 @@ export default {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    margin-left: 15px;
+    margin-right: 20px;
 }
 .answer-content {
+    margin-right: 15px;
+    text-align: initial;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.answer-content-top {
+    display: flex;
+}
+.answer-writer {
+    font-size: 15px;
+    font-weight: 500;
+    margin-right: 15px;
+}
+.answer-control {
+    font-size: 13px;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.wide-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: none;
+  margin-top: 15px;
+}
 
+.submit-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #0a72eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.cancel-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #085ac6;
 }
 
 @media (max-width: 600px) {
