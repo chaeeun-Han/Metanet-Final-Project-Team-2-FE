@@ -7,7 +7,6 @@
     <span class="w-125px text-gray-500 fw-semibold fs-7">이메일로 로그인</span>
   </div>
 
-  <!-- Login_input 컴포넌트에 필드 설정과 v-model 바인딩 -->
   <Login_input :fields="loginFormFields" v-model="loginFormData" @submit="handleSubmit" />
 
   <div class="text-gray-500 text-center fw-semibold fs-6">
@@ -17,8 +16,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import Login_input from "./Login_input.vue";
+import { login } from "../../apis/apiService";
 
 export default {
   name: "Login_form",
@@ -38,14 +37,14 @@ export default {
     async handleSubmit() {
       console.log("Submitting form data:", this.loginFormData.id, this.loginFormData.password);
       try {
-        const response = await axios.post(
-          "http://localhost:8080/login",
-          { id: this.loginFormData.id, password: this.loginFormData.password },
-          { headers: { "Content-Type": "application/json; charset=UTF-8" } }
-        );
-        console.log("Response from server:", response.data);
+        const response = await login({
+          id: this.loginFormData.id,
+          password: this.loginFormData.password,
+        });
+        console.log("로그인 성공:", response);
+        this.$router.push("/");
       } catch (error) {
-        console.error("Error during login:", error.response ? error.response.data : error);
+        console.error("로그인 실패:", error.response ? error.response.data : error);
       }
     },
   },
