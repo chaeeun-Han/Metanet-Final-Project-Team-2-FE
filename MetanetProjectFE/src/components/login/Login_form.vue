@@ -18,7 +18,7 @@
 <script>
 import axios from "axios";
 import { inject } from "vue";
-import Login_input from "./Login_input.vue";
+import Login_input from "./Login_Input.vue";
 import { login } from "../../apis/apiService";
 
 export default {
@@ -75,7 +75,6 @@ export default {
         } else {
           console.warn("❌ 액세스 토큰이 없거나 올바르지 않음");
         }
-
       } catch (error) {
         console.error("로그인 실패:", error.response ? error.response.data : error);
       }
