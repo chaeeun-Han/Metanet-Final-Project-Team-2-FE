@@ -12,7 +12,7 @@ export default defineConfig({
     https: true,
     proxy: {
       "/ws": {
-        target: "http://localhost:8080",
+        target: "ws://localhost:8080",
         ws: true,
         changeOrigin: true,
       },

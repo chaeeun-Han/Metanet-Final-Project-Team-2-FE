@@ -44,7 +44,7 @@ export default {
 
       console.log("📡 WebSocket 연결 시도 - JWT:", token);
 
-      const socket = new SockJS("/ws");
+      const socket = new WebSocket("ws://localhost:8080/ws");
       this.stompClient = Stomp.over(socket);
 
       this.stompClient.connect(
