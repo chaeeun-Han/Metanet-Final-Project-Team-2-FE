@@ -17,7 +17,7 @@ const routes = [
   { path: "/", component: Main_main },
   { path: "/account", component: Account_main },
   { path: "/signup", component: Signup },
-  { path: "/login", component: Login_main, name: "login" },
+  { path: "/login", component: Login_main },
   { path: "/questions", component: QnaList },
   { path: "/questions/:questionId", component: QuestionDetail },
   { path: "/password/reset", component:  Password_reset, name: "passwordReset"},
