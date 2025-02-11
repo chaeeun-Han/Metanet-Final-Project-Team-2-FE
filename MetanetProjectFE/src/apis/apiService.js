@@ -28,12 +28,12 @@ export async function login(credentials) {
   const authHeader = response.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.split(" ")[1];
-    localStorage.setItem("jwtToken", token);
+    sessionStorage.setItem("jwtToken", token);
 
     const payload = parseJwt(token);
     if (payload) {
-      localStorage.setItem("memberId", payload.sub);
-      localStorage.setItem("memberRole", payload.auth);
+      sessionStorage.setItem("memberId", payload.sub);
+      sessionStorage.setItem("memberRole", payload.auth);
     }
   }
   return response.data;
