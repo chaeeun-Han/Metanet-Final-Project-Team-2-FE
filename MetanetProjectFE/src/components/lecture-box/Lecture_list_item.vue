@@ -1,11 +1,11 @@
 <template>
   <div class="lecture-item">
     <!-- 이미지 클릭 시 강의 상세 페이지로 이동 -->
-    <router-link :to="`/lecture/${lectureId}`">
+    <router-link :to="`/lectures/${lectureId}`">
       <img :src="profile || 'assets/media/default-lecture.jpg'" alt="Lecture Image" class="lecture-img" />
     </router-link>
     <div class="lecture-info">
-      <router-link :to="`/lecture/${lectureId}`" class="lecture-title-link">
+      <router-link :to="`/lectures/${lectureId}`" class="lecture-title-link">
         <span class="lecture-title">{{ title }}</span>
       </router-link>
       <div class="lecture-instructor">{{ teacher }}</div>

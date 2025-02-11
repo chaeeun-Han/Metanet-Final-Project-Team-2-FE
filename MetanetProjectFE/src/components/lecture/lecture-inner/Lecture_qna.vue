@@ -1,75 +1,286 @@
 <template>
-  <div class="lecture-qna">
-    <h3>Q&A 게시판</h3>
-    <div v-if="qnaData && qnaData.length">
-      <div v-for="item in qnaData" :key="item.questionId" class="qna-item">
-        <!-- 제목을 클릭하면 /lecture/{lectureId}/QNA/{questionId}로 이동 -->
-        <router-link :to="`/lecture/${$route.params.lectureId}/QNA/${item.questionId}`" class="qna-title-link">
-          <h4 class="qna-title">{{ item.title }}</h4>
-        </router-link>
-        <p class="qna-meta">
-          작성자: {{ item.writer }} | 작성일: {{ formatDate(item.date) }} | 답변 수: {{ item.answerCount }}
-        </p>
-      </div>
+  <div class="container">
+        <div class="list-top">
+            <button @click="handleClick" class="question-button">질문하기</button>
+        </div>
+        <table class="table" v-if="questions && questions.length > 0">
+            <tbody>
+                <tr v-for="(question, index) in paginatedQuestions" :key="index" class="questionList" @click="handleRowClick(question)">
+                    <td>
+                        <div class="left-content">
+                            <h3>{{ question.title }}</h3>
+                            <p>{{ question.writer }}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="right-content">
+                            <div class="comments-box">
+                                <span class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" class="icon-svg">
+                                        <path d="M12 2C6.48 2 2 5.8 2 10c0 2.38 1.19 4.5 3.09 6l-1.07 4.28c-.1.38.27.72.63.53L9 18.87c.97.19 1.98.3 3 .3 5.52 0 10-3.8 10-8S17.52 2 12 2z"/>
+                                    </svg>
+                                </span>
+                                <span class="comments-count">{{ question.answerCount }}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div v-else class="no-questions">
+            <p>질문글이 없습니다.</p>
+        </div>
+        <div class="pagination-controls">
+            <span
+                @click="previousPage"
+                :class="{ disabled: currentPage === 1 }"
+                class="pagination-text"
+            >
+                &lt;
+            </span>
+            <span
+                v-for="page in visiblePages"
+                :key="page"
+                @click="goToPage(page)"
+                :class="['pagination-number', { active: page === currentPage }]"
+            >
+                {{ page }}
+            </span>
+            <span
+                @click="nextPage"
+                :class="{ disabled: currentPage === totalPages }"
+                class="pagination-text"
+            >
+                &gt;
+            </span>
+        </div>
     </div>
-    <div v-else class="text-center py-5"><span class="spinner-border text-primary"></span> Q&A 데이터 로딩 중...</div>
-  </div>
 </template>
 
 <script>
-import api from "../../../apis/api";
+import axios from "axios";
+
 export default {
-  name: "LectureQnA",
   data() {
     return {
-      qnaData: [],
+      questions: [],
+      currentPage: 1,
+      pageSize: 10,
+      maxVisiblePages: 5,
     };
   },
+  props: {
+    lectureData: Object,
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.questions.length / this.pageSize);
+    },
+    paginatedQuestions() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.questions.slice(start, end);
+    },
+    visiblePages() {
+      const half = Math.floor(this.maxVisiblePages / 2);
+      let startPage = Math.max(1, this.currentPage - half);
+      let endPage = Math.min(this.totalPages, startPage + this.maxVisiblePages - 1);
+
+      if (endPage - startPage + 1 < this.maxVisiblePages) {
+        startPage = Math.max(1, endPage - this.maxVisiblePages + 1);
+      }
+
+      return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    },
+  },
   methods: {
-    async fetchQnaData() {
+    async fetchQuestions() {
+        try {
+            const lectureId = this.$route.params.lectureId;
+            const response = await axios.get(`http://localhost:8080/lectures/${lectureId}/questions`);
+            this.questions = response.data.data;
+            console.log("Fetched questions:", this.questions);
+        } catch (error) {
+            console.error("Failed to fetch questions:", error);
+        }
+    },
+    handleRowClick(question) {
       const lectureId = this.$route.params.lectureId;
-      try {
-        const response = await api.get(`/lectures/${lectureId}/questions`);
-        // API 응답 구조에 따라 수정: 여기서는 response.data.data가 Q&A 배열이라고 가정
-        this.qnaData = response.data.data;
-      } catch (error) {
-        console.error("Q&A 데이터 가져오기 실패:", error);
+      this.$router.push(`/lectures/${lectureId}/questions/${question.questionId}`);
+    },
+    goToPage(page) {
+      this.currentPage = page;
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
       }
     },
-    formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleString();
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    handleClick() {
+        const lectureId = this.$route.params.lectureId;
+        this.$router.push(`/lectures/${lectureId}/questions/write`);
     },
   },
-  created() {
-    this.fetchQnaData();
-  },
-  watch: {
-    "$route.params.lectureId": "fetchQnaData",
+  mounted() {
+      this.fetchQuestions();
   },
 };
 </script>
 
 <style scoped>
-.qna-item {
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 0.5rem;
-}
-.qna-title-link {
-  text-decoration: none;
-  color: inherit;
-}
-.qna-title {
-  font-weight: bold;
-  margin-bottom: 0.25rem;
-  cursor: pointer;
-}
-.qna-title:hover {
-  color: #1d4ed8;
-}
-.qna-meta {
-  font-size: 0.9rem;
-  color: #555;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .container {
+        text-align: center;
+        margin: 30px auto;
+        width: 100%;
+        max-width: 700px;
+        padding: 0 15px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .list-top {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+    .question-button {
+        padding: 8px 15px 8px 15px;
+        min-width: 100;
+        height: auto;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+        background-color: #0A72EB;
+        color: white;
+        border: none;
+        box-shadow: none;
+    }
+
+    .left-content {
+        text-align: left;
+    }
+
+    .left-content h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 350px;
+        cursor: pointer;
+    }
+
+    .left-content p {
+        font-size: 14px;
+        color: gray;
+    }
+
+    .right-content {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .comments-box {
+        display: flex;
+        align-items: center;
+        background-color: #f0f0f0;
+        border-radius: 20px;
+        padding: 5px 10px;
+    }
+
+    .icon {
+        display: flex;
+        align-items: center;
+        margin-right: 5px;
+    }
+
+    .icon-svg {
+        width: 20px;
+        height: 20px;
+        color: gray;
+    }
+
+    .comments-count {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+    }
+    .pagination-controls {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .pagination-text {
+        font-size: 18px;
+        cursor: pointer;
+        color: grey;
+        user-select: none;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .pagination-text.disabled {
+        color: #CDD2DF;
+        cursor: not-allowed;
+    }
+
+    .pagination-number {
+        font-size: 16px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        outline: none;
+        user-select: none;
+    }
+
+    .pagination-number.active {
+        background-color: #0a72eb;
+        color: white;
+        border: none;
+    }
+
+    .pagination-number:hover {
+        background-color: #ddd;
+    }
+    .no-questions {
+        font-size: 17px;
+        font-weight: 600;
+        color: #9AA2B8;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 10px;
+        }
+    }
+    @media (max-width: 450px) {
+        .left-content h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+    }
+
 </style>
