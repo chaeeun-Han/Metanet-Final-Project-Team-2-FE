@@ -17,7 +17,7 @@ api.interceptors.request.use(
   (config) => {
     // 공개 엔드포인트가 아니라면 토큰 첨부
     if (!isPublicEndpoint(config.url)) {
-      const token = localStorage.getItem("jwtToken");
+      const token = sessionStorage.getItem("jwtToken");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
