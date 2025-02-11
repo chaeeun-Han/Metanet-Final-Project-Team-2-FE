@@ -52,7 +52,7 @@ export default {
     async fetchToolData() {
       try {
         const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/auth/Toolbarmember", {
+        const response = await axios.get("http://localhost:8080/auth/toolbarmember", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
