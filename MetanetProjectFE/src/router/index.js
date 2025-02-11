@@ -22,7 +22,6 @@ const routes = [
   { path: "/questions/:questionId", component: QuestionDetail },
   { path: "/password/reset", component:  Password_reset, name: "passwordReset"},
   { path: "/password/confirm", component:  Password_confirm, name: "passwordConfirm"},
-  { path: "/login", component: Login_main },
   { path: "/lectures/:lectureId/questions/:questionId", component: QuestionDetail },
   { path: "/lectures/:lectureId/questions/write", component: QuestionWrite },
   {
