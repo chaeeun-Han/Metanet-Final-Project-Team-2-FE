@@ -418,6 +418,9 @@
                 <a v-if="isLogin" @click="logout" class="menu-link px-5">로그아웃</a>
                 <router-link v-else to="/login" class="menu-link px-5">로그인</router-link>
               </div>
+              <div class="menu-item px-5">
+                <router-link v-if="!isLogin" to="/signup" class="menu-link px-5">회원가입</router-link>
+              </div>
             </div>
           </div>
           <!-- Mobile Header Menu Toggle -->
