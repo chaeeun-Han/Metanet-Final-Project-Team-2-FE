@@ -18,7 +18,7 @@
 <script>
 import axios from "axios";
 import { inject } from "vue";
-import Login_input from "./Login_input.vue";
+import Login_input from "./Login_Input.vue";
 import { login } from "../../apis/apiService";
 
 export default {
@@ -27,7 +27,7 @@ export default {
     Login_input,
   },
   setup() {
-    const connectWebSocket = inject("connectWebSocket"); // ✅ WebSocket 함수 가져오기
+    const connectWebSocket = inject("connectWebSocket");
 
     if (!connectWebSocket) {
       console.error("❌ WebSocket 함수 로드 실패: connectWebSocket이 undefined입니다.");
@@ -62,7 +62,7 @@ export default {
           const accessToken = authHeader.split(" ")[1];
           console.log("Extracted Token:", accessToken);
 
-          localStorage.setItem("accessToken", accessToken);
+          sessionStorage.setItem("accessToken", accessToken);
 
           axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
@@ -75,7 +75,6 @@ export default {
         } else {
           console.warn("❌ 액세스 토큰이 없거나 올바르지 않음");
         }
-
       } catch (error) {
         console.error("로그인 실패:", error.response ? error.response.data : error);
       }

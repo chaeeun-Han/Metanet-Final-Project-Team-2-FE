@@ -208,13 +208,13 @@
           <!-- 알림 아이콘 및 메뉴 -->
           <div class="app-navbar-item ms-1 ms-md-4">
             <div
-              class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px"
+            class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px"
               data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
               data-kt-menu-attach="parent"
               data-kt-menu-placement="bottom-end"
               id="kt_menu_item_notifications"
             >
-              <i class="ki-duotone ki-notification-status fs-2">
+            <i :class="['ki-duotone', 'ki-notification-status', 'fs-2', { 'notification-icon': true, 'has-notifications': hasNotifications }]">
                 <span class="path1"></span>
                 <span class="path2"></span>
                 <span class="path3"></span>
@@ -242,33 +242,32 @@
                       aria-selected="true"
                       tabindex="0"
                       role="tab"
-                      >알림</a
-                    >
+                      >알림</a>
                   </li>
                 </ul>
               </div>
               <div class="tab-content">
                 <div class="tab-pane fade show active" id="kt_topbar_notifications_1" role="tabpanel">
                   <div class="scroll-y mh-325px my-5 px-8">
-                    <!-- notifications 배열을 v‑for로 렌더링 -->
                     <div
                       v-if="userData"
-                      v-for="(item, index) in notifications"
+                      v-for="(item, index) in truncatedNotifications"
                       :key="index"
                       class="d-flex flex-stack py-4"
                     >
                       <div class="d-flex align-items-center">
-                        <div class="symbol symbol-35px me-4">
-                          <span class="symbol-label bg-light-danger">
-                            <i class="ki-duotone ki-information fs-2 text-danger"></i>
-                          </span>
-                        </div>
-                        <div class="mb-0 me-2">
-                          <a href="#" class="fs-6 text-gray-800 text-hover-primary fw-bold">{{ item.title }}</a>
-                          <div class="text-gray-500 fs-7">{{ item.name }}</div>
+                        <!-- <div class="d-flex flex-column">
+                          <router-link :to="`/lectures/${item.lectureId}/questions/${item.questionId}`"
+                            class="fs-6 text-gray-800 text-hover-primary fw-bold"
+                            @click="removeNotification(index), closeNotification(), handleNotificationClick(item.lectureId, item.questionId)">{{ item.message }}</router-link>
+                          <div class="text-gray-500 fs-7">{{ item.timestamp }}</div>
+
+                        </div> -->
+                        <div class="fs-6 text-gray-800 text-hover-primary fw-bold cursor-pointer"
+                            @click="removeNotification(index); closeNotification(); handleNotificationClick(item.lectureId, item.questionId)">
+                          {{ item.shortMessage }}
                         </div>
                       </div>
-                      <span class="badge badge-light fs-8">{{ item.time }}</span>
                     </div>
                     <div v-if="!userData">asdf</div>
                   </div>
@@ -457,28 +456,76 @@ export default {
   },
   data() {
     return {
-      notifications: [
-        { title: "hello", name: "hello2", time: "2H" },
-        { title: "hello", name: "hello2", time: "2H" },
-        { title: "hello", name: "hello2", time: "2H" },
-      ],
+      notifications: [],
       searchQuery: "",
+      isNotificationOpen: false,
     };
   },
   created() {
-    // this.fetchNotifications();
+    if (window.websocketInstance) {
+      console.log("헤더 - 기존 웹소켓 사용");
+    } else {
+      console.log("웹소켓 연결되지 않음 - 로그인 필요");
+    }
+    window.addEventListener("new-notification", this.addNotification);
+  },
+  computed: {
+    hasNotifications() {
+      return this.notifications.length > 0;
+    },
+    truncatedNotifications() {
+    return this.notifications.map(item => ({
+        ...item,
+        shortMessage: item.message.length > 100 ? item.message.substring(0, 100) + "..." : item.message
+      }));
+    },
   },
   methods: {
-    fetchNotifications() {
-      axios
-        .get("/api/notifications")
-        .then((response) => {
-          this.notifications = response.data;
-        })
-        .catch((error) => {
-          console.error("알림 데이터를 불러오는 중 에러 발생:", error);
-        });
+    loadNotifications() {
+      const savedNotifications = sessionStorage.getItem("notifications");
+      if (savedNotifications) {
+        this.notifications = JSON.parse(savedNotifications);
+      }
     },
+    addNotification(event) {
+      const data = event.detail;
+      console.log("새로운 알림 : ", data);
+      this.notifications.unshift(data);
+      sessionStorage.setItem("notifications", JSON.stringify(this.notifications));
+    },
+    removeNotification(index) {
+      this.notifications.splice(index, 1);
+      sessionStorage.setItem("notifications", JSON.stringify(this.notifications));
+    },
+    closeNotification() {
+      const notificationTab = document.getElementById("kt_menu_notifications");
+      if (notificationTab) {
+        const bsTab = bootstrap.Tab.getInstance(notificationTab);
+        if (bsTab) {
+          bsTab.hide();
+        }
+      }
+    },
+    handleNotificationClick(lectureId, questionId) {
+      const newPath = `/lectures/${lectureId}/questions/${questionId}`;
+      if (this.$route.fullPath === newPath) {
+        this.$router.push({ path: newPath, query: { refresh: Date.now() } });
+      } else {
+        this.$router.push(newPath);
+      }
+    },
+  },
+  beforeUnmount() {
+    window.removeEventListener("new-notification", this.addNotification);
   },
 };
 </script>
+<style>
+.notification-icon {
+  color: gray;
+}
+
+.ki-duotone.has-notifications {
+  color: red !important;
+}
+</style>

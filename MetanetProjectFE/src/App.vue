@@ -3,7 +3,7 @@
     <div class="app-wrapper flex-column flex-row-fluid ms-0 ps-0" id="kt_app_wrapper">
       <Header :userData="myUserData" />
       <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </div>
     </div>
   </div>
@@ -12,7 +12,7 @@
 <script>
 import Header from "./components/Header/Header.vue";
 import { provide, onMounted, onBeforeUnmount } from "vue";
-import SockJS from "sockjs-client";
+import { jwtDecode } from "jwt-decode";
 import Stomp from "stompjs";
 
 export default {
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     connectWebSocket() {
-      const token = localStorage.getItem("accessToken");
+      const token = sessionStorage.getItem("accessToken");
       if (!token) {
         console.error("❌ WebSocket 연결 실패: 토큰 없음");
         return;
@@ -44,8 +44,15 @@ export default {
 
       console.log("📡 WebSocket 연결 시도 - JWT:", token);
 
-      const socket = new SockJS("/ws");
+      const decoded = jwtDecode(token);
+      const userId = decoded.sub;
+      if (window.websocketInstance) {
+        console.log("⚠️ 기존 WebSocket이 존재 -> 해제 후 재연결");
+        this.disconnectWebSocket();
+      }
+      const socket = new WebSocket("ws://localhost:8080/ws");
       this.stompClient = Stomp.over(socket);
+      window.websocketInstance = this.stompClient;
 
       this.stompClient.connect(
         { Authorization: `Bearer ${token}` },
@@ -55,6 +62,8 @@ export default {
           this.stompClient.subscribe("/user/queue/notifications", (message) => {
             const notification = JSON.parse(message.body);
             console.log("📩 알림 수신:", notification.message);
+
+            window.dispatchEvent(new CustomEvent("new-notification", { detail: notification }));
           });
         },
         (error) => {
@@ -63,11 +72,14 @@ export default {
       );
     },
     disconnectWebSocket() {
-      if (this.stompClient) {
-        this.stompClient.disconnect(() => {
+      if (window.websocketInstance) {
+        console.log("🔌 WebSocket 연결 해제 중...");
+        window.websocketInstance.disconnect(() => {
           console.log("❌ WebSocket 연결 해제됨");
         });
+
         this.stompClient = null;
+        window.websocketInstance = null;
       }
     },
   },
@@ -75,8 +87,13 @@ export default {
     this.disconnectWebSocket();
   },
   mounted() {
-    provide("connectWebSocket", this.connectWebSocket); // ✅ WebSocket 함수 제공
+    provide("connectWebSocket", this.connectWebSocket);
     provide("disconnectWebSocket", this.disconnectWebSocket);
+
+    const token = sessionStorage.getItem("accessToken");
+    if (token) {
+      this.connectWebSocket();
+    }
   },
 };
 </script>

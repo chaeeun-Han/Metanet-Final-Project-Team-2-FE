@@ -9,10 +9,10 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
-    https: true,
+    https: false,
     proxy: {
       "/ws": {
-        target: "http://localhost:8080",
+        target: "ws://localhost:8080",
         ws: true,
         changeOrigin: true,
       },
