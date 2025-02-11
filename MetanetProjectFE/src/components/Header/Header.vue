@@ -256,13 +256,6 @@
                       class="d-flex flex-stack py-4"
                     >
                       <div class="d-flex align-items-center">
-                        <!-- <div class="d-flex flex-column">
-                          <router-link :to="`/lectures/${item.lectureId}/questions/${item.questionId}`"
-                            class="fs-6 text-gray-800 text-hover-primary fw-bold"
-                            @click="removeNotification(index), closeNotification(), handleNotificationClick(item.lectureId, item.questionId)">{{ item.message }}</router-link>
-                          <div class="text-gray-500 fs-7">{{ item.timestamp }}</div>
-
-                        </div> -->
                         <div class="fs-6 text-gray-800 text-hover-primary fw-bold cursor-pointer"
                             @click="removeNotification(index); closeNotification(); handleNotificationClick(item.lectureId, item.questionId)">
                           {{ item.shortMessage }}
@@ -421,7 +414,9 @@
                 <a href="account/settings.html" class="menu-link px-5">회원 정보 변경하기</a>
               </div>
               <div class="menu-item px-5">
-                <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5">로그 아웃</a>
+                <!-- <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5" @click="logout">로그 아웃</a> -->
+                <a v-if="isLogin" @click="logout" class="menu-link px-5">로그아웃</a>
+                <router-link v-else to="/login" class="menu-link px-5">로그인</router-link>
               </div>
             </div>
           </div>
@@ -445,6 +440,7 @@
 
 <script>
 import axios from "axios";
+import { inject, watch } from "vue";
 
 export default {
   name: "Header",
@@ -453,6 +449,7 @@ export default {
     userData: {
       type: Object,
     },
+    isLogin: Boolean,
   },
   data() {
     return {
@@ -460,6 +457,14 @@ export default {
       searchQuery: "",
       isNotificationOpen: false,
     };
+  },
+  setup() {
+    const isLogin = inject("isLogin");
+    const updateLoginStatus = inject("updateLoginStatus");
+    watch(isLogin, (newValue) => {
+      console.log("🔄 Header - isLogin 변경 감지:", newValue);
+    });
+    return { isLogin, updateLoginStatus };
   },
   created() {
     if (window.websocketInstance) {
@@ -514,6 +519,16 @@ export default {
         this.$router.push(newPath);
       }
     },
+    logout() {
+      sessionStorage.clear();
+      console.log("로그아웃됨");
+      this.updateLoginStatus(false);
+      if (this.$route.fullPath === "/") {
+        this.$router.push({ path: "/", query: { refresh: Date.now() } });
+      } else {
+        this.$router.push("/");
+      }
+    }
   },
   beforeUnmount() {
     window.removeEventListener("new-notification", this.addNotification);
