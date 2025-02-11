@@ -10,13 +10,19 @@ import Lecture_QnA from "../components/lecture/lecture-inner/Lecture_qna.vue";
 import Lecture_file from "../components/lecture/lecture-inner/Lecture_file.vue";
 import Lecture_intro from "../components/lecture/lecture-inner/Lecture_intro.vue";
 
+import Password_confirm from "../components/password-reset/Password_confirm.vue";
+import Password_reset from "../components/password-reset/Password_reset.vue";
+
 const routes = [
   { path: "/", component: Main_main },
   { path: "/account", component: Account_main },
   { path: "/signup", component: Signup },
+  { path: "/password/reset", component:  Password_reset, name: "passwordReset"},
+  { path: "/password/confirm", component:  Password_confirm, name: "passwordConfirm"},
   { path: "/login", component: Login_main },
   { path: "/lectures/:lectureId/questions/:questionId", component: QuestionDetail },
   { path: "/lectures/:lectureId/questions/write", component: QuestionWrite },
+
   {
     path: "/lectures/:lectureId",
     component: Lecture_content,

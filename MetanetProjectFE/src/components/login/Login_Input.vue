@@ -15,7 +15,7 @@
       </div>
       <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
         <div></div>
-        <a href="#" class="link-primary">비밀번호를 잊으셨습니까?</a>
+        <router-link to="/password/confirm" class="link-primary">비밀번호를 잊으셨습니까?</router-link>
       </div>
       <div class="d-grid mb-10">
         <input type="submit" id="kt_sign_in_submit" class="btn btn-primary" :value="text" />
