@@ -2,7 +2,7 @@
   <div class="main-container">
     <!-- Top5: 마감임박 강의 -->
     <div class="section" style="padding-top: 100px">
-      <h2 class="section-title">마감임박 강의 Top 5</h2>
+      <h2 class="section-title">{{ t("main.closingSoon") }}</h2>
       <div class="row justify-content-center">
         <div
           class="col-xl-2 col-lg-3 col-md-4 col-sm-6"
@@ -22,7 +22,7 @@
 
     <!-- Top5: 좋아요 강의 -->
     <div class="section">
-      <h2 class="section-title">좋아요 강의 Top 5</h2>
+      <h2 class="section-title">{{ t("main.likes") }}</h2>
       <div class="row justify-content-center">
         <div
           class="col-xl-2 col-lg-3 col-md-4 col-sm-6"
@@ -42,7 +42,7 @@
 
     <div class="section full-lectures">
       <div class="header">
-        <h2 class="section-title">강의 목록</h2>
+        <h2 class="section-title">{{ t("main.list") }}</h2>
         <div class="tag-filters">
           <label v-for="tag in availableTags" :key="tag" class="tag-filter">
             <input type="checkbox" :value="tag" v-model="selectedTags" />
@@ -85,6 +85,7 @@
 import Lecture_box from "../lecture-box/Lecture_box.vue";
 import Lecture_list_item from "../lecture-box/Lecture_list_item.vue";
 import api from "../../apis/apiService";
+import { useI18n } from "vue-i18n";
 
 export default {
   name: "main_main",
@@ -103,6 +104,10 @@ export default {
       availableTags: [],
       selectedTags: [],
     };
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   computed: {
     filteredLectures() {
