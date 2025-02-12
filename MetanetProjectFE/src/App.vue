@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <div class="app-wrapper flex-column flex-row-fluid ms-0 ps-0" id="kt_app_wrapper">
-      <!-- Header 컴포넌트에 notifications와 userData를 전달 -->
-      <Header :userData="myUserData"></Header>
+      <Header :userData="myUserData" :isLogin="isLogin" @update-login-status="isLogin = $event"></Header>
       <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
         <router-view :key="$route.fullPath" />
       </div>
@@ -12,7 +11,7 @@
 
 <script>
 import Header from "./components/Header/Header.vue";
-import { provide, onMounted, onBeforeUnmount } from "vue";
+import { nextTick, provide, ref, watch } from "vue";
 import { jwtDecode } from "jwt-decode";
 import Stomp from "stompjs";
 
@@ -20,6 +19,19 @@ export default {
   name: "App",
   components: {
     Header,
+  },
+  setup() {
+    const isLogin = ref(!!sessionStorage.getItem("accessToken"));
+    const updateLoginStatus = async (status) => {
+      isLogin.value = status;
+      await nextTick();
+    };
+    watch(isLogin, (newValue) => {
+      console.log("isLogin 변경됨: ", newValue);
+    });
+    provide("updateLoginStatus", updateLoginStatus);
+    provide("isLogin", isLogin);
+    return { isLogin};
   },
   data() {
     return {
@@ -33,6 +45,7 @@ export default {
         language: "영어",
       },
       stompClient: null,
+      isLogin: !!sessionStorage.getItem("accessToken"),
     };
   },
   methods: {
@@ -68,7 +81,7 @@ export default {
           });
         },
         (error) => {
-          console.error("❌ WebSocket 연결 실패:", error);
+          console.log("❌ WebSocket 연결 실패:", error);
         }
       );
     },
