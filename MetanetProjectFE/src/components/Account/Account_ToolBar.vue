@@ -112,3 +112,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .nav-link.active {
+    color: #0061f2 !important; /* 파란색 유지 */
+    /* text-decoration: underline !important; 밑줄 유지 */
+    font-weight: bold;
+  }
+</style>
