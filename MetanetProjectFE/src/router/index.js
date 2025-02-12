@@ -13,6 +13,9 @@ import Lecture_intro from "../components/lecture/lecture-inner/Lecture_intro.vue
 import Password_confirm from "../components/password-reset/Password_confirm.vue";
 import Password_reset from "../components/password-reset/Password_reset.vue";
 
+import CartList from "../components/Cart/Cart_content.vue";
+import Success from "../components/Cart/toss/Success.vue";
+
 const routes = [
   { path: "/", component: Main_main },
   { path: "/account", component: Account_main },
@@ -22,7 +25,8 @@ const routes = [
   { path: "/login", component: Login_main },
   { path: "/lectures/:lectureId/questions/:questionId", component: QuestionDetail },
   { path: "/lectures/:lectureId/questions/write", component: QuestionWrite },
-
+  { path: "/cart", component: CartList},
+  { path: "/success", component: Success},
   {
     path: "/lectures/:lectureId",
     component: Lecture_content,
