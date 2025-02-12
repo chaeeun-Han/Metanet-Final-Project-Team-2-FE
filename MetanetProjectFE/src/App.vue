@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="app-wrapper flex-column flex-row-fluid ms-0 ps-0" id="kt_app_wrapper">
-      <Header :userData="myUserData" :isLogin="isLogin" @update-login-status="isLogin = $event"/>
+      <Header :userData="myUserData" :isLogin="isLogin" @update-login-status="isLogin = $event"></Header>
       <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
         <router-view :key="$route.fullPath" />
       </div>

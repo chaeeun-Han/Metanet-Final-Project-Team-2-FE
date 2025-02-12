@@ -2,6 +2,9 @@ import axios from "axios";
 
 function isPublicEndpoint(url) {
   if (url === "/lectures/all") return true;
+  if (url === "/email/mail-password") return true;
+  if (url === "/email/verify") return true;
+  if (url === "/auth/login") return true;
   const parts = url.split("/");
   if (parts[1] === "lecture" && parts.length === 3) {
     return true;

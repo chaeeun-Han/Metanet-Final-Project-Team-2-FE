@@ -29,38 +29,46 @@
                     <!--end::Table head-->
                     <!--begin::Table body-->
                     <tbody>
-                        <tr>                            
+                        <tr v-for="(pay, index) in payListData" :key="index"> 
                             <td>
-                                <a href="#" class="text-gray-900 fw-bold text-hover-primary fs-6">56037-XDER</a>
+                            <a href="#" class="text-gray-900 fw-bold text-hover-primary fs-6">{{ pay.payId }}</a>
                             </td>
                             <td>
-                                <a href="#"
-                                    class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">Brasil</a>
-                               
+                            <div class="d-flex align-items-center">
+                                <!-- 사진 -->
+                                <div class="symbol symbol-50px me-3">
+                                <img :src="pay.profile" class="" alt="" />
+                                </div>
+                                <!-- 타이틀 -->
+                                <a href="#" class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ pay.title }}</a>
+                            </div>
+                            </td>
+
+                            <td>
+                            <span 
+                                class="badge" 
+                                :class="pay.status ? 'badge-light-danger' : 'badge-light-success'"
+                            >
+                                {{ pay.status ? '환불 완료' : '결제 완료' }}
+                            </span>
                             </td>
                             <td>
-                                <span class="badge badge-light-success">Approved</span>
+                            <a href="#"
+                                class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ pay.startDate }}</a>
                             </td>
                             <td>
-                                <a href="#"
-                                    class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">05/28/2020</a>
-                               
-                            </td>
-                            <td>
-                                <a href="#"
-                                    class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">05/28/2020</a>                               
+                            <a href="#"
+                                class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ pay.endDate }}</a>
                             </td>
                             <td class="text-gray-900 fw-bold text-hover-primary fs-6">
-                                <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user">
-                                    <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">
-                                    상세보기</a>
-                                </div>	
+                            <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user">
+                                <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">
+                                상세보기</a>
+                            </div>
                             </td>
-                           
-                            
                         </tr>
-                        
-                    </tbody>
+                        </tbody>
+
                     <!--end::Table body-->
                 </table>
                 <!--end::Table-->
@@ -73,3 +81,11 @@
 
 
 </template>
+
+<script>
+export default {
+  props: {
+    payListData: Array, // 데이터가 배열임을 명시
+  }
+};
+</script>
