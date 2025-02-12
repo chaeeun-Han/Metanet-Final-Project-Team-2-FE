@@ -59,6 +59,7 @@
               인증번호 발송
             </button>
           </div>
+          <p v-if="emailSent" class="text-dark">메일을 발송했습니다.</p>
         </div>
 
         <!-- 이메일 인증 코드 입력 필드 -->
@@ -85,6 +86,7 @@
               확인
             </button>
           </div>
+          <p v-if="codeChecked" class="text-dark">인증되었습니다.</p>
         </div>
 
         <!-- 생년월일 (날짜 입력 필드) -->
