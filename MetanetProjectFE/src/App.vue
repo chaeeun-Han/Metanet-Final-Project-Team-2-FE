@@ -31,7 +31,7 @@ export default {
     });
     provide("updateLoginStatus", updateLoginStatus);
     provide("isLogin", isLogin);
-    return { isLogin};
+    return { isLogin };
   },
   data() {
     return {

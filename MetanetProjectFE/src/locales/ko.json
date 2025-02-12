@@ -1,0 +1,19 @@
+{
+  "main": {
+    "closingSoon": "마감임박 강의 Top 5",
+    "likes": "인기 강의 Top 5",
+    "list": "강의 목록"
+  },
+  "header": {
+    "en": "영어",
+    "ko": "한국어",
+    "search": "강의를 검색해 보세요",
+    "language": "언어",
+    "profile": "내 프로필",
+    "myCourses": "내 강의 보기",
+    "editProfile": "회원 정보 수정",
+    "signout": "로그아웃",
+    "signin": "로그인",
+    "signup": "회원가입"
+  }
+}
