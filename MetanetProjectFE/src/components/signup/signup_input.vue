@@ -173,6 +173,8 @@
 </template>
 
 <script>
+import api from '../../apis/api';
+
 export default {
   name: "Signup_input",
   props: {
@@ -256,8 +258,8 @@ export default {
     async sendVerificationCode(email) {
       this.emailSent = true;
       try {
-        const response = await axios.post(
-            "http://localhost:8080/email/send",
+        const response = await api.post(
+            "/email/send",
             { email: email },
         );
         if (response.status !== 200) {
@@ -273,8 +275,8 @@ export default {
       try {
         console.log("이메일 : ", this.modelValue.email);
         console.log("코드 : ", this.modelValue.code);
-        const response = await axios.post(
-          "http://localhost:8080/email/verify",
+        const response = await api.post(
+          "/email/verify",
           {
             email: this.modelValue.email,
             verifyCode: this.modelValue.code
