@@ -153,7 +153,6 @@
   
   <script>
   export default {
-	name: "Account_Lecture",
 	props:{
 		myLectureData:Object
 	}

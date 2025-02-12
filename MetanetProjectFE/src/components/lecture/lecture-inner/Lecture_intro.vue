@@ -253,7 +253,7 @@ export default {
     },
     async fetchReviews() {
       try {
-        const response = await api.get(`/lecture/${this.lectureData.lectureId}/reviews`);
+        const response = await api.get(`/lectures/${this.lectureData.lectureId}/reviews`);
         // undefined나 null 값은 필터링
         this.reviews = (response.data.data || []).filter((review) => review);
         this.reviewsLoaded = true;
@@ -278,7 +278,7 @@ export default {
     async saveEdit(review) {
       try {
         const payload = { content: this.editingContent };
-        await api.put(`/lecture/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
+        await api.put(`/lectures/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
         review.content = this.editingContent;
         this.editingReviewId = null;
         this.editingContent = "";
@@ -289,7 +289,7 @@ export default {
     async deleteReview(review) {
       try {
         const payload = { deleted: 1 };
-        await api.delete(`/lecture/${this.lectureData.lectureId}/reviews/${review.reviewId}`, { data: payload });
+        await api.delete(`/lectures/${this.lectureData.lectureId}/reviews/${review.reviewId}`, { data: payload });
         // 삭제 성공 시 리뷰 리스트에서 제거
         this.reviews = this.reviews.filter((r) => r.reviewId !== review.reviewId);
       } catch (error) {
@@ -308,7 +308,7 @@ export default {
     async submitReply(review) {
       try {
         const payload = { content: this.replyContent };
-        await api.post(`/lecture/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
+        await api.post(`/lectures/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
         // 제출 성공 시 페이지 새로고침
         window.location.reload();
       } catch (error) {
@@ -327,7 +327,7 @@ export default {
     async submitNewReview() {
       try {
         const payload = { content: this.newReviewContent };
-        await api.post(`/lecture/${this.lectureData.lectureId}/reviews`, payload);
+        await api.post(`/lectures/${this.lectureData.lectureId}/reviews`, payload);
         // 제출 성공 시 페이지 새로고침
         window.location.reload();
       } catch (error) {

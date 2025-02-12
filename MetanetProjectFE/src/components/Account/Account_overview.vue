@@ -89,7 +89,6 @@
 
 <script>
 export default {
-  name: "Account_overview",
   props: {
     userData: {
       type: Object,
