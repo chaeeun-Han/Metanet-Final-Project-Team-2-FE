@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div class="app-wrapper flex-column flex-row-fluid ms-0 ps-0" id="kt_app_wrapper">
-      <Header :userData="myUserData" />
+      <!-- Header 컴포넌트에 notifications와 userData를 전달 -->
+      <Header :userData="myUserData"></Header>
       <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
         <router-view :key="$route.fullPath" />
       </div>
