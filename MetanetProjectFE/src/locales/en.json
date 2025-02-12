@@ -1,0 +1,19 @@
+{
+  "main": {
+    "closingSoon": "Top 5 Courses Closing Soon",
+    "likes": "Popular Courses Top 5",
+    "list": "Courses"
+  },
+  "header": {
+    "en": "English",
+    "ko": "Korean",
+    "search": "Search for courses",
+    "language": "Language",
+    "profile": "My profile",
+    "myCourses": "My Courses",
+    "editProfile": "Edit Profile",
+    "signout": "Sign out",
+    "signin": "Sign in",
+    "signup": "Sign up"
+  }
+}
