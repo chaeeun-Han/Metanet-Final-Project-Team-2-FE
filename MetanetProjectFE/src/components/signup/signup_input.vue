@@ -121,14 +121,12 @@
                 <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
               </span>
             </div>
-
             <div class="d-flex align-items-center mt-2">
               <div class="flex-grow-1 rounded h-5px me-2" :class="hasLetter ? 'bg-success' : 'bg-secondary'"></div>
               <div class="flex-grow-1 rounded h-5px me-2" :class="hasNumber ? 'bg-success' : 'bg-secondary'"></div>
               <div class="flex-grow-1 rounded h-5px" :class="hasSpecialChar ? 'bg-success' : 'bg-secondary'"></div>
             </div>
-            <p v-if="passwordError" class="text-danger">{{ passwordError }}</p>
-            <div class="text-muted">영어, 숫자, 특수문자를 포함해야 합니다 (8~16자리)</div>
+            <div v-if="passwordError" class="text-danger">영어, 숫자, 특수문자를 포함해야 합니다 (8~16자리)</div>
           </div>
         </div>
 
