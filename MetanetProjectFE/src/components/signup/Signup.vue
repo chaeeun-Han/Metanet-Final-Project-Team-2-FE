@@ -8,7 +8,7 @@
             <h1 class="text-gray-900 fw-bolder mb-3">회원가입</h1>
           </div>
           <div class="w-lg-500px p-10">
-            <Signup_input ref="signupInput" :fields="signupFormFields" v-model="signupFormData" @submit="handleSubmit" />
+            <signup_input ref="signupInput" :fields="signupFormFields" v-model="signupFormData" @submit="handleSubmit" />
           </div>
 
           <div class="separator separator-content my-14"></div>
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import Signup_input from "./Signup_input.vue";
+import signup_input from "./signup_input.vue";
 import Login_background from "../login/Login_background.vue";
 import api from '../../apis/api';
 
 export default {
   name: "Signup",
   components: {
-    Signup_input,
+    signup_input,
     Login_background,
   },
   data() {

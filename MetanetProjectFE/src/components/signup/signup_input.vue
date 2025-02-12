@@ -178,7 +178,6 @@
 import api from '../../apis/api';
 
 export default {
-  name: "Signup_input",
   props: {
     fields: {
       type: Array,
