@@ -11,7 +11,7 @@
 
   <div class="text-gray-500 text-center fw-semibold fs-6">
     아직 회원정보가 없으시나요?
-    <a href="#" class="link-primary">회원가입</a>
+    <a href="/signup" class="link-primary">회원가입</a>
   </div>
 </template>
 
