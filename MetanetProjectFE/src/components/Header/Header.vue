@@ -187,7 +187,7 @@
               v-model="searchQuery"
               name="company"
               class="form-control form-control-lg form-control-solid"
-              placeholder="강의를 검색해 보세요"
+              :placeholder="t('header.search')"
               style="padding: 0px 30px"
             />
           </form>
@@ -256,13 +256,6 @@
                       class="d-flex flex-stack py-4"
                     >
                       <div class="d-flex align-items-center">
-                        <!-- <div class="d-flex flex-column">
-                          <router-link :to="`/lectures/${item.lectureId}/questions/${item.questionId}`"
-                            class="fs-6 text-gray-800 text-hover-primary fw-bold"
-                            @click="removeNotification(index), closeNotification(), handleNotificationClick(item.lectureId, item.questionId)">{{ item.message }}</router-link>
-                          <div class="text-gray-500 fs-7">{{ item.timestamp }}</div>
-
-                        </div> -->
                         <div class="fs-6 text-gray-800 text-hover-primary fw-bold cursor-pointer"
                             @click="removeNotification(index); closeNotification(); handleNotificationClick(item.lectureId, item.questionId)">
                           {{ item.shortMessage }}
@@ -369,11 +362,11 @@
               </div>
               <div class="separator my-2"></div>
               <div class="menu-item px-5">
-                <router-link to="/account" class="menu-link px-5">내 프로필</router-link>
+                <router-link to="/account" class="menu-link px-5">{{ t("header.profile") }}</router-link>
               </div>
               <div class="menu-item px-5">
                 <a href="apps/projects/list.html" class="menu-link px-5">
-                  <span class="menu-text">내가 수강한 강의</span>
+                  <span class="menu-text">{{ t("header.myCourses") }}</span>
                   <span class="menu-badge">
                     <span class="badge badge-light-danger badge-circle fw-bold fs-7">{{ userData.courseCount }}</span>
                   </span>
@@ -387,12 +380,12 @@
               >
                 <a href="#" class="menu-link px-5">
                   <span class="menu-title position-relative">
-                    언어
+                    {{ t("header.language") }}
                     <span class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">
-                      {{ userData.language }}
+                      {{ language }}
                       <img
                         class="w-15px h-15px rounded-1 ms-2"
-                        src="../../../public/assets/media/flags/united-states.svg"
+                        :src="flagSrc"
                         alt=""
                       />
                     </span>
@@ -400,28 +393,33 @@
                 </a>
                 <div class="menu-sub menu-sub-dropdown w-175px py-4">
                   <div class="menu-item px-3">
-                    <a href="account/settings.html" class="menu-link d-flex px-5 active">
+                    <a class="menu-link d-flex px-5" :class="{ active: isEnglishActive }" @click.prevent="changeLanguage('en')">
                       <span class="symbol symbol-20px me-4">
                         <img class="rounded-1" src="../../../public/assets/media/flags/united-states.svg" alt="" />
                       </span>
-                      영어
+                      {{ t("header.en") }}
                     </a>
                   </div>
                   <div class="menu-item px-3">
-                    <a href="account/settings.html" class="menu-link d-flex px-5">
+                    <a class="menu-link d-flex px-5" :class="{ active: isKoreanActive }"  @click.prevent="changeLanguage('ko')">
                       <span class="symbol symbol-20px me-4">
-                        <img class="rounded-1" src="../../../public/assets/media/flags/spain.svg" alt="" />
+                        <img class="rounded-1" src="../../../public/assets/media/flags/south-korea.svg" alt="" />
                       </span>
-                      한국어
+                      {{ t("header.ko") }}
                     </a>
                   </div>
                 </div>
               </div>
               <div class="menu-item px-5 my-1">
-                <a href="account/settings.html" class="menu-link px-5">회원 정보 변경하기</a>
+                <a href="account/settings.html" class="menu-link px-5">{{ t("header.editProfile") }}</a>
               </div>
               <div class="menu-item px-5">
-                <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5">로그 아웃</a>
+                <!-- <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5" @click="logout">로그 아웃</a> -->
+                <a v-if="isLogin" @click="logout" class="menu-link px-5">{{ t("header.signout") }}</a>
+                <router-link v-else to="/login" class="menu-link px-5">{{ t("header.signin") }}</router-link>
+              </div>
+              <div class="menu-item px-5">
+                <router-link v-if="!isLogin" to="/signup" class="menu-link px-5">{{ t("header.signup") }}</router-link>
               </div>
             </div>
           </div>
@@ -445,6 +443,8 @@
 
 <script>
 import axios from "axios";
+import { inject, watch, ref, computed, watchEffect } from "vue";
+import { useI18n } from "vue-i18n";
 
 export default {
   name: "Header",
@@ -453,6 +453,7 @@ export default {
     userData: {
       type: Object,
     },
+    isLogin: Boolean,
   },
   data() {
     return {
@@ -460,6 +461,38 @@ export default {
       searchQuery: "",
       isNotificationOpen: false,
     };
+  },
+  setup() {
+    //언어
+    const { t, locale } = useI18n();
+    locale.value = sessionStorage.getItem("locale") || "ko";
+    const changeLanguage = (lang) => {
+      locale.value = lang;
+      sessionStorage.setItem("locale", lang);
+    };
+    const language = ref(locale.value === "en" ? "English" : "한국어");
+    const flagSrc = ref(
+      locale.value === "en"
+        ? "../../../public/assets/media/flags/united-states.svg"
+        : "../../../public/assets/media/flags/south-korea.svg"
+    );
+    const isKoreanActive = computed(() => locale.value === "ko");
+    const isEnglishActive = computed(() => locale.value === "en");
+    watchEffect(() => {
+      language.value = locale.value === "en" ? "English" : "한국어";
+      flagSrc.value =
+        locale.value === "en"
+          ? "../../../public/assets/media/flags/united-states.svg"
+          : "../../../public/assets/media/flags/south-korea.svg";
+    });
+
+    //로그인
+    const isLogin = inject("isLogin");
+    const updateLoginStatus = inject("updateLoginStatus");
+    watch(isLogin, (newValue) => {
+      console.log("🔄 Header - isLogin 변경 감지:", newValue);
+    });
+    return { t, locale, changeLanguage, language, flagSrc, isKoreanActive, isEnglishActive, isLogin, updateLoginStatus, ref };
   },
   created() {
     if (window.websocketInstance) {
@@ -512,6 +545,16 @@ export default {
         this.$router.push({ path: newPath, query: { refresh: Date.now() } });
       } else {
         this.$router.push(newPath);
+      }
+    },
+    logout() {
+      sessionStorage.clear();
+      console.log("로그아웃됨");
+      this.updateLoginStatus(false);
+      if (this.$route.fullPath === "/") {
+        this.$router.push({ path: "/", query: { refresh: Date.now() } });
+      } else {
+        this.$router.push("/");
       }
     },
   },

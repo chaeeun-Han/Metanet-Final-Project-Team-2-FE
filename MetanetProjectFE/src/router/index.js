@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Main_main from "../components/main/main_main.vue";
 import Account_main from "../components/Account/Account_main.vue";
-import Signup from "../components/Signup.vue";
+import Signup from "../components/signup/Signup.vue";
 import Login_main from "../components/login/Login_main.vue";
 import QuestionDetail from "../components/qna/QuestionDetail.vue";
 import Lecture_content from "../components/lecture/Lecture_content.vue";
