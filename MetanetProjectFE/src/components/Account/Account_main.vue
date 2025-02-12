@@ -10,6 +10,7 @@
           <Account_revenue v-if="currentComponent === 'revenue'" />
           <Account_lecture :myLectureData="myLectureData" v-if="currentComponent === 'myLecture'" />
           <Account_editprofile :editListData="editListData" v-if="currentComponent === 'editProfile'" />
+          <Account_input_lecture v-if="currentComponent === 'registerLecture'"/>
         </div>
       </div>
     </div>
@@ -25,6 +26,7 @@ import Account_revenue from "./Account_revenue.vue";
 import Account_mystudylist from "./Account_mystudylist.vue";
 import Account_editprofile from "./Account_editprofile.vue";
 import Account_mystudy from "./Account_mystudy.vue";
+import Account_input_lecture from "./Account_input_lecture.vue";
 
 export default {
   name: "Account_main",
@@ -36,6 +38,7 @@ export default {
     Account_revenue,
     Account_mystudylist,
     Account_editprofile,
+    Account_input_lecture,
   },
   data() {
     return {

@@ -111,11 +111,19 @@
             >강의</a
           >
         </li>
+        <li class="nav-item mt-2">
+          <a
+            class="nav-link ms-0 me-10 py-5"
+            :class="{ active: activeComponent === 'registerLecture' }"
+            href="#"
+            @click.prevent="changeComponent('registerLecture')"
+            >강의 추가</a
+          >
+        </li>
       </ul>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: {
