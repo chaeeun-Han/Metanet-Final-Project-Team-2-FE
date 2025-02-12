@@ -84,7 +84,6 @@
 
 <script>
 export default {
-  name: "Account_PayList",
   props: {
     payListData: Array, // 데이터가 배열임을 명시
   }
