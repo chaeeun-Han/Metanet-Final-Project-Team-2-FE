@@ -4,8 +4,8 @@
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-xxl">
           <Account_ToolBar :toolbarData="toolbarData" @changeComponent="changeComponent" />
-          <Account_myStudy :myStudyData="myStudyData" v-if="currentComponent === 'myStudy'" />
-          <Account_myStudyList :myStudyListData="myStudyListData" v-if="currentComponent === 'myStudyList'" />
+          <Account_mystudy :myStudyData="myStudyData" v-if="currentComponent === 'myStudy'" />
+          <Account_mystudylist :myStudyListData="myStudyListData" v-if="currentComponent === 'myStudyList'" />
           <Account_paylist :payListData="payListData" v-if="currentComponent === 'payList'" />
           <Account_revenue v-if="currentComponent === 'revenue'" />
           <Account_lecture :myLectureData="myLectureData" v-if="currentComponent === 'myLecture'" />
@@ -19,22 +19,22 @@
 <script>
 import axios from "axios";
 import Account_ToolBar from "./Account_ToolBar.vue";
-import Account_myStudy from "./Account_mystudy.vue";
 import Account_lecture from "./Account_lecture.vue";
 import Account_paylist from "./Account_paylist.vue";
 import Account_revenue from "./Account_revenue.vue";
-import Account_myStudyList from "./Account_myStudyList.vue";
+import Account_mystudylist from "./Account_mystudylist.vue";
 import Account_editprofile from "./Account_editprofile.vue";
+import Account_mystudy from "./Account_mystudy.vue";
 
 export default {
   name: "Account_main",
   components: {
     Account_ToolBar,
-    Account_myStudy,
+    Account_mystudy,
     Account_lecture,
     Account_paylist,
     Account_revenue,
-    Account_myStudyList,
+    Account_mystudylist,
     Account_editprofile,
   },
   data() {
