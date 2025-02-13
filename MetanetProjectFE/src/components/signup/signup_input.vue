@@ -175,6 +175,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import api from '../../apis/api';
 
 export default {
@@ -216,7 +217,7 @@ export default {
   },
   methods: {
     resetEmailVerification() {
-      console.log("📢 이메일 인증 상태 초기화 실행됨 (Signup_input.vue)");
+      console.log("이메일 인증 상태 초기화 실행됨 (Signup_input.vue)");
       this.emailSent = false;
       this.codeChecked = false;
     },
@@ -246,11 +247,11 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       if (this.passwordError || this.passwordConfirmError) {
-        alert("비밀번호가 올바르지 않습니다.");
+        Swal.fire('올바르지 않은 비밀번호', '비밀번호는 영어, 숫자, 특수문자를 포함한 8~16자리여야 합니다.', 'error');
         return;
       }
       if (!this.codeChecked) {
-        alert("이메일 인증이 완료되지 않았습니다.");
+        Swal.fire('이메일 인증 실패', '이메일 인증이 완료되지 않았습니다.', 'error');
         return;
       }
       this.$emit("submit", this.modelValue);
@@ -293,7 +294,7 @@ export default {
           const errorCode = error.response.data.code;
 
           if (errorCode === "CF") {
-            alert("인증코드가 올바르지 않습니다.");
+            Swal.fire('인증 실패', '인증코드가 올바르지 않습니다.', 'error');
           }
         }
       }
