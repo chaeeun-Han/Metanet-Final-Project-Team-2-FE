@@ -55,6 +55,7 @@
     <script>
     import axios from "axios";
     import { jwtDecode } from "jwt-decode";
+    import api from "../../apis/api";
     
     export default {
       data() {
@@ -100,8 +101,9 @@
         async fetchQuestionDetail() {
             try {
                 const questionId = this.$route.params.questionId;
+                const lectureId = this.$route.params.lectureId;
                 console.log(questionId);
-                const response = await axios.get(`http://localhost:8080/lectures/40/questions/${questionId}`);
+                const response = await api.get(`/lectures/${lectureId}/questions/${questionId}`);
                 
                 this.response = response.data.data;
                 console.log("Fetched question detail:", this.response);
@@ -111,15 +113,16 @@
         },
         async insertAnswer() {
             if (!this.newAnswer.trim()) {
-                alert("답변을 입력하세요.");
+                Swal.fire('등록 실패', '답변을 입력하세요', 'info');
                 return;
             }
     
             try {
                 const questionId = this.$route.params.questionId;
+                const lectureId = this.$route.params.lectureId;
                 const token = sessionStorage.getItem("accessToken");
-                const response = await axios.post(
-                    `http://localhost:8080/lectures/40/questions/${questionId}/answers`,
+                const response = await api.post(
+                    `/lectures/${lectureId}/questions/${questionId}/answers`,
                     { content: this.newAnswer },
                     {
                         headers: {
@@ -141,9 +144,10 @@
         async deleteQuestion() {
             try {
                 const questionId = this.$route.params.questionId;
+                const lectureId = this.$route.params.lectureId;
                 const token = sessionStorage.getItem("accessToken");
-                const response = await axios.delete(
-                    `http://localhost:8080/lectures/40/questions/${questionId}`,
+                const response = await api.delete(
+                    `/lectures/${lectureId}/questions/${questionId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -162,9 +166,10 @@
             try {
                 console.log("##### 답변 아이디 : " + answerId);
                 const questionId = this.$route.params.questionId;
+                const lectureId = this.$route.params.lectureId;
                 const token = sessionStorage.getItem("accessToken");
-                const response = await axios.delete(
-                    `http://localhost:8080/lectures/40/questions/${questionId}/answers/${answerId}`,
+                const response = await api.delete(
+                    `/lectures/${lectureId}/questions/${questionId}/answers/${answerId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -181,15 +186,16 @@
         },
         async updateAnswer(answerId) {
             if (!this.updatedAnswer.trim()) {
-                alert("답변을 입력하세요.");
+                Swal.fire('등록 실패', '답변을 입력하세요', 'info');
                 return;
             }
     
             try {
                 const questionId = this.$route.params.questionId;
+                const lectureId = this.$route.params.lectureId;
                 const token = sessionStorage.getItem("accessToken");
-                const response = await axios.put(
-                    `http://localhost:8080/lectures/40/questions/${questionId}/answers/${answerId}`,
+                const response = await api.put(
+                    `/lectures/${lectureId}/questions/${questionId}/answers/${answerId}`,
                     { content: this.updatedAnswer },
                     {
                         headers: {
@@ -232,11 +238,11 @@
         },
         toggleEdit(answerId, content) {
             if (this.editingAnswerId === answerId) {
-            this.editingAnswerId = null; // 취소 기능
+            this.editingAnswerId = null;
             this.updatedAnswer = "";
             } else {
             this.editingAnswerId = answerId;
-            this.updatedAnswer = content; // 기존 내용 미리 세팅
+            this.updatedAnswer = content;
             }
         },
         cancelEdit() {

@@ -35,6 +35,7 @@
   </template>
   <script>
   import { jwtDecode } from "jwt-decode";
+  import api from "../../apis/api";
   
   export default {
     data() {
@@ -87,15 +88,15 @@
       async uploadQuestion() {
         const token = sessionStorage.getItem("accessToken");
         if (!token) {
-          alert("로그인이 필요합니다.");
+          Swal.fire('등록 실패', '로그인이 필요합니다.', 'info');
           return;
         }
         if (!this.writedTitle.trim()) {
-          alert("제목을 입력하세요.");
+          Swal.fire('등록 실패', '제목을 입력하세요', 'info');
           return;
         }
         if (!this.writedContent.trim()) {
-          alert("내용을 입력하세요.");
+          Swal.fire('등록 실패', '내용을 입력하세요', 'info');
           return;
         }
         const lectureId = this.$route.params.lectureId;
@@ -112,8 +113,8 @@
         }
         try {
             const questionId = this.$route.params.questionId;
-            const response = await axios.post(
-                `http://localhost:8080/lectures/${lectureId}/questions`,
+            const response = await api.post(
+                `/lectures/${lectureId}/questions`,
                 formData,
                 {
                     headers: {
