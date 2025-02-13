@@ -29,13 +29,15 @@ export default {
   setup() {
     const connectWebSocket = inject("connectWebSocket");
     const updateLoginStatus = inject("updateLoginStatus");
+    const getMember = inject("getMember");
+    const isLogin = inject("isLogin");
 
     if (!connectWebSocket) {
       console.error("❌ WebSocket 함수 로드 실패: connectWebSocket이 undefined입니다.");
     }
 
     return {
-      connectWebSocket, updateLoginStatus,
+      connectWebSocket, updateLoginStatus, getMember, isLogin
     };
   },
   data() {
@@ -66,6 +68,9 @@ export default {
           sessionStorage.setItem("accessToken", accessToken);
 
           axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+          await this.getMember();
+          
 
           if (this.connectWebSocket) {
             this.connectWebSocket();

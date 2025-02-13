@@ -314,7 +314,7 @@ export default {
                         "Content-Type": "application/json",
                     },
                 });
-                this.memberData = response.data.data[0];
+                this.memberData = response.data.data.members;
             } catch (error) {
                 console.error("회원 정보 불러오기 실패:", error.response?.data || error.message);
             }

@@ -16,192 +16,45 @@
       <!-- Mobile Logo -->
       <div class="px-6" id="" style="display: flex; align-items: center; justify-self: center">
         <!--begin::Logo image-->
-        <a href="/">
+        <router-link to="/">
           <img
             alt="Logo"
-            src="../../../public/assets/media/logos/default-dark.svg"
-            class="h-25px app-sidebar-logo-default"
+            src="../../../public/assets/media/classpick_logo.png"
+            class="h-35px app-sidebar-logo-default"
           />
           <img
             alt="Logo"
-            src="../../../public/assets/media/logos/default-small.svg"
-            class="h-20px app-sidebar-logo-minimize"
+            src="../../../public/assets/media/classpick_logo.png"
+            class="h-25px app-sidebar-logo-minimize"
           />
-        </a>
+        </router-link>
       </div>
 
       <!-- Header Wrapper -->
       <div class="d-flex align-items-center justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
-        <!-- Menu Wrapper -->
-        <div
-          class="app-header-menu app-header-mobile-drawer align-items-stretch"
-          data-kt-drawer="true"
-          data-kt-drawer-name="app-header-menu"
-          data-kt-drawer-activate="{default: true, lg: false}"
-          data-kt-drawer-overlay="true"
-          data-kt-drawer-width="250px"
-          data-kt-drawer-direction="end"
-          data-kt-drawer-toggle="#kt_app_header_menu_toggle"
-          data-kt-swapper="true"
-          data-kt-swapper-mode="{default: 'append', lg: 'prepend'}"
-          data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}"
-        >
-          <!-- Menu -->
-          <div
-            class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
-            id="kt_app_header_menu"
-            data-kt-menu="true"
+        <div class="d-flex align-items-center position-relative w-100">
+          <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+          <input 
+            type="text" 
+            @keyup.enter="sendToMain"
+            v-model="searchQuery" 
+            data-kt-ecommerce-edit-order-filter="search" 
+            class="form-control form-control-solid w-100 w-lg-50 ps-12 d-none d-lg-block"
+            placeholder="강의명, 강사명으로 검색하세요"
           >
-            <!-- Menu Item: Pages -->
-            <div
-              data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-              data-kt-menu-placement="bottom-start"
-              class="menu-item here show"
-            >
-              <span class="menu-link">
-                <span class="menu-title">Pages</span>
-                <span class="menu-arrow d-lg-none"></span>
-              </span>
-              <!-- Menu Sub -->
-              <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0">
-                <div class="menu-active-bg px-4 px-lg-0">
-                  <!-- Tabs Nav -->
-                  <div class="d-flex w-100 overflow-auto">
-                    <ul
-                      class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1"
-                      role="tablist"
-                    >
-                      <li class="nav-item mx-lg-1" role="presentation">
-                        <a
-                          class="nav-link py-3 py-lg-6 active text-active-primary"
-                          href="#"
-                          data-bs-toggle="tab"
-                          data-bs-target="#kt_app_header_menu_pages_account"
-                          aria-selected="true"
-                          role="tab"
-                          >Account</a
-                        >
-                      </li>
-                      <li class="nav-item mx-lg-1" role="presentation">
-                        <a
-                          class="nav-link py-3 py-lg-6 text-active-primary"
-                          href="#"
-                          data-bs-toggle="tab"
-                          data-bs-target="#kt_app_header_menu_pages_widgets"
-                          aria-selected="false"
-                          tabindex="-1"
-                          role="tab"
-                          >Widgets</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- Tabs Nav End -->
-                  <!-- Tabs Content -->
-                  <div class="tab-content py-4 py-lg-8 px-lg-7">
-                    <div class="tab-pane active w-lg-600px" id="kt_app_header_menu_pages_account" role="tabpanel">
-                      <div class="row">
-                        <div class="col-lg-5 mb-6 mb-lg-0">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <div class="menu-item p-0 m-0">
-                                <a href="account/overview.html" class="menu-link active">
-                                  <span class="menu-title">Overview</span>
-                                </a>
-                              </div>
-                              <div class="menu-item p-0 m-0">
-                                <a href="account/settings.html" class="menu-link">
-                                  <span class="menu-title">Settings</span>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-7">
-                          <img
-                            src="../../../public/assets/media/stock/900x600/46.jpg"
-                            class="rounded mw-100"
-                            alt="Menu Image"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane w-lg-500px" id="kt_app_header_menu_pages_widgets" role="tabpanel">
-                      <div class="row">
-                        <div class="col-lg-4 mb-6 mb-lg-0">
-                          <div class="menu-item p-0 m-0">
-                            <a href="widgets/lists.html" class="menu-link">
-                              <span class="menu-title">Lists</span>
-                            </a>
-                          </div>
-                          <div class="menu-item p-0 m-0">
-                            <a href="widgets/statistics.html" class="menu-link">
-                              <span class="menu-title">Statistics</span>
-                            </a>
-                          </div>
-                          <div class="menu-item p-0 m-0">
-                            <a href="widgets/charts.html" class="menu-link">
-                              <span class="menu-title">Charts</span>
-                            </a>
-                          </div>
-                          <div class="menu-item p-0 m-0">
-                            <a href="widgets/mixed.html" class="menu-link">
-                              <span class="menu-title">Mixed</span>
-                            </a>
-                          </div>
-                          <div class="menu-item p-0 m-0">
-                            <a href="widgets/tables.html" class="menu-link">
-                              <span class="menu-title">Tables</span>
-                            </a>
-                          </div>
-                          <div class="menu-item p-0 m-0">
-                            <a href="widgets/feeds.html" class="menu-link">
-                              <span class="menu-title">Feeds</span>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="col-lg-8">
-                          <img
-                            src="../../../public/assets/media/stock/900x600/44.jpg"
-                            class="rounded mw-100"
-                            alt="Menu Image"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Tabs Content End -->
-                </div>
-              </div>
-              <!-- Menu Sub End -->
-            </div>
-            <!-- End Menu Item -->
-          </div>
-          <!-- End Menu -->
+          <input 
+            type="text" 
+            @keyup.enter="sendToMain"
+            v-model="searchQuery" 
+            data-kt-ecommerce-edit-order-filter="search" 
+            class="form-control form-control-solid w-100 ps-12 d-lg-none"
+            placeholder="검색"
+          >
         </div>
 
-        <div class="herehere" style="flex-grow: 0.3; position: relative">
-          <form data-kt-search-element="form" class="w-100 position-relative mb-3" autocomplete="off">
-            <input
-              type="text"
-              v-model="searchQuery"
-              name="company"
-              class="form-control form-control-lg form-control-solid"
-              :placeholder="t('header.search')"
-              style="padding: 0px 30px"
-            />
-          </form>
-
-          <!-- searchQuery 값이 있을 때만 표시 -->
-          <div
-            v-if="searchQuery"
-            style="position: absolute; width: 100%; height: 100px"
-            id="kt_profile_details_view"
-            class="card mb-5 mb-xl-10"
-          >
-            <div>asdfasfadfsdf</div>
-          </div>
-        </div>
 
         <!-- Navbar -->
         <div class="app-navbar flex-shrink-0">
@@ -228,7 +81,7 @@
             >
               <div
                 class="d-flex flex-column bgi-no-repeat rounded-top"
-                :style="{ backgroundImage: 'url(../../../public/assets/media/misc/menu-header-bg.jpg)' }"
+                :style="{ backgroundImage: 'url(../../../public/assets/media/auth/bg7-dark.jpg)' }"
               >
                 <h3 class="text-white fw-semibold px-9 mt-10 mb-6">
                   알림 창 <span class="fs-8 opacity-75 ps-3">({{ notifications.length }}개)</span>
@@ -250,7 +103,7 @@
                 <div class="tab-pane fade show active" id="kt_topbar_notifications_1" role="tabpanel">
                   <div class="scroll-y mh-325px my-5 px-8">
                     <div
-                      v-if="userData"
+                     
                       v-for="(item, index) in truncatedNotifications"
                       :key="index"
                       class="d-flex flex-stack py-4"
@@ -262,7 +115,6 @@
                         </div>
                       </div>
                     </div>
-                    <div v-if="!userData">asdf</div>
                   </div>
                   <div class="py-3 text-center border-top"></div>
                 </div>
@@ -332,6 +184,19 @@
               </div>
             </div>
           </div>
+          <!-- cart -->
+          <div class="app-navbar-item ms-1 ms-md-4" v-show="isLogin">
+            <router-link to="/cart"
+              class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px"
+            >
+              <i class="ki-duotone ki-handcart fs-1">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+              </i>
+            </router-link>
+          </div>
+
           <!-- User Menu -->
           <div class="app-navbar-item ms-1 ms-md-4" id="kt_header_user_menu_toggle">
             <div
@@ -340,7 +205,7 @@
               data-kt-menu-attach="parent"
               data-kt-menu-placement="bottom-end"
             >
-              <img :src="userData.profile" class="rounded-3" alt="user" />
+              <img :src="userData.profile" class="rounded-3" alt="user"/>
             </div>
             <div
               class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
@@ -349,28 +214,25 @@
               <div class="menu-item px-3">
                 <div class="menu-content d-flex align-items-center px-3">
                   <div class="symbol symbol-50px me-5">
-                    <img :src="userData.profile" alt="프로필" />
+                    <img :src="userData.profile || '../../public/assets/media/profile.png'" class="rounded-3" alt="프로필" />
                   </div>
                   <div class="d-flex flex-column">
                     <div class="fw-bold d-flex align-items-center fs-5">
-                      {{ userData.name }}
-                      <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ userData.role }}</span>
+                      {{ userData.name || "로그인 후 이용 가능" }}
+                      <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2" v-show="isLogin">{{ userData.role }}</span>
                     </div>
-                    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ userData.email }}</a>
+                    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7" v-show="isLogin">{{ userData.email }}</a>
                   </div>
                 </div>
               </div>
               <div class="separator my-2"></div>
               <div class="menu-item px-5">
-                <router-link to="/account" class="menu-link px-5">{{ t("header.profile") }}</router-link>
+                <router-link to="/account" class="menu-link px-5" v-show="isLogin">{{ t("header.profile") }}</router-link>
               </div>
               <div class="menu-item px-5">
-                <a href="apps/projects/list.html" class="menu-link px-5">
-                  <span class="menu-text">{{ t("header.myCourses") }}</span>
-                  <span class="menu-badge">
-                    <span class="badge badge-light-danger badge-circle fw-bold fs-7">{{ userData.courseCount }}</span>
-                  </span>
-                </a>
+                <router-link to="/account" class="menu-link px-5">
+                  <span class="menu-text" v-show="isLogin">{{ t("header.myCourses") }}</span>
+                </router-link>
               </div>
               <div
                 class="menu-item px-5"
@@ -411,7 +273,7 @@
                 </div>
               </div>
               <div class="menu-item px-5 my-1">
-                <a href="account/settings.html" class="menu-link px-5">{{ t("header.editProfile") }}</a>
+                <router-link to="/account" class="menu-link px-5" v-show="isLogin">{{ t("header.editProfile") }}</router-link>
               </div>
               <div class="menu-item px-5">
                 <!-- <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5" @click="logout">로그 아웃</a> -->
@@ -421,15 +283,6 @@
               <div class="menu-item px-5">
                 <router-link v-if="!isLogin" to="/signup" class="menu-link px-5">{{ t("header.signup") }}</router-link>
               </div>
-            </div>
-          </div>
-          <!-- Mobile Header Menu Toggle -->
-          <div class="app-navbar-item d-lg-none ms-2 me-n2" title="Show header menu">
-            <div class="btn btn-flex btn-icon btn-active-color-primary w-30px h-30px" id="kt_app_header_menu_toggle">
-              <i class="ki-duotone ki-element-4 fs-1">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
             </div>
           </div>
         </div>
@@ -442,27 +295,34 @@
 </template>
 
 <script>
-import axios from "axios";
 import { inject, watch, ref, computed, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Header",
-  props: {
-    // 사용자 정보를 객체 형태로 전달받음 (부모(App.vue)에서 넘김)
-    userData: {
-      type: Object,
-    },
-    isLogin: Boolean,
-  },
+  emits: ["search"],
+  props: { isLogin: Boolean },
   data() {
     return {
       notifications: [],
-      searchQuery: "",
       isNotificationOpen: false,
     };
   },
-  setup() {
+  setup(props, { emit }) {
+    const userData = inject("userData"); // App.vue에서 제공한 `userData` 가져오기
+    const searchQuery = ref("");
+    const router = useRouter();
+
+    const sendToMain = () => {
+      emit("search", searchQuery.value);
+
+      // 현재 페이지가 main_main.vue가 아니라면 이동
+      if (router.currentRoute.value.path !== "/") {
+        router.push({ path: "/", query: { search: searchQuery.value } });
+      }
+    };
+
     //언어
     const { t, locale } = useI18n();
     locale.value = sessionStorage.getItem("locale") || "ko";
@@ -478,6 +338,18 @@ export default {
     );
     const isKoreanActive = computed(() => locale.value === "ko");
     const isEnglishActive = computed(() => locale.value === "en");
+    //const userData = inject("myUserData");
+    // const userData = computed(() => props.userData);
+    // watch(userData, (newValue) => {
+    //   console.log("✅ Header.vue - userData 변경 감지:", newValue);
+    // });
+    // const userData = computed(() => {
+    //   const storedData = sessionStorage.getItem("userData");
+    //   const test = storedData ? JSON.parse(storedData) : { name: "로그인 후 이용 가능", profile: "../../public/assets/media/profile.png" }
+    //   console.log(test);
+    //   return storedData ? JSON.parse(storedData) : { name: "로그인 후 이용 가능", profile: "../../public/assets/media/profile.png" };
+    // });
+
     watchEffect(() => {
       language.value = locale.value === "en" ? "English" : "한국어";
       flagSrc.value =
@@ -488,11 +360,14 @@ export default {
 
     //로그인
     const isLogin = inject("isLogin");
+    const logout = inject("logout");
     const updateLoginStatus = inject("updateLoginStatus");
+
     watch(isLogin, (newValue) => {
-      console.log("🔄 Header - isLogin 변경 감지:", newValue);
+      console.log("Header - isLogin 변경 감지:", newValue);
+      // console.log("userData.profile" , userData);
     });
-    return { t, locale, changeLanguage, language, flagSrc, isKoreanActive, isEnglishActive, isLogin, updateLoginStatus, ref };
+    return { t, locale, changeLanguage, language, flagSrc, isKoreanActive, isEnglishActive, isLogin, updateLoginStatus, ref, userData, logout, searchQuery, sendToMain };
   },
   created() {
     if (window.websocketInstance) {
@@ -546,17 +421,7 @@ export default {
       } else {
         this.$router.push(newPath);
       }
-    },
-    logout() {
-      sessionStorage.clear();
-      console.log("로그아웃됨");
-      this.updateLoginStatus(false);
-      if (this.$route.fullPath === "/") {
-        this.$router.push({ path: "/", query: { refresh: Date.now() } });
-      } else {
-        this.$router.push("/");
-      }
-    },
+    }
   },
   beforeUnmount() {
     window.removeEventListener("new-notification", this.addNotification);
