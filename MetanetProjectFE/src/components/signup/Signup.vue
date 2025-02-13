@@ -114,9 +114,6 @@ export default {
       }
     },
   },
-  mounted() {
-    console.log("✅ Signup_input 컴포넌트가 제대로 등록됐는지 확인:", Signup_input);
-  }
 };
 </script>
 

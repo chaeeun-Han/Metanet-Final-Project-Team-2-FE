@@ -216,7 +216,7 @@ export default {
   },
   methods: {
     resetEmailVerification() {
-      console.log("📢 이메일 인증 상태 초기화 실행됨 (Signup_input.vue)");
+      console.log("이메일 인증 상태 초기화 실행됨 (Signup_input.vue)");
       this.emailSent = false;
       this.codeChecked = false;
     },
