@@ -20,16 +20,13 @@ const routes = [
   { path: "/", component: Main_main },
   { path: "/account", component: Account_main },
   { path: "/signup", component: Signup },
-  { path: "/login", component: Login_main },
-  { path: "/questions", component: QnaList },
-  { path: "/questions/:questionId", component: QuestionDetail },
   { path: "/password/reset", component:  Password_reset, name: "passwordReset"},
   { path: "/password/confirm", component:  Password_confirm, name: "passwordConfirm"},
+  { path: "/login", component: Login_main },
   { path: "/lectures/:lectureId/questions/:questionId", component: QuestionDetail },
   { path: "/lectures/:lectureId/questions/write", component: QuestionWrite },
   { path: "/cart", component: CartList},
   { path: "/success", component: Success},
-
   {
     path: "/lectures/:lectureId",
     component: Lecture_content,
