@@ -40,6 +40,7 @@
       </div>
     </div>
 
+    <!-- 모든 강의 리스트 -->
     <div class="section full-lectures">
       <div class="header">
         <h2 class="section-title">{{ t("main.list") }}</h2>
@@ -59,11 +60,11 @@
             :name="lecture.category"
             :price="lecture.price"
             :tags="lecture.tags"
-            :teacher="lecture.teacher || 'null'"
+            :teacher="lecture.teacher || '강사 미정'"
           />
         </div>
       </div>
-      <!-- Pagination Controls: 가운데 정렬, 크게 표시 -->
+      <!-- Pagination Controls -->
       <div class="pagination-controls">
         <button @click="prevPage" :disabled="currentPage === 1">&lt;</button>
         <span
@@ -93,12 +94,14 @@ export default {
     Lecture_box,
     Lecture_list_item,
   },
+  props: {
+    searchKeyword: String, // App.vue에서 전달받은 검색어
+  },
   data() {
     return {
       lectures: [],
       topDeadLectures: [],
       topLikeLectures: [],
-      // Pagination Data
       currentPage: 1,
       itemsPerPage: 30,
       availableTags: [],
@@ -111,11 +114,17 @@ export default {
   },
   computed: {
     filteredLectures() {
-      if (!this.selectedTags.length) return this.lectures;
+      const searchQuery = this.searchKeyword?.toLowerCase() || this.$route.query.search || "";
+
       return this.lectures.filter((lecture) => {
-        if (!lecture.tags) return false;
-        const tagsArray = lecture.tags.split(",").map((t) => t.trim().toLowerCase());
-        return this.selectedTags.some((tag) => tagsArray.includes(tag.toLowerCase()));
+        const tagMatch =
+          this.selectedTags.length === 0 ||
+          lecture.tags?.split(",").map((t) => t.trim().toLowerCase()).some((tag) => this.selectedTags.includes(tag.toLowerCase()));
+
+        const titleMatch = lecture.title.toLowerCase().includes(searchQuery);
+        const teacherMatch = (lecture.teacher || "").toLowerCase().includes(searchQuery);
+
+        return tagMatch && (titleMatch || teacherMatch);
       });
     },
     paginatedLectures() {
@@ -163,6 +172,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .main-container {
