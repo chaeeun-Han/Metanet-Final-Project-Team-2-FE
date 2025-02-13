@@ -91,16 +91,29 @@ export default {
               "Content-Type": "application/json",
             },
           });
-          console.log("회원가입 성공:", response);
-          this.$router.push("/login");
+          if (response.status === 200) {
+            console.log("회원가입 성공:", response);
+            this.$router.push("/login");
+          }
         } catch (error) {
           console.error("회원가입 실패:", error.response ? error.response.data : error);
           if (error.response && error.response.data && error.response.data.code) {
             const errorCode = error.response.data.code;
+            const message = error.response.data.message;
 
             if (errorCode === "DUPLICATED_EMAIL") {
-              alert("이미 가입된 이메일입니다. 다른 이메일을 사용해주세요.");
+              Swal.fire('가입 실패', '이미 가입된 이메일입니다. 다른 이메일을 사용해주세요.', 'error');
               this.resetEmailState();
+              return;
+            } else if (errorCode === "REGEX_ERROR" && message == "Phone value not match Regex") {
+              Swal.fire('가입 실패', '전화번호 형식이 옳지 않습니다.', 'error');
+              return;
+            } else if (errorCode === "DI") {
+              Swal.fire('가입 실패', '이미 가입된 아이디입니다. 다른 아이디를 사용해주세요.', 'error');
+              return;
+            } else {
+              Swal.fire('가입 실패', '오류가 발생했습니다. 다시 시도해주세요', 'error');
+              return;
             }
           }
         }
