@@ -4,8 +4,8 @@
         <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label fw-bold fs-3 mb-1">결제 내역 전체보기</span>
-                
-            </h3>            
+
+            </h3>
         </div>
         <!--end::Header-->
         <!--begin::Body-->
@@ -17,57 +17,56 @@
                     <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted">
-                           
+
                             <th class="min-w-120px">결제 번호</th>
                             <th class="min-w-150px">강의명</th>
                             <th class="min-w-120px">상태</th>
                             <th class="min-w-120px">강의 시작일</th>
                             <th class="min-w-120px">강의 종료일</th>
-                            <th class="min-w-120px">환불 및 구매내역 상세보기</th>                            
+                            <th class="min-w-120px">환불</th>
                         </tr>
                     </thead>
                     <!--end::Table head-->
                     <!--begin::Table body-->
                     <tbody>
-                        <tr v-for="(pay, index) in payListData" :key="index"> 
+                        <tr v-for="(pay, index) in payListData" :key="index">
                             <td>
-                            <a href="#" class="text-gray-900 fw-bold text-hover-primary fs-6">{{ pay.payId }}</a>
+                                <a class="text-gray-900 fw-bold text-hover-primary fs-6">{{ pay.payId }}</a>
                             </td>
                             <td>
-                            <div class="d-flex align-items-center">
-                                <!-- 사진 -->
-                                <div class="symbol symbol-50px me-3">
-                                <img :src="pay.profile" class="" alt="" />
+                                <div class="d-flex align-items-center">
+                                    <!-- 사진 -->
+                                    <div class="symbol symbol-50px me-3">
+                                        <img :src="pay.profile" class="" alt="" />
+                                    </div>
+                                    <!-- 타이틀 -->
+                                    <a class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{
+                                        pay.title }}</a>
                                 </div>
-                                <!-- 타이틀 -->
-                                <a href="#" class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ pay.title }}</a>
-                            </div>
                             </td>
 
                             <td>
-                            <span 
-                                class="badge" 
-                                :class="pay.status ? 'badge-light-danger' : 'badge-light-success'"
-                            >
-                                {{ pay.status ? '환불 완료' : '결제 완료' }}
-                            </span>
+                                <span class="badge" :class="pay.status ? 'badge-light-danger' : 'badge-light-success'">
+                                    {{ pay.status ? '환불 완료' : '결제 완료' }}
+                                </span>
                             </td>
                             <td>
-                            <a href="#"
-                                class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ pay.startDate }}</a>
+                                <a class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{
+                                    pay.startDate }}</a>
                             </td>
                             <td>
-                            <a href="#"
-                                class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ pay.endDate }}</a>
+                                <a class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{
+                                    pay.endDate }}</a>
                             </td>
                             <td class="text-gray-900 fw-bold text-hover-primary fs-6">
-                            <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user">
-                                <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">
-                                상세보기</a>
-                            </div>
+                                <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-trigger="hover" title="Click to add a user">
+                                    <a @click="refund(pay.lectureId)" class="btn btn-sm btn-light btn-active-primary">
+                                        환불</a>
+                                </div>
                             </td>
                         </tr>
-                        </tbody>
+                    </tbody>
 
                     <!--end::Table body-->
                 </table>
@@ -83,9 +82,37 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  props: {
-    payListData: Array, // 데이터가 배열임을 명시
-  }
+    data() {
+        return {
+            lectureId: this.payListData.lectureId, // 초기 컴포넌트 설정
+        }
+    },
+    props: {
+        payListData: Array, // 데이터가 배열임을 명시
+    },
+    methods: {
+        async refund(lectureId) { // lectureId를 인자로 받음
+        try {
+            const token = sessionStorage.getItem("accessToken");
+
+            // 서버에서 환불 API 호출
+            const response = await axios.post(`http://localhost:8080/lectures/refund/${lectureId}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            Swal.fire('환불 성공', '환불이 성공적으로 처리되었습니다.', 'success');
+            
+        } catch (error) {            
+            Swal.fire('환불 실패', '서버와의 통신에 실패하였습니다.', 'error');
+        }
+    }
+
+    }
 };
 </script>

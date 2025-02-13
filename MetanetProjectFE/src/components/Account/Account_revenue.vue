@@ -48,11 +48,11 @@
           <tbody class="fw-semibold text-gray-600">
             <tr v-for="lecture in lectureDetails" :key="lecture.lectureId">
               <td>
-                <a href="#" class="text-gray-800 text-hover-primary fw-bold">{{ lecture.lectureId }}</a>
+                <a class="text-gray-800 text-hover-primary fw-bold">{{ lecture.lectureId }}</a>
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ lecture.title }}</a>
+                  <a class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ lecture.title }}</a>
                 </div>
               </td>
               <td class="text-center pe-0">

@@ -14,15 +14,15 @@
           <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
             <div class="d-flex flex-column">
               <div class="d-flex align-items-center mb-2">
-                <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ userData.name }}</a>
+                <a class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ userData.name }}</a>
                 
-                <a href="#">
+                <a >
                   <i class="ki-duotone ki-verify fs-1 text-primary">
                     <span class="path1"></span>
                     <span class="path2"></span>
                   </i>
                 </a>
-                <a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                <a class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
                   <i class="ki-duotone ki-profile-circle fs-4 me-1">
                     <span class="path1"></span>
                     <span class="path2"></span>
@@ -43,22 +43,22 @@
           <div class="d-flex flex-wrap flex-stack">
             <div class="d-flex flex-column flex-grow-1 pe-8">
               <div class="d-flex flex-wrap">
-                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
                   이메일 : {{ userData.email }}
                 </span>
               </div>
               <div class="d-flex flex-wrap">
-                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
                   전화번호 : {{ userData.phone }}
                 </span>
               </div>
               <div class="d-flex flex-wrap">
-                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
                   생년월일 : {{ userData.birth }}
                 </span>
               </div>
               <div class="d-flex flex-wrap">
-                <span href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
+                <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">                  
                   입금계좌 : {{ userData.pay }}
                 </span>              
               </div>
