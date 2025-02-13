@@ -88,15 +88,15 @@
       async uploadQuestion() {
         const token = sessionStorage.getItem("accessToken");
         if (!token) {
-          alert("로그인이 필요합니다.");
+          Swal.fire('등록 실패', '로그인이 필요합니다.', 'info');
           return;
         }
         if (!this.writedTitle.trim()) {
-          alert("제목을 입력하세요.");
+          Swal.fire('등록 실패', '제목을 입력하세요', 'info');
           return;
         }
         if (!this.writedContent.trim()) {
-          alert("내용을 입력하세요.");
+          Swal.fire('등록 실패', '내용을 입력하세요', 'info');
           return;
         }
         const lectureId = this.$route.params.lectureId;

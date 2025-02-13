@@ -113,7 +113,7 @@
         },
         async insertAnswer() {
             if (!this.newAnswer.trim()) {
-                alert("답변을 입력하세요.");
+                Swal.fire('등록 실패', '답변을 입력하세요', 'info');
                 return;
             }
     
@@ -186,7 +186,7 @@
         },
         async updateAnswer(answerId) {
             if (!this.updatedAnswer.trim()) {
-                alert("답변을 입력하세요.");
+                Swal.fire('등록 실패', '답변을 입력하세요', 'info');
                 return;
             }
     
@@ -238,11 +238,11 @@
         },
         toggleEdit(answerId, content) {
             if (this.editingAnswerId === answerId) {
-            this.editingAnswerId = null; // 취소 기능
+            this.editingAnswerId = null;
             this.updatedAnswer = "";
             } else {
             this.editingAnswerId = answerId;
-            this.updatedAnswer = content; // 기존 내용 미리 세팅
+            this.updatedAnswer = content;
             }
         },
         cancelEdit() {
