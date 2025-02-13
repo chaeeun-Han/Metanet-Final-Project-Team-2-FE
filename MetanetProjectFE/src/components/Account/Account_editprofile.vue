@@ -32,21 +32,22 @@
             <!--begin::Col-->
             <div class="col-lg-8">
               <!--begin::Image input-->
-              <div
-                class="image-input image-input-outline"
-                data-kt-image-input="true"
-                style="background-image: url('assets/media/svg/avatars/blank.svg')"
-              >
-                <!--begin::Preview existing avatar-->
-                <div class="form-group">
-                  <label for="profilePicture">Profile Picture</label>
-                  <input type="file" id="profilePicture" @change="handleFileChange" accept="image/*" />
-
-                  <!-- 프로필 사진 미리보기 -->
-                  <div v-if="previewImage" class="image-preview">
-                    <img :src="previewImage" alt="Profile Preview" />
+              <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
+                  <!--begin::Preview existing avatar-->
+                  <div class="form-group">
+                    <label for="profilePicture">Profile Picture</label>
+                    <input
+                      type="file"
+                      id="profilePicture"
+                      @change="handleFileChange"
+                      accept="image/*"
+                    />
+                    
+                    <!-- 프로필 사진 미리보기 -->
+                    <div v-if="previewImage" class="image-preview">
+                      <img :src="previewImage" alt="Profile Preview" />
+                    </div>
                   </div>
-                </div>
                 <!--end::Hint-->
               </div>
               <!--end::Col-->
@@ -184,7 +185,7 @@
         <!--begin::Actions-->
         <div class="card-footer d-flex justify-content-end py-6 px-9">
           <button type="reset" class="btn btn-light btn-active-light-primary me-2">취소</button>
-          <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">변경사항 적용</button>
+          <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">변경사항 적용 </button>
         </div>
         <!--end::Actions-->
       </form>
@@ -487,17 +488,16 @@
         </div>
       </div>
 
-      <!--begin::Tax info-->
-      <div class="mt-10">
-        <h3 class="mb-3">수수료 및 세금 공제 안내</h3>
-        <div class="fw-semibold text-gray-600 fs-6">
-          수익 정산 시 플랫폼 수수료(10%) 차감 후 지급
-          <br />
-          <a class="fw-bold" href="#">자세히 보기</a>
-        </div>
-      </div>
-      <!--end::Tax info-->
+  <!--begin::Tax info-->
+  <div class="mt-10">
+    <h3 class="mb-3">수수료 및 세금 공제 안내</h3>
+    <div class="fw-semibold text-gray-600 fs-6">수익 정산 시 플랫폼 수수료(10%) 차감 후 지급
+      <br />
+      <a class="fw-bold" href="#">자세히 보기</a>
     </div>
+  </div>
+  <!--end::Tax info-->
+</div>
 
     <!--end::Card body-->
   </div>
@@ -626,23 +626,23 @@ export default {
       }
     },
     async updateProfile() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
+        try {
+          const token = sessionStorage.getItem("accessToken");
 
-        // FormData 객체 생성
-        const formData = new FormData();
+          // FormData 객체 생성
+          const formData = new FormData();
 
-        // myCategory가 비어 있거나 selectedCategories가 비어 있을 경우 alert 처리
-        if (!this.editListData.myCategory && this.editListData.myCategory.length === 0 && this.selectedCategories.length === 0) {
-          return; // myCategory나 selectedCategories가 없으면 더 이상 진행하지 않음
-        }
-
-        // 프로필 사진 파일 추가 (파일이 선택된 경우)
-        if (!this.selectedFile) {
-          alert("사진을 추가 해주세요.");
-        } else {
-          formData.append("file", this.selectedFile);
-        }
+         // myCategory가 비어 있거나 selectedCategories가 비어 있을 경우 alert 처리
+          if (!this.editListData.myCategory && this.editListData.myCategory.length === 0 && this.selectedCategories.length === 0) {            
+            return; // myCategory나 selectedCategories가 없으면 더 이상 진행하지 않음
+          }
+         
+          // 프로필 사진 파일 추가 (파일이 선택된 경우)
+          if (!this.selectedFile) {
+            alert("사진을 추가 해주세요.");
+          }else {
+            formData.append('file', this.selectedFile);
+          }
 
         formData.append("name", this.editListData.members.name || this.editListData.members.name);
         formData.append("phone", this.editListData.members.phone || this.editListData.members.phone);
@@ -657,14 +657,14 @@ export default {
           },
         });
 
-        console.log(response.data);
-        alert("프로필이 업데이트되었습니다!");
-        window.location.reload();
-      } catch (error) {
-        console.error(error);
-        alert("업데이트에 실패했습니다.");
-      }
-    },
+          console.log(response.data);
+          alert("프로필이 업데이트되었습니다!");
+          window.location.reload();
+        } catch (error) {
+          console.error(error);
+          alert("업데이트에 실패했습니다.");
+        }
+      },
     handleAvatarChange(file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -676,7 +676,7 @@ export default {
     },
     async senEmailCode() {
       if (!this.newEmail) {
-        alert("이메일을 입력해주세요.");
+        alert('이메일을 입력해주세요.');
         return;
       }
 
@@ -694,11 +694,11 @@ export default {
           },
         });
 
-        console.log("인증코드 발송 성공 :", response.data);
+        console.log('인증코드 발송 성공 :', response.data);
         alert("인증코드가 발송되었습니다.");
       } catch (error) {
-        console.log("인증코드 발송 실패: ", error.response ? error.response.data : error.message);
-        alert("인증코드 발송에 실패했습니다.");
+        console.log('인증코드 발송 실패: ', error.response ? error.response.data : error.message);
+        alert('인증코드 발송에 실패했습니다.');
       } finally {
         this.loading = false;
       }
@@ -706,7 +706,7 @@ export default {
 
     async checkCode() {
       if (!this.newEmail || !this.email_verify) {
-        alert("이메일과 인증코드를 입력해주세요.");
+        Swal.fire('입력 값 확인', '이메일과 인증코드를 입력해주세요.', 'info');        
         return;
       }
 
@@ -721,38 +721,37 @@ export default {
           },
         });
 
-        console.log("인증이 완료되었습니다:", response.data);
-        alert("인증이 완료되었습니다.");
+        Swal.fire('인증 성공', '인증에 성공하였습니다', 'success');
       } catch (error) {
         console.error("인증에 실패하였습니다.", error.response ? error.response.data : error.message);
-        alert("인증에 실패하였습니다.");
+        Swal.fire('인증 실패', '인증에 실패하였습니다', 'error');
       }
     },
 
     async editEmail() {
       if (!this.newEmail || !this.email_verify) {
-        alert("이메일과 인증번호 인증 후에 설정해주세요.");
+        Swal.fire('입력 값 확인', '이메일과 인증번호 인증 후에 설정해주세요.', 'info');        
         return;
       }
       const payload = { email: this.newEmail };
 
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/auth/email", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+      const token = sessionStorage.getItem("accessToken");
+      const response = await axios.post("http://localhost:8080/auth/email", payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });        
         alert("이메일 변경이 완료되었습니다.");
         window.location.reload();
-      } catch (error) {
+      } catch (error) {        
         alert("이메일 변경에 실패하였습니다.");
       }
     },
     async passwordEdit() {
-      if (this.newpassword != this.confirmpassword) {
-        alert("비밀번호와 비밀번호 확인의 값이 동일한지 확인해주세요.");
+      if(this.newpassword != this.confirmpassword){
+        alert('비밀번호와 비밀번호 확인의 값이 동일한지 확인해주세요.');
         return;
       }
 
@@ -767,18 +766,18 @@ export default {
           },
         });
 
-        console.log("비밀번호 변경 성공 :", response.data);
+        console.log('비밀번호 변경 성공 :', response.data);
         alert("비밀번호 변경 성공하였습니다..");
         window.location.reload();
       } catch (error) {
-        console.log("비밀번호 변경 실패: ", error.response ? error.response.data : error.message);
-        alert("비밀번호 변경 실패했습니다.");
-      }
-    },
-
+        console.log('비밀번호 변경 실패: ', error.response ? error.response.data : error.message);
+        alert('비밀번호 변경 실패했습니다.');
+      } 
+    },    
+    
     async editBank() {
       if (!this.currentbank) {
-        alert("계좌 번호를 입력해주세요.");
+        alert('계좌 번호를 입력해주세요.');
         return;
       }
 
@@ -793,12 +792,12 @@ export default {
           },
         });
 
-        console.log("계좌번호 변경 성공:", response.data);
+        console.log('계좌번호 변경 성공:', response.data);
         alert("계좌번호 변경 성공하였습니다.");
         window.location.reload();
       } catch (error) {
-        console.log("계좌번호 변경 실패: ", error.response ? error.response.data : error.message);
-        alert("계좌번호 변경 실패했습니다.");
+        console.log('계좌번호 변경 실패: ', error.response ? error.response.data : error.message);
+        alert('계좌번호 변경 실패했습니다.');
       }
     },
     async deleteBank() {
@@ -811,12 +810,12 @@ export default {
           },
         });
 
-        console.log("계좌번호 삭제 성공:", response.data);
+        console.log('계좌번호 삭제 성공:', response.data);
         alert("계좌번호 삭제 성공하였습니다.");
         window.location.reload();
       } catch (error) {
-        console.log("계좌번호 삭제 실패: ", error.response ? error.response.data : error.message);
-        alert("계좌번호 삭제 실패했습니다.");
+        console.log('계좌번호 삭제 실패: ', error.response ? error.response.data : error.message);
+        alert('계좌번호 삭제 실패했습니다.');
       }
     },
     async getTags() {
@@ -830,7 +829,7 @@ export default {
 
     async addBank() {
       if (!this.addbank) {
-        alert("계좌 번호를 입력해주세요.");
+        alert('계좌 번호를 입력해주세요.');
         return;
       }
 
@@ -845,19 +844,20 @@ export default {
           },
         });
 
-        console.log("계좌번호 추가 성공:", response.data);
+        console.log('계좌번호 추가 성공:', response.data);
         alert("계좌번호 추가 성공하였습니다.");
         window.location.reload();
       } catch (error) {
-        console.log("계좌번호 추가 실패: ", error.response ? error.response.data : error.message);
-        alert("계좌번호 추가 실패했습니다.");
+        console.log('계좌번호 추가 실패: ', error.response ? error.response.data : error.message);
+        alert('계좌번호 추가 실패했습니다.');
       }
     },
     async deleteMember() {
       const deactivateCheckbox = document.getElementById("deactivate");
 
       if (!deactivateCheckbox.checked) {
-        alert("탈퇴하시려면 체크 표시를 하셔야 합니다.");
+       
+        alert('탈퇴하시려면 체크 표시를 하셔야 합니다.');
       }
 
       try {
@@ -869,12 +869,12 @@ export default {
           },
         });
 
-        console.log("회원 탈퇴 성공:", response.data);
+        console.log('회원 탈퇴 성공:', response.data);
         alert("회원 탈퇴 되셨습니다. 로그인 창으로 이동합니다.");
-        window.location.href = "/login";
+        window.location.href = '/login';
       } catch (error) {
-        console.log("회원 탈퇴 실패: ", error.response ? error.response.data : error.message);
-        alert("회원 탈퇴 실패했습니다.");
+        console.log('회원 탈퇴 실패: ', error.response ? error.response.data : error.message);
+        alert('회원 탈퇴 실패했습니다.');
       }
     },
   },

@@ -23,8 +23,8 @@
 										<input class="form-control bg-transparent flex-grow-1" placeholder="이메일 입력" v-model="email" />
 										<button type="button" @click="sendVerificationCode" 
 											:disabled="loading" 
-											class="btn btn-primary ms-2" style="height: 100%; padding: 0 20px;">
-											<span v-if="!loading">인증코드 발송</span>
+											id="confirm_btn" class="btn btn-primary">
+											<span v-if="!loading">인증코드 <br> 발송</span>
 											<span v-else>
 												<span class="spinner-border spinner-border-sm align-middle"></span> 전송 중...
 											</span>
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import api from "../../apis/api";
 
 export default {
@@ -74,7 +75,7 @@ export default {
   
     async sendVerificationCode() {
       if (!this.email) {
-        alert("이메일을 입력해주세요.");
+		Swal.fire('이메일 값 확인', '이메일을 입력해주세요', 'info');        
         return;
       }
 
@@ -85,10 +86,10 @@ export default {
       try {
         const response = await api.post("/email/mail-password", payload);
         console.log("인증코드 발송 성공:", response.data);
-        alert("인증코드가 발송되었습니다.");
+        Swal.fire('인증코드 발송 성공', '이메일을 확인해주세요', 'success');
       } catch (error) {
         console.error("인증코드 발송 실패:", error);
-        alert("인증코드 발송에 실패했습니다.");
+		Swal.fire('인증코드 발송 실패', '이메일 전송을 실패했습니다.', 'error');
       } finally {
         this.loading = false;
       }
@@ -96,7 +97,7 @@ export default {
 
     async checkCode() {
       if (!this.email || !this.verifyCode) {
-        alert("이메일과 인증코드를 입력해주세요.");
+		Swal.fire('입력 값 확인', '이메일과 인증코드를 입력해주세요.', 'info');        
         return;
       }
 
@@ -105,13 +106,29 @@ export default {
       try {
         const response = await api.post("/email/verify", payload);
         console.log("인증이 완료되었습니다:", response.data);
-        alert("인증이 완료되었습니다.");
+		Swal.fire('인증 성공', '인증이 완료되었습니다.', 'success');        
 		this.$router.push({ path: '/password/reset', query: { email: this.email } });
       } catch (error) {
         console.error("인증에 실패하였습니다.", error);
-        alert("인증에 실패하였습니다.");
+        Swal.fire('인증 실패', '인증이 실패하였습니다.', 'error');
       }
     },
   },
 };
 </script>
+<style>
+  .form {
+    max-width: 400px;
+    margin: auto;
+  }
+  .btn {
+    transition: all 0.3s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+  }
+</style>

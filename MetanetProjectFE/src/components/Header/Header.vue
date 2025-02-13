@@ -228,12 +228,7 @@
               <div class="separator my-2"></div>
               <div class="menu-item px-5">
                 <router-link to="/account" class="menu-link px-5" v-show="isLogin">{{ t("header.profile") }}</router-link>
-              </div>
-              <div class="menu-item px-5">
-                <router-link to="/account" class="menu-link px-5">
-                  <span class="menu-text" v-show="isLogin">{{ t("header.myCourses") }}</span>
-                </router-link>
-              </div>
+              </div>              
               <div
                 class="menu-item px-5"
                 data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
@@ -271,10 +266,7 @@
                     </a>
                   </div>
                 </div>
-              </div>
-              <div class="menu-item px-5 my-1">
-                <router-link to="/account" class="menu-link px-5" v-show="isLogin">{{ t("header.editProfile") }}</router-link>
-              </div>
+              </div>              
               <div class="menu-item px-5">
                 <!-- <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5" @click="logout">로그 아웃</a> -->
                 <a v-if="isLogin" @click="logout" class="menu-link px-5">{{ t("header.signout") }}</a>

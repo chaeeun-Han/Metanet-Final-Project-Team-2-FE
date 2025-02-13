@@ -21,7 +21,7 @@
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="d-flex justify-content-start flex-column">
-                      <a href="#" class="text-gray-900 fw-bold text-hover-primary fs-6">{{ lecture.title }}</a>
+                      <a class="text-gray-900 fw-bold text-hover-primary fs-6">{{ lecture.title }}</a>
                     </div>
                   </div>
                 </td>
@@ -44,7 +44,7 @@
                   </div>
                 </td>
                 <td>
-                  <a href="#" class="btn btn-sm btn-light btn-active-primary"
+                  <a class="btn btn-sm btn-light btn-active-primary"
                     @click="showDetails(lecture)">
                     <i class="ki-duotone ki-plus fs-2"></i> 자세히 보기
                   </a>
@@ -74,10 +74,10 @@
                 <tr v-for="lectureList in currentLecture.myStudyLectureList" :key="lectureList.lectureListId">
                   <td></td>
                   <td>
-                    <a href="#" class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ lectureList.lectureListId }}</a>
+                    <a class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ lectureList.lectureListId }}</a>
                   </td>
                   <td>
-                    <a href="#" class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ lectureList.title }}</a>
+                    <a class="text-gray-900 fw-bold text-hover-primary d-block mb-1 fs-6">{{ lectureList.title }}</a>
                   </td>
                   <td>
                     <span :class="lectureList.attend ? 'badge badge-light-success' : 'badge badge-light-danger'">

@@ -14,7 +14,6 @@
 								<!--begin::Title-->
 								<h1 class="text-gray-900 fw-bolder mb-3">새로운 비밀번호 입력</h1>
 								<!--end::Title-->
-								
 							</div>
 							<!--begin::Heading-->
 							<!--begin::Input group-->
@@ -31,7 +30,6 @@
 										</span>
 									</div>
 									<!--end::Input wrapper-->
-									
 								</div>
 								<!--end::Wrapper-->
 								<!--begin::Hint-->
@@ -46,10 +44,9 @@
 								<!--end::Repeat Password-->
 							</div>
 							<!--end::Input group=-->
-							
 							<!--begin::Action-->
-							<div class="d-grid mb-10">
-								<button type="button" @click="newPassword" id="kt_new_password_submit" class="btn btn-primary">
+							<div class="d-grid mb-10 text-center">
+								<button type="button" @click="newPassword" id="kt_new_password_submit" class="btn btn-primary mx-auto w-100 py-3">
 									<!--begin::Indicator label-->
 									<span class="indicator-label">비밀번호 변경</span>
 									<!--end::Indicator label-->
@@ -62,10 +59,8 @@
 							<!--end::Action-->
 						</form>
 						<!--end::Form-->
-					
 					</div>
 					<!--end::Wrapper-->
-					
 				</div>
 				<!--end::Content-->
 				</div>
@@ -88,13 +83,13 @@ export default {
   },
   methods: {      
     async newPassword() {
-      if (!this.password || !this.confirm_password) {
-        alert("비밀번호와 비밀번호 확인을 입력해주세요.");
+      if (!this.password || !this.confirm_password) {        
+		Swal.fire('입력 값 확인', '비밀번호와 비밀번호 확인을 입력해주세요.', 'info');
         return;
       }
 
 	  if (this.password !== this.confirm_password) {
-        alert("비밀번호와 비밀번호 확인을 동일하게 입력해주세요.");
+        Swal.fire('입력 값 확인', '비밀번호와 비밀번호 값을 동일하게 입력해주세요.', 'info');
         return;
       }
 
@@ -103,14 +98,13 @@ export default {
       try {
         const response = await api.post("/auth/password", payload);
         console.log("비밀번호 변경이 완료되었습니다:", response.data);
-        alert("비밀번호를 변경하였습니다. 다시 로그인해주세요");
+		Swal.fire('비밀번호 변경 성공', '비밀번호 변경을 성공하였습니다.', 'success');        
 		this.$router.push("/login");
       } catch (error) {
         console.error("비밀번호 변경을 실패하였습니다.", error);
-        alert("비밀번호 변경을 실패하였습니다.");
+		Swal.fire('비밀번호 변경 실패', '비밀번호 변경을 실패하였습니다.', 'error');        
       }
     },
   },
 };
 </script>
-

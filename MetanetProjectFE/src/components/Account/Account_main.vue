@@ -10,7 +10,6 @@
           <Account_revenue v-if="currentComponent === 'revenue'" />
           <Account_lecture :myLectureData="myLectureData" v-if="currentComponent === 'myLecture'" />
           <Account_editprofile :editListData="editListData" v-if="currentComponent === 'editProfile'" />
-          <Account_input_lecture v-if="currentComponent === 'registerLecture'"/>
         </div>
       </div>
     </div>
@@ -23,10 +22,7 @@ import Account_ToolBar from "./Account_ToolBar.vue";
 import Account_lecture from "./Account_lecture.vue";
 import Account_paylist from "./Account_paylist.vue";
 import Account_revenue from "./Account_revenue.vue";
-import Account_mystudylist from "./Account_mystudylist.vue";
-import Account_editprofile from "./Account_editprofile.vue";
 import Account_mystudy from "./Account_mystudy.vue";
-import Account_input_lecture from "./Account_input_lecture.vue";
 
 export default {
   name: "Account_main",
@@ -38,7 +34,6 @@ export default {
     Account_revenue,
     Account_mystudylist,
     Account_editprofile,
-    Account_input_lecture,
   },
   data() {
     return {
@@ -49,6 +44,9 @@ export default {
       payListData: [],
       myLectureData: {},
       editListData: {},
+      viewMemberData : [],
+      viewLectureData : [],
+      adminData :{}
     };
   },
   methods: {
@@ -145,6 +143,51 @@ export default {
     changeComponent(componentName) {
       this.currentComponent = componentName;
     },
+    async fetchviewMemberData() {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const response = await axios.get("http://localhost:8080/admin/accounts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        this.viewMemberData = response.data.data;
+      } catch (error) {
+        console.error("Failed to fetch lecture data:", error.response?.data || error.message);
+      }
+    },  
+    async fetchviewLectureData() {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const response = await axios.get("http://localhost:8080/admin/lectures", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        this.viewLectureData = response.data.data;
+      } catch (error) {
+        console.error("Failed to fetch lecture data:", error.response?.data || error.message);
+      }
+    },
+    async fetchadminDashboard() {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const response = await axios.get("http://localhost:8080/admin/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        this.adminData = response.data.data;
+      } catch (error) {
+        console.error("Failed to fetch lecture data:", error.response?.data || error.message);
+      }
+    },
   },
 
   created() {
@@ -154,6 +197,9 @@ export default {
     this.fetchPayListData();
     this.fetchMystudyListData();
     this.fetchAccountData();
+    this.fetchviewMemberData();
+    this.fetchviewLectureData();
+    this.fetchadminDashboard();
   },
 };
 </script>
