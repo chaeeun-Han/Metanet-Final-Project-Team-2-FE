@@ -35,6 +35,7 @@
   </template>
   <script>
   import { jwtDecode } from "jwt-decode";
+  import api from "../../apis/api";
   
   export default {
     data() {
@@ -112,8 +113,8 @@
         }
         try {
             const questionId = this.$route.params.questionId;
-            const response = await axios.post(
-                `http://localhost:8080/lectures/${lectureId}/questions`,
+            const response = await api.post(
+                `/lectures/${lectureId}/questions`,
                 formData,
                 {
                     headers: {
