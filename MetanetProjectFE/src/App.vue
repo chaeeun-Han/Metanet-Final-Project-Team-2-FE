@@ -41,7 +41,11 @@ export default {
 
     const loadUserData = () => {
       const storedData = sessionStorage.getItem("userData");
-      userData.value = storedData ? JSON.parse(storedData) : initData;
+      if (storedData) {
+        userData.value = JSON.parse(storedData);
+      } else {
+        userData.value = initData; // 기본 값 설정
+      }
     };
 
     // 최초 마운트 시 `sessionStorage`에서 데이터 불러오기
@@ -94,7 +98,7 @@ export default {
           profile: member.profile || "../../public/assets/media/profile.png",
         };
 
-        sessionStorage.setItem("userData", JSON.stringify(userData));
+        sessionStorage.setItem("userData", JSON.stringify(userData.value));
 
       } catch (error) {
         console.error("회원 정보 불러오기 실패:", error);
