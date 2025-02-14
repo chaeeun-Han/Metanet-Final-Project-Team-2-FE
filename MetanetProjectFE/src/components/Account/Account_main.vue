@@ -72,6 +72,22 @@ export default {
         });
 
         this.toolbarData = { ...response.data.data };
+        const userRole = this.toolbarData?.member?.role;
+        if(userRole ==='Admin'){
+          this.fetchviewMemberData();
+          this.fetchviewLectureData();
+          this.fetchadminDashboard();
+          this.fetchLectureData();
+          this.fetchAccountData();        
+        }else if(userRole ==='Teacher'){
+          this.fetchLectureData();
+          this.fetchAccountData();          
+        }
+
+        this.fetchMyStudyData();
+        this.fetchMystudyListData();
+        this.fetchPayListData();
+      
       } catch (error) {
         console.error("Failed to fetch toolbar data:", error.response?.data || error.message);
       }
@@ -203,14 +219,7 @@ export default {
 
   created() {
     this.fetchToolData();
-    this.fetchMyStudyData();
-    this.fetchLectureData();
-    this.fetchPayListData();
-    this.fetchMystudyListData();
     this.fetchAccountData();
-    this.fetchviewMemberData();
-    this.fetchviewLectureData();
-    this.fetchadminDashboard();
   },
 };
 </script>
