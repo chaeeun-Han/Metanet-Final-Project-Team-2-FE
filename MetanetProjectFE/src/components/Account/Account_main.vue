@@ -27,7 +27,7 @@ import Account_lecture from "./Account_lecture.vue";
 import Account_paylist from "./Account_paylist.vue";
 import Account_revenue from "./Account_revenue.vue";
 import Account_mystudy from "./Account_mystudy.vue";
-import Account_mystudylist from "./Account_myStudyList.vue";
+import Account_mystudylist from "./Account_mystudylist.vue";
 import Account_editprofile from "./Account_editprofile.vue";
 import Account_viemember from "./Account_viewmember.vue";
 import Account_viewlecture from "./Account_viewlecture.vue";
@@ -76,21 +76,20 @@ export default {
 
         this.toolbarData = { ...response.data.data };
         const userRole = this.toolbarData?.member?.role;
-        if(userRole ==='Admin'){
+        if (userRole === "Admin") {
           this.fetchviewMemberData();
           this.fetchviewLectureData();
           this.fetchadminDashboard();
           this.fetchLectureData();
-          this.fetchAccountData();        
-        }else if(userRole ==='Teacher'){
+          this.fetchAccountData();
+        } else if (userRole === "Teacher") {
           this.fetchLectureData();
-          this.fetchAccountData();          
+          this.fetchAccountData();
         }
 
         this.fetchMyStudyData();
         this.fetchMystudyListData();
         this.fetchPayListData();
-      
       } catch (error) {
         console.error("Failed to fetch toolbar data:", error.response?.data || error.message);
       }

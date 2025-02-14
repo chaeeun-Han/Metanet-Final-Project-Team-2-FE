@@ -21,14 +21,11 @@
           <span class="fw-bold">강사 <br /></span> - {{ lectureData.teacher || "정보 없음" }}
         </div>
 
-        <!-- 강의 일정 -->
-        <div class="text-muted mb-3">
-          <span class="fw-bold">강의 일정 <br /></span> - {{ lectureData.lectureDate || "정보 없음" }}
-        </div>
-
         <!-- 상세 강의 일정 -->
         <div class="text-muted">
-          <span class="fw-bold">상세 강의 일정 <br /></span> - {{ lectureData.startDate || "정보 없음" }} ~ {{ lectureData.endDate || "정보 없음" }}
+          <span class="fw-bold">강의 일정 <br /></span>{{ lectureData.startDate || "정보 없음" }} 시작
+          <br />
+          {{ lectureData.endDate || "정보 없음" }} 종료
           <ul class="mt-2 mb-0">
             <li v-for="(schedule, index) in lectureData.detailSchedule" :key="index">
               {{ schedule }}
@@ -108,7 +105,7 @@
                 <td>
                   <div class="d-flex align-items-center">
                     <span v-if="!isTeacher(review)" class="badge badge-light-warning ms-2">학생</span>
-                    <span v-if="isTeacher(review)" class="badge badge-light-primary ms-2">강사</span>
+                    <span v-if="isTeacher(review)" class="badge badge-light-primary ms-2">담당 강사</span>
                   </div>
                 </td>
 
@@ -128,52 +125,35 @@
                 <!-- 액션 버튼 -->
                 <td class="text-end">
                   <div class="action-container">
-                    <!-- 관리자 (ROLE_Admin)인 경우: 모든 액션 버튼 표시 -->
+                    <!-- (1) 관리자: 모든 리뷰 수정 & 삭제 가능 -->
                     <template v-if="currentUserRole === '관리자'">
                       <template v-if="editingReviewId === review.reviewId">
-                        <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)">
-                          저장
-                        </span>
-                        <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelEdit">
-                          취소
-                        </span>
+                        <span class="badge badge-light-primary large-action" style="cursor: pointer" @click="saveEdit(review)">저장</span>
+                        <span class="badge badge-light-secondary large-action" style="cursor: pointer" @click="cancelEdit">취소</span>
                       </template>
                       <template v-else>
-                        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)"> 수정 </span>
-                        <span class="badge badge-light-danger" style="margin-right: 4px; cursor: pointer" @click="deleteReview(review)"> 삭제 </span>
-                        <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">
-                          답변하기
-                        </span>
+                        <span class="badge badge-light-warning" style="cursor: pointer" @click="startEditing(review)">수정</span>
+                        <span class="badge badge-light-danger" style="cursor: pointer" @click="deleteReview(review)">삭제</span>
+                        <span class="badge badge-light-warning" style="cursor: pointer" @click="startReply(review)">답변하기</span>
                       </template>
                     </template>
-                    <!-- 관리자가 아닌 경우 -->
-                    <template v-else>
-                      <!-- 본인 작성 리뷰: 수정, 삭제 -->
-                      <template v-if="review.memberId != currentUserId">
-                        <template v-if="editingReviewId !== review.reviewId">
-                          <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)">
-                            수정
-                          </span>
-                          <span class="badge badge-light-danger" style="margin-right: 4px; cursor: pointer" @click="deleteReview(review)">
-                            삭제
-                          </span>
-                        </template>
-                        <template v-else>
-                          <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)">
-                            저장
-                          </span>
-                          <span class="badge badge-light-secondary large-action" style="margin-right: 4px; cursor: pointer" @click="cancelEdit">
-                            취소
-                          </span>
-                        </template>
+
+                    <!-- (2) 본인 리뷰 수정 가능 (학생 & 선생님) -->
+                    <template v-else-if="review.id === currentUserId">
+                      <template v-if="editingReviewId === review.reviewId">
+                        <span class="badge badge-light-primary large-action" style="cursor: pointer" @click="saveEdit(review)">저장</span>
+                        <span class="badge badge-light-secondary large-action" style="cursor: pointer" @click="cancelEdit">취소</span>
                       </template>
-                      <!-- 본인 작성이 아니고, 강사 (ROLE_Teacher)이며 해당 강의의 선생인 경우에만 답변하기 가능 -->
-                      <template v-else-if="currentUserRole === '선생님' && currentUserId === lectureData.memberId">
-                        <template v-if="replyReviewId !== review.reviewId">
-                          <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">
-                            답변하기
-                          </span>
-                        </template>
+                      <template v-else>
+                        <span class="badge badge-light-warning" style="cursor: pointer" @click="startEditing(review)">수정</span>
+                        <span class="badge badge-light-danger" style="cursor: pointer" @click="deleteReview(review)">삭제</span>
+                      </template>
+                    </template>
+
+                    <!-- (3) 선생님이고, 강의 담당 선생님일 경우 답변 가능 -->
+                    <template v-else-if="currentUserRole === '선생님' && lectureData.memberId === currentUserId">
+                      <template v-if="replyReviewId !== review.reviewId">
+                        <span class="badge badge-light-warning" style="cursor: pointer" @click="startReply(review)">답변하기</span>
                       </template>
                     </template>
                   </div>
@@ -292,6 +272,7 @@ export default {
       }
     },
     isTeacher(review) {
+      console.log(review, this.lectureData);
       return String(review.memberId) === String(this.lectureData.memberId);
     },
     // 리뷰 수정 관련 메서드
@@ -366,7 +347,7 @@ export default {
         });
         Swal.fire("장바구니에 담겼습니다!");
       } catch (error) {
-        console.error("카트 담기 실패 :", error);
+        Swal.fire("이미 구매한 강의 입니다!!");
       }
     },
   },
