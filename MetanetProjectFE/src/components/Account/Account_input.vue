@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="handleSubmit" style="padding: 30px">
-    <!-- 일반 필드 렌더링 (파일, 텍스트, 날짜 등) -->
     <div style="display: flex; align-items: center; gap: 10px">
       <button style="margin-bottom: 10px" class="btn btn-primary btn-sm" onclick="window.open('http://localhost:8080/zoom/auth', '_blank')">
         Zoom
@@ -10,7 +9,6 @@
     <input type="text" name="code" v-model="modelValue.code" class="form-control bg-transparent" placeholder="Enter code" />
 
     <div v-for="(field, index) in nonListFields" :key="'nonlist-' + index" class="fv-row mb-3" style="margin-top: 20px">
-      <!-- 파일 입력 -->
       <div v-if="field.type === 'file'">
         <label>{{ field.placeholder }}</label>
         <input
@@ -21,7 +19,6 @@
           @change="handleFileChange(field.name, $event)"
         />
       </div>
-      <!-- 태그 선택 -->
       <div v-else-if="field.type === 'tags'">
         <label style="padding-right: 30px">{{ field.placeholder }}</label>
         <div v-for="tag in tagOptions" :key="tag.tag_id" class="form-check form-check-inline">
@@ -33,7 +30,6 @@
         <p v-if="selectedTags.length === 0" class="text-muted mt-2">태그를 선택해주세요</p>
         <p v-else class="text-muted mt-2">현재 선택된 태그: {{ selectedTags.join(", ") }}</p>
       </div>
-      <!-- 그 외의 일반 입력 필드 (텍스트, date 등) -->
       <div v-else>
         <label>{{ field.placeholder }}</label>
         <input
@@ -49,90 +45,95 @@
       </div>
     </div>
 
-    <!-- 리스트 타입 필드 렌더링 (예: 강의 상세 일정) -->
-    <div v-for="(field, index) in listFields" :key="'list-' + index" class="fv-row mb-3">
-      <label>{{ field.placeholder }}</label>
-      <div class="list-group-container">
-        <div v-for="(group, groupIndex) in getListValue(field.name)" :key="groupIndex" class="group">
-          <!-- 안내 문구 -->
-          <div class="list-group-row row">
-            <label class="mb-2" style="font-size: 0.9rem; color: #888"> 시간은 15분 단위로 입력 가능합니다. </label>
-            <div class="col">
-              <!-- 강의 날짜 -->
+    <div class="fv-row mb-3">
+      <button type="button" class="btn btn-secondary btn-sm" @click="toggleExcelMode">
+        {{ useExcel ? "목록 입력으로 전환" : "Excel 로 넣기" }}
+      </button>
+    </div>
+
+    <div v-if="useExcel" class="fv-row mb-3">
+      <label>Excel 파일 업로드 (강의 상세 일정)</label>
+      <input type="file" name="excelFile" @change="handleExcelFileChange" class="form-control" required />
+      <button type="button" class="btn btn-info btn-sm mt-2" @click="downloadExcelTemplate">엑셀 템플릿 받기</button>
+    </div>
+
+    <div v-else>
+      <div v-for="(field, index) in listFields" :key="'list-' + index" class="fv-row mb-3">
+        <label>{{ field.placeholder }}</label>
+        <div class="list-group-container">
+          <div v-for="(group, groupIndex) in getListValue(field.name)" :key="groupIndex" class="group">
+            <div class="list-group-row row">
+              <label class="mb-2" style="font-size: 0.9rem; color: #888"> 시간은 15분 단위로 입력 가능합니다. </label>
+              <div class="col">
+                <input
+                  type="date"
+                  v-model="group.date"
+                  @input="updateListField(field.name, groupIndex, 'date', $event.target.value)"
+                  placeholder="강의 날짜"
+                  class="form-control"
+                  max="9999-12-31"
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="time"
+                  :value="group.startTime"
+                  @blur="updateListField(field.name, groupIndex, 'startTime', $event.target.value)"
+                  placeholder="강의 시작"
+                  class="form-control"
+                  min="00:00"
+                  max="23:45"
+                  step="900"
+                  pattern="^(?:[01]\d|2[0-3]):(?:00|15|30|45)$"
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="time"
+                  :value="group.endTime"
+                  @blur="updateListField(field.name, groupIndex, 'endTime', $event.target.value)"
+                  placeholder="강의 종료"
+                  class="form-control"
+                  min="00:00"
+                  max="23:45"
+                  step="900"
+                  pattern="^(?:[01]\d|2[0-3]):(?:00|15|30|45)$"
+                />
+              </div>
+            </div>
+            <div class="list-group-row mt-2">
               <input
-                type="date"
-                v-model="group.date"
-                @input="updateListField(field.name, groupIndex, 'date', $event.target.value)"
-                placeholder="강의 날짜"
+                type="text"
+                v-model="group.title"
+                @input="updateListField(field.name, groupIndex, 'title', $event.target.value)"
+                placeholder="강의 제목"
                 class="form-control"
-                max="9999-12-31"
               />
             </div>
-            <div class="col">
-              <!-- 강의 시작 시간 (15분 단위 보정) -->
+            <div class="list-group-row mt-2">
               <input
-                type="time"
-                :value="group.startTime"
-                @blur="updateListField(field.name, groupIndex, 'startTime', $event.target.value)"
-                placeholder="강의 시작"
+                type="text"
+                v-model="group.description"
+                @input="updateListField(field.name, groupIndex, 'description', $event.target.value)"
+                placeholder="강의 설명"
                 class="form-control"
-                min="00:00"
-                max="23:45"
-                step="900"
-                pattern="^(?:[01]\d|2[0-3]):(?:00|15|30|45)$"
               />
             </div>
-            <div class="col">
-              <!-- 강의 종료 시간 (15분 단위 보정) -->
-              <input
-                type="time"
-                :value="group.endTime"
-                @blur="updateListField(field.name, groupIndex, 'endTime', $event.target.value)"
-                placeholder="강의 종료"
-                class="form-control"
-                min="00:00"
-                max="23:45"
-                step="900"
-                pattern="^(?:[01]\d|2[0-3]):(?:00|15|30|45)$"
-              />
+            <div class="list-group-controls mt-2">
+              <button
+                type="button"
+                @click="removeListGroup(field.name, groupIndex)"
+                v-if="getListValue(field.name).length > 1"
+                class="btn btn-danger btn-sm"
+              >
+                -
+              </button>
             </div>
+            <hr />
           </div>
-          <!-- 강의 제목 입력 -->
-          <div class="list-group-row mt-2">
-            <input
-              type="text"
-              v-model="group.title"
-              @input="updateListField(field.name, groupIndex, 'title', $event.target.value)"
-              placeholder="강의 제목"
-              class="form-control"
-            />
+          <div class="add-group-btn">
+            <button type="button" @click="addListGroup(field.name)" class="btn btn-primary btn-sm">+</button>
           </div>
-          <!-- 강의 설명 입력 -->
-          <div class="list-group-row mt-2">
-            <input
-              type="text"
-              v-model="group.description"
-              @input="updateListField(field.name, groupIndex, 'description', $event.target.value)"
-              placeholder="강의 설명"
-              class="form-control"
-            />
-          </div>
-          <!-- 삭제 버튼 (그룹이 1개 이상일 때 표시) -->
-          <div class="list-group-controls mt-2">
-            <button
-              type="button"
-              @click="removeListGroup(field.name, groupIndex)"
-              v-if="getListValue(field.name).length > 1"
-              class="btn btn-danger btn-sm"
-            >
-              -
-            </button>
-          </div>
-          <hr />
-        </div>
-        <!-- plus 버튼: 리스트의 마지막 아래에 위치 -->
-        <div class="add-group-btn">
-          <button type="button" @click="addListGroup(field.name)" class="btn btn-primary btn-sm">+</button>
         </div>
       </div>
     </div>
@@ -170,6 +171,8 @@ export default {
     return {
       tagOptions: [],
       selectedTags: [],
+      useExcel: false,
+      excelFile: null,
     };
   },
   computed: {
@@ -221,8 +224,9 @@ export default {
         formData.append("descriptionPicFile", modelValue.descriptionPicFile);
       }
 
-      // 리스트 배열을 JSON 문자열로 변환한 후, Blob으로 감싸서 전송 (Content-Type: application/json)
-      if (Array.isArray(modelValue.lists)) {
+      if (this.useExcel && this.excelFile) {
+        formData.append("excelFile", this.excelFile);
+      } else if (Array.isArray(modelValue.lists)) {
         const listsJson = JSON.stringify(modelValue.lists);
         const listsBlob = new Blob([listsJson], { type: "application/json" });
         formData.append("lists", listsBlob);
@@ -254,6 +258,11 @@ export default {
     handleFileChange(fieldName, event) {
       const file = event.target.files[0];
       this.updateField(fieldName, file);
+    },
+
+    handleExcelFileChange(event) {
+      const file = event.target.files[0];
+      this.excelFile = file;
     },
     getListValue(fieldName) {
       let list = this.modelValue[fieldName];
@@ -315,6 +324,28 @@ export default {
     updateTags() {
       const updated = { ...this.modelValue, tags: this.selectedTags.join(",") };
       this.$emit("update:modelValue", updated);
+    },
+
+    toggleExcelMode() {
+      if (this.useExcel) {
+        // Excel 모드에서 목록 입력 모드로 돌아갈 때 백업된 데이터 복구
+        if (this.savedLists) {
+          this.updateField("lists", this.savedLists);
+        }
+      } else {
+        // 목록 입력 모드에서 Excel 모드로 전환할 때 기존 lists 데이터를 백업
+        this.savedLists = [...this.modelValue.lists]; // 깊은 복사하여 원본 데이터 보존
+        this.updateField("lists", []);
+      }
+
+      this.useExcel = !this.useExcel;
+    },
+
+    downloadExcelTemplate() {
+      window.open(
+        "https://zebal-buket.s3.ap-northeast-2.amazonaws.com/%EA%B0%95%EC%9D%98%EB%A6%AC%EC%8A%A4%ED%8A%B8(Lecture_List)_TEMPLATE.xlsx",
+        "_blank"
+      );
     },
   },
 };
