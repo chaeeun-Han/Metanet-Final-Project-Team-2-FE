@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <div class="app-wrapper flex-column flex-row-fluid ms-0 ps-0" id="kt_app_wrapper">
-      <Header :userData="userData" :isLogin="isLogin" 
-              @update-login-status="isLogin = $event" 
-              @search="updateSearchKeyword" />
-      <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-        <router-view :key="$route.fullPath" :searchKeyword="searchKeyword"/>
+      <Header :userData="userData" :isLogin="isLogin" @update-login-status="isLogin = $event" @search="updateSearchKeyword" />
+      <div class="app-main flex-column flex-row-fluid" id="kt_app_main" style="overflow-x: hidden">
+        <router-view :key="$route.fullPath" :searchKeyword="searchKeyword" />
       </div>
     </div>
   </div>
@@ -32,7 +30,6 @@ export default {
       profile: "../../public/assets/media/profile.png",
     };
 
-    
     // const userData = storedData ? JSON.parse(storedData) : initData;
     const userData = ref({
       name: "로그인 후 이용 가능",
@@ -99,7 +96,6 @@ export default {
         };
 
         sessionStorage.setItem("userData", JSON.stringify(userData.value));
-
       } catch (error) {
         console.error("회원 정보 불러오기 실패:", error);
       }
