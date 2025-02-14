@@ -16,6 +16,10 @@ import Password_reset from "../components/password-reset/Password_reset.vue";
 import CartList from "../components/Cart/Cart_content.vue";
 import Success from "../components/Cart/toss/Success.vue";
 
+import Error403Page from "../components/error/Error403Page.vue";
+import Error404Page from "../components/error/Error404Page.vue";
+import Error500Page from "../components/error/Error500Page.vue";
+
 const routes = [
   { path: "/", component: Main_main },
   { path: "/account", component: Account_main },
@@ -27,6 +31,9 @@ const routes = [
   { path: "/lectures/:lectureId/questions/write", component: QuestionWrite },
   { path: "/cart", component: CartList},
   { path: "/success", component: Success},
+  { path: "/403Page", name: 'Error403Page', component: Error403Page },  
+  { path: "/:pathMatch(.*)*", name: 'Error404Page', component: Error404Page },  
+  { path: "/500Page", name: 'Error500Page', component: Error500Page },  
   {
     path: "/lectures/:lectureId",
     component: Lecture_content,

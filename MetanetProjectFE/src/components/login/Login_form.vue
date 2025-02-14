@@ -56,7 +56,7 @@ export default {
         const response = await axios.post(
           "http://localhost:8080/auth/login",
           { id: this.loginFormData.id, password: this.loginFormData.password },
-          { headers: { "Content-Type": "application/json; charset=UTF-8" } }
+          { headers: { "Content-Type": "application/json", "skipInterceptor": "true" } }
         );
         console.log("Response from server:", response.data);
 
@@ -85,6 +85,7 @@ export default {
           console.warn("❌ 액세스 토큰이 없거나 올바르지 않음");
         }
       } catch (error) {
+        Swal.fire('로그인 실패', 'ID 비밀번호를 확인해주세요.', 'error');                         
         console.error("로그인 실패:", error.response ? error.response.data : error);
       }
     },

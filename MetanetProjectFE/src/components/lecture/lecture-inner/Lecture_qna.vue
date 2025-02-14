@@ -108,8 +108,13 @@ export default {
       }
     },
     handleClick() {
-      const lectureId = this.$route.params.lectureId;
-      this.$router.push(`/lectures/${lectureId}/questions/write`);
+        const lectureId = this.$route.params.lectureId;
+        const token = sessionStorage.getItem("accessToken");
+        if (!token) {
+          Swal.fire('로그인 필요', '질문을 작성하려면 로그인해주세요', 'info');
+          return;
+        }
+        this.$router.push(`/lectures/${lectureId}/questions/write`);
     },
   },
   mounted() {
