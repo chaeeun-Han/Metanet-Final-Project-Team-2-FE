@@ -18,7 +18,7 @@
         <router-link to="/password/confirm" class="link-primary">비밀번호를 잊으셨습니까?</router-link>
       </div>
       <div class="d-grid mb-10">
-        <input type="submit" id="kt_sign_in_submit" class="btn btn-primary" :value="text" />
+        <input type="submit" id="kt_sign_in_submit" class="btn btn-primary login-btn" :value="text" />
       </div>
     </form>
   </div>
@@ -34,7 +34,7 @@ export default {
     },
     text: {
       type: String,
-      default: "Submit",
+      default: "로그인",
     },
     fields: {
       type: Array,
@@ -60,5 +60,14 @@ export default {
 </script>
 
 <style scoped>
-/* 필요한 스타일을 추가하세요 */
+.login-btn {
+  width: 435px; /* 기본값 */
+}
+
+@media (max-width: 414px) {
+  .login-btn {
+    width: 250px; /* 415px 미만일 때 */
+  }
+}
+
 </style>

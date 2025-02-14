@@ -3,15 +3,11 @@
     <h1 class="text-gray-900 fw-bolder mb-3">로그인</h1>
   </div>
 
-  <div class="separator separator-content my-14">
-    <span class="w-125px text-gray-500 fw-semibold fs-7">이메일로 로그인</span>
-  </div>
-
   <Login_input :fields="loginFormFields" v-model="loginFormData" @submit="handleSubmit" />
 
   <div class="text-gray-500 text-center fw-semibold fs-6">
     아직 회원정보가 없으시나요?
-    <a href="/signup" class="link-primary">회원가입</a>
+    <router-link to="/signup" class="link-primary">회원가입</router-link>
   </div>
 </template>
 
