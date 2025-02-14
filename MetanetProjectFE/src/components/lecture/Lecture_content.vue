@@ -29,6 +29,7 @@
             class="nav-link text-active-primary ms-0 me-10 py-5"
             :to="`/lectures/${$route.params.lectureId}/file`"
             exact-active-class="active"
+            :data="lectureData"
           >
             강의 자료
           </router-link>
