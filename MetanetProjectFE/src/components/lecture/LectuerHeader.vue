@@ -61,11 +61,10 @@ export default {
 
 /* 텍스트 컨테이너: 화면의 오른쪽 1/3 (왼쪽 66% 지점부터 시작) */
 .text-container {
-  z-index: 100;
+  z-index: 2;
   position: absolute;
   bottom: 20px;
   left: 15%;
-  width: 100%;
   padding: 20px;
 }
 </style>

@@ -36,7 +36,7 @@
     <div v-else class="text-center">파일 데이터 로딩 중...</div>
 
     <!-- 다운로드 확인 모달 -->
-    <div v-if="showModal" class="custom-modal-overlay">
+    <div v-if="showModal && is_buyed" class="custom-modal-overlay">
       <div class="custom-modal">
         <div class="modal-header">
           <h2 class="modal-title">다운로드 확인</h2>
@@ -49,6 +49,19 @@
           <button class="btn btn-light" @click="closeModal">취소</button>
           <button class="btn btn-primary" @click="confirmDownload">예</button>
         </div>
+      </div>
+    </div>
+
+    <div v-if="showModal && !is_buyed" class="custom-modal-overlay">
+      <div class="custom-modal">
+        <div class="modal-header">
+          <h2 class="modal-title">다운로드 확인</h2>
+          <button class="close-button" @click="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>강의를 구매해야 다운로드 받을 수 있습니다!</p>
+        </div>
+        <div class="modal-footer"></div>
       </div>
     </div>
 
@@ -87,6 +100,7 @@ export default {
       fileUrlToDownload: "",
       showUploadModal: false,
       selectedFile: null,
+      is_buyed: false,
     };
   },
   computed: {
@@ -100,6 +114,8 @@ export default {
       const lectureId = this.$route.params.lectureId;
       try {
         const response = await api.get(`/lectures/data/${lectureId}`);
+        this.is_buyed = response.data.data[0] >= 1 ? true : false;
+        response.data.data.splice(0, 1);
         this.files = response.data.data || [];
         this.filesLoaded = true;
       } catch (error) {
