@@ -456,11 +456,11 @@ export default {
       for (let item of [...this.selectedCartData]) {
         buyCartArray.push(item.cartId);
       }
-      buyCartArray = buyArray.toString().replaceAll(",", "_");
+      buyCartArray = [...new Set(buyCartArray)].toString().replaceAll(",", "_");
       buyArray = [...new Set(buyArray)].toString().replaceAll(",", "_");
       console.log(buyArray + " and " + buyCartArray);
       tossPayments
-        .requestPayment("카드", {
+        .requestPayment({
           amount: parseInt(this.totalPrice),
           orderId: "lecturebuylists_" + buyArray + "cartId_" + buyCartArray,
           orderName: this.selectedCartData[0].title + " 외 " + this.selectedCartData.length - 1 + "개",

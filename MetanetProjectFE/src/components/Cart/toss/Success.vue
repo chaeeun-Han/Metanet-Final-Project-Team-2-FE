@@ -13,17 +13,27 @@
 import { useRoute, useRouter } from "vue-router";
 import { onMounted } from "vue";
 import api from "../../../apis/api";
-
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
 
-    const orderId = route.query.orderId; // 예: "lecturebuylists_3_5_7"
-    const lectureIds = orderId ? orderId.split("_").slice(1) : []; // ["3", "5", "7"]
+    const orderId = route.query.orderId;
+    const lecturePart = orderId.split("lecturebuylists_")[1].split("cartId_")[0];
+
+    const cartPart = orderId.split("cartId_")[1];
+
+    const lectureIds = lecturePart.split("_").map(Number);
+    const cartIds = cartPart.split("_").map(Number);
 
     const purchaseLectures = async () => {
       try {
+        await api.delete("/cart", {
+          data: {
+            cartIds: cartIds,
+          },
+        });
+
         for (const lectureId of lectureIds) {
           await api.post(`/lectures/buy/${lectureId}`);
           console.log(`✅ 강의 구매 완료: ${lectureId}`);
@@ -36,7 +46,7 @@ export default {
     };
 
     const goToLectures = () => {
-      router.push("/lectures/my-lectures"); // 사용자의 강의 목록 페이지로 이동
+      router.push("/account"); // 사용자의 강의 목록 페이지로 이동
     };
 
     onMounted(() => {
