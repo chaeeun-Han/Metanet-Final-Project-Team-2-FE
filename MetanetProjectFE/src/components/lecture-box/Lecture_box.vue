@@ -1,22 +1,20 @@
 <template>
-  <div class="lecture-card">
-    <div class="card-body">
-      <!-- 이미지 클릭 시 강의 상세 페이지로 이동 -->
-      <router-link :to="`/lectures/${lectureId}`">
-        <div class="img-container">
-          <img :src="profile || 'assets/media/default-lecture.jpg'" alt="Lecture Image" />
-        </div>
-      </router-link>
-      <div class="info">
-        <span class="title">{{ title }}</span>
-        <span class="instructor">{{ teacher }}</span>
-        <span class="category">{{ name }}</span>
+  <router-link :to="`/lectures/${lectureId}`">
+    <div class="lecture-card">
+      <div class="lecture-image-container">
+        <img :src="profile" alt="Lecture Thumbnail" class="lecture-image" />
       </div>
-      <span class="price">₩{{ price.toLocaleString() }}</span>
-      <!-- 태그가 있을 경우 파란색 박스로 표시 -->
-      <div class="tags" v-if="tags">{{ tags }}</div>
+      <div class="lecture-info">
+        <div class="lecture-title text-gray-900">{{ truncatedTitle }}</div>
+        <div class="lecture-teacher">{{ teacher }}</div>
+        <div class="lecture-price text-gray-900">{{ formattedPrice }}</div>
+        <div class="lecture-stats">
+          <span class="students text-gray-900">👥 {{ leftSpace }} 명 남음</span>
+          <span class="rating text-gray-900">❤️{{ likes }} 명이 좋아함</span>
+        </div>
+      </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -30,6 +28,8 @@ export default {
     title: String,
     name: String,
     price: Number,
+    likes: Number,
+    leftSpace: Number,
     tags: {
       type: String,
       default: "",
@@ -39,73 +39,71 @@ export default {
       default: "강사명 미정",
     },
   },
+  computed: {
+    truncatedTitle() {
+      return this.title.length > 20 ? this.title.substring(0, 20) + '...' : this.title;
+    },
+    formattedPrice() {
+      return `₩${this.price.toLocaleString()}`;
+    },
+  }
 };
 </script>
 
 <style scoped>
 .lecture-card {
-  width: 269px;
-  background-color: #eff6ff; /* 밝은 파란색 계열 */
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-.dark .lecture-card {
-  background-color: #1e3a8a;
-}
-.img-container {
   width: 100%;
-  height: 180px;
-  overflow: hidden;
-  border-radius: 8px;
-  margin: 0 auto 0.5rem;
+  max-width: 250px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  margin: auto;
+  transition: transform 0.2s ease-in-out;
 }
-.img-container img {
+
+/* 작은 화면에서 크기 줄이기 */
+@media (max-width: 768px) {
+  .lecture-card {
+    max-width: 200px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 420px) { 
+  .lecture-card {
+    max-width: 160px;
+    height: 260px;
+  }
+}
+
+.lecture-card:hover {
+  transform: scale(1.05);
+}
+
+.lecture-image-container {
+  width: 100%;
+  height: 150px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.lecture-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.info {
-  margin-bottom: 0.5rem;
+
+.lecture-info {
+  padding: 10px;
+  flex-grow: 1;
 }
-.title {
-  display: block;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #1f2937;
-  cursor: pointer;
-}
-.title:hover {
-  color: #1d4ed8;
-}
-.instructor {
-  display: block;
-  font-size: 1.2rem;
-  color: #374151;
-  margin-top: 0.25rem;
-}
-.category {
-  display: block;
+
+.lecture-stats {
   font-size: 1rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
 }
-.price {
-  display: block;
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #0ae49b;
-  text-align: center;
-  margin-top: 0.5rem;
-}
-.tags {
-  display: inline-block;
-  padding: 4px 8px;
-  background-color: #3b82f6;
-  color: #fff;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-}
+
+.lecture-teacher {
+    color: #666;
+  }
 </style>
