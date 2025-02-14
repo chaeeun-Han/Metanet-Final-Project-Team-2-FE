@@ -17,7 +17,7 @@
 
           <div class="text-gray-500 text-center fw-semibold fs-6">
             이미 회원정보가 있으신가요?
-            <a href="#" class="link-primary">로그인</a>
+            <router-link to="/login" class="link-primary">로그인</router-link>
           </div>
         </div>
       </div>

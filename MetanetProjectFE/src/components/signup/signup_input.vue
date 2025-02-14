@@ -166,7 +166,7 @@
         <input 
           type="submit" 
           id="kt_sign_in_submit" 
-          class="btn btn-primary" 
+          class="btn btn-primary signup-btn mt-5" 
           :disabled="!!passwordError || !!passwordConfirmError"
         />
       </div>
@@ -330,5 +330,15 @@ export default {
   background-color: #A0A0A0 !important;
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.signup-btn {
+  width: 435px; /* 기본값 */
+}
+
+@media (max-width: 414px) {
+  .signup-btn {
+    width: 250px; /* 415px 미만일 때 */
+  }
 }
 </style>
