@@ -1,7 +1,9 @@
 {
   "main": {
     "closingSoon": "Top 5 Courses Closing Soon",
+    "closingDescription" : "Meet some of the most popular lectures in Classpic!",
     "likes": "Popular Courses Top 5",
+    "likesDescription" : "If you don't book now, it will close soon!",
     "list": "Courses"
   },
   "header": {
