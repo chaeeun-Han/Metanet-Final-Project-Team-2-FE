@@ -1,7 +1,9 @@
 {
   "main": {
     "closingSoon": "마감임박 강의 Top 5",
+    "closingDescription" : "지금 예약하지 않으면 곧 마감돼요!",
     "likes": "인기 강의 Top 5",
+    "likesDescription" : "클래스픽에서 가장 인기있는 강의들을 만나보세요!",
     "list": "강의 목록"
   },
   "header": {

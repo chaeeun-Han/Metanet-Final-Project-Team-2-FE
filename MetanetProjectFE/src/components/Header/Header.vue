@@ -330,17 +330,6 @@ export default {
     );
     const isKoreanActive = computed(() => locale.value === "ko");
     const isEnglishActive = computed(() => locale.value === "en");
-    //const userData = inject("myUserData");
-    // const userData = computed(() => props.userData);
-    // watch(userData, (newValue) => {
-    //   console.log("✅ Header.vue - userData 변경 감지:", newValue);
-    // });
-    // const userData = computed(() => {
-    //   const storedData = sessionStorage.getItem("userData");
-    //   const test = storedData ? JSON.parse(storedData) : { name: "로그인 후 이용 가능", profile: "../../public/assets/media/profile.png" }
-    //   console.log(test);
-    //   return storedData ? JSON.parse(storedData) : { name: "로그인 후 이용 가능", profile: "../../public/assets/media/profile.png" };
-    // });
 
     watchEffect(() => {
       language.value = locale.value === "en" ? "English" : "한국어";
@@ -357,7 +346,6 @@ export default {
 
     watch(isLogin, (newValue) => {
       console.log("Header - isLogin 변경 감지:", newValue);
-      // console.log("userData.profile" , userData);
     });
     return { t, locale, changeLanguage, language, flagSrc, isKoreanActive, isEnglishActive, isLogin, updateLoginStatus, ref, userData, logout, searchQuery, sendToMain };
   },
