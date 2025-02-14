@@ -7,12 +7,13 @@
           <Account_mystudy :myStudyData="myStudyData" v-if="currentComponent === 'myStudy'" />
           <Account_mystudylist :myStudyListData="myStudyListData" v-if="currentComponent === 'myStudyList'" />
           <Account_paylist :payListData="payListData" v-if="currentComponent === 'payList'" />
-          <Account_revenue v-if="currentComponent === 'revenue'" />  
-          <Account_lecture :myLectureData="myLectureData" v-if="currentComponent === 'myLecture'" />                           
-          <Account_editprofile :editListData="editListData" v-if="currentComponent === 'editProfile'" />   
-          <Account_viemember :viewMemberData="viewMemberData" v-if="currentComponent === 'viewMember'" />       
-          <Account_viewlecture :viewLectureData="viewLectureData" v-if="currentComponent === 'viewLecture'" />           
-          <Account_adminDashboard :adminData="adminData" v-if="currentComponent === 'adminDashboard'" />           
+          <Account_revenue v-if="currentComponent === 'revenue'" />
+          <Account_lecture :myLectureData="myLectureData" v-if="currentComponent === 'myLecture'" />
+          <Account_editprofile :editListData="editListData" v-if="currentComponent === 'editProfile'" />
+          <Account_viemember :viewMemberData="viewMemberData" v-if="currentComponent === 'viewMember'" />
+          <Account_viewlecture :viewLectureData="viewLectureData" v-if="currentComponent === 'viewLecture'" />
+          <Account_adminDashboard :adminData="adminData" v-if="currentComponent === 'adminDashboard'" />
+          <Account_input_lecture v-if="currentComponent === 'registerLecture'" />
         </div>
       </div>
     </div>
@@ -27,10 +28,11 @@ import Account_paylist from "./Account_paylist.vue";
 import Account_revenue from "./Account_revenue.vue";
 import Account_mystudy from "./Account_mystudy.vue";
 import Account_mystudylist from "./Account_myStudyList.vue";
-import Account_editprofile from "./Account_editprofile.vue"; 
+import Account_editprofile from "./Account_editprofile.vue";
 import Account_viemember from "./Account_viewmember.vue";
-import Account_viewlecture from "./Account_viewlecture.vue"; 
-import Account_adminDashboard from "./Account_adminDashboard.vue"; 
+import Account_viewlecture from "./Account_viewlecture.vue";
+import Account_adminDashboard from "./Account_adminDashboard.vue";
+import Account_input_lecture from "./Account_input_lecture.vue";
 
 export default {
   name: "Account_main",
@@ -44,7 +46,8 @@ export default {
     Account_editprofile,
     Account_viemember,
     Account_viewlecture,
-    Account_adminDashboard
+    Account_adminDashboard,
+    Account_input_lecture,
   },
   data() {
     return {
@@ -55,9 +58,9 @@ export default {
       payListData: [],
       myLectureData: {},
       editListData: {},
-      viewMemberData : [],
-      viewLectureData : [],
-      adminData :{}
+      viewMemberData: [],
+      viewLectureData: [],
+      adminData: {},
     };
   },
   methods: {
@@ -184,7 +187,7 @@ export default {
       } catch (error) {
         console.error("Failed to fetch lecture data:", error.response?.data || error.message);
       }
-    },  
+    },
     async fetchviewLectureData() {
       try {
         const token = sessionStorage.getItem("accessToken");

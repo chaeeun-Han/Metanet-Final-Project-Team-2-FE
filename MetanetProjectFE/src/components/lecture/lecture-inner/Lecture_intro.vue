@@ -37,12 +37,27 @@
         </div>
         <!-- 수강신청 버튼 -->
         <div class="d-flex gap-3 mb-4" style="margin-top: 30px">
-          <button class="btn btn-primary flex-grow-1" :disabled="isDeadlinePassed">수강신청</button>
+          <button class="btn btn-primary flex-grow-1" :disabled="isDeadlinePassed" @click="submitCart">수강신청</button>
         </div>
       </div>
     </div>
 
     <div v-else class="loading">데이터 로딩 중...</div>
+
+    <!-- 강의 일정 섹션 (리뷰 위에 추가) -->
+    <div class="card card-flush mb-5 mb-xl-10" style="padding: 30px; margin-top: 30px">
+      <h3 class="section-title">강의 일정</h3>
+      <div v-if="listsLoaded && lectureLists.length">
+        <div v-for="(item, index) in lectureLists" :key="index" class="lecture-list-item">
+          <div class="instructor-name">{{ item.name }} 강사</div>
+          <div class="lecture-title">{{ item.title }}</div>
+          <div class="lecture-description">{{ item.description }}</div>
+          <div class="lecture-time">{{ item.startTime }} ~ {{ item.endTime }}</div>
+        </div>
+      </div>
+      <div v-else-if="listsLoaded && !lectureLists.length" class="text-center">강의 일정이 없습니다.</div>
+      <div v-else class="text-center">강의 일정 로딩 중...</div>
+    </div>
 
     <!-- 리뷰 테이블 섹션 -->
     <div class="card card-flush mb-5 mb-xl-10" style="padding: 30px; margin-top: 30px">
@@ -114,7 +129,7 @@
                 <td class="text-end">
                   <div class="action-container">
                     <!-- 관리자 (ROLE_Admin)인 경우: 모든 액션 버튼 표시 -->
-                    <template v-if="currentUserRole === 'ROLE_Admin'">
+                    <template v-if="currentUserRole === '관리자'">
                       <template v-if="editingReviewId === review.reviewId">
                         <span class="badge badge-light-primary large-action" style="margin-right: 4px; cursor: pointer" @click="saveEdit(review)">
                           저장
@@ -134,7 +149,7 @@
                     <!-- 관리자가 아닌 경우 -->
                     <template v-else>
                       <!-- 본인 작성 리뷰: 수정, 삭제 -->
-                      <template v-if="review.memberId === currentUserId">
+                      <template v-if="review.memberId != currentUserId">
                         <template v-if="editingReviewId !== review.reviewId">
                           <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startEditing(review)">
                             수정
@@ -153,7 +168,7 @@
                         </template>
                       </template>
                       <!-- 본인 작성이 아니고, 강사 (ROLE_Teacher)이며 해당 강의의 선생인 경우에만 답변하기 가능 -->
-                      <template v-else-if="currentUserRole === 'ROLE_Teacher' && currentUserId === lectureData.memberId">
+                      <template v-else-if="currentUserRole === '선생님' && currentUserId === lectureData.memberId">
                         <template v-if="replyReviewId !== review.reviewId">
                           <span class="badge badge-light-warning" style="margin-right: 4px; cursor: pointer" @click="startReply(review)">
                             답변하기
@@ -219,6 +234,10 @@ export default {
       // 새 리뷰 관련 상태값
       isNewReview: false,
       newReviewContent: "",
+
+      // 강의 일정 데이터
+      lectureLists: [],
+      listsLoaded: false,
     };
   },
   computed: {
@@ -227,10 +246,10 @@ export default {
       return new Date(this.lectureData.deadlineTime) < new Date();
     },
     currentUserId() {
-      return localStorage.getItem("memberId");
+      return JSON.parse(sessionStorage.getItem("userData")).id;
     },
     currentUserRole() {
-      return localStorage.getItem("memberRole");
+      return JSON.parse(sessionStorage.getItem("userData")).role;
     },
   },
   methods: {
@@ -246,7 +265,8 @@ export default {
       try {
         await api.post(`/lectures/likes/${this.lectureData.lectureId}`);
         this.isLiked = !this.isLiked;
-        this.likes = this.isLiked ? this.likes + 1 : this.likes - 1;
+        // lectureData.likes 업데이트
+        this.lectureData.likes = this.isLiked ? Number(this.lectureData.likes) + 1 : Number(this.lectureData.likes) - 1;
       } catch (error) {
         console.error("좋아요 처리 실패:", error);
       }
@@ -254,7 +274,6 @@ export default {
     async fetchReviews() {
       try {
         const response = await api.get(`/lectures/${this.lectureData.lectureId}/reviews`);
-        // undefined나 null 값은 필터링
         this.reviews = (response.data.data || []).filter((review) => review);
         this.reviewsLoaded = true;
       } catch (error) {
@@ -262,8 +281,17 @@ export default {
         this.reviewsLoaded = true;
       }
     },
+    async fetchLectureLists() {
+      try {
+        const response = await api.get(`/lectures/lectureLists/${this.lectureData.lectureId}`);
+        this.lectureLists = response.data.data || [];
+        this.listsLoaded = true;
+      } catch (error) {
+        console.error("강의 일정 데이터 가져오기 실패:", error);
+        this.listsLoaded = true;
+      }
+    },
     isTeacher(review) {
-      // 강의 강사와 리뷰 작성자가 동일하면 강사로 판단
       return String(review.memberId) === String(this.lectureData.memberId);
     },
     // 리뷰 수정 관련 메서드
@@ -290,13 +318,12 @@ export default {
       try {
         const payload = { deleted: 1 };
         await api.delete(`/lectures/${this.lectureData.lectureId}/reviews/${review.reviewId}`, { data: payload });
-        // 삭제 성공 시 리뷰 리스트에서 제거
         this.reviews = this.reviews.filter((r) => r.reviewId !== review.reviewId);
       } catch (error) {
         console.error("리뷰 삭제 실패:", error);
       }
     },
-    // 강사/관리자 답변 관련 메서드
+    // 답변 관련 메서드
     startReply(review) {
       this.replyReviewId = review.reviewId;
       this.replyContent = "";
@@ -309,7 +336,6 @@ export default {
       try {
         const payload = { content: this.replyContent };
         await api.post(`/lectures/${this.lectureData.lectureId}/reviews/${review.reviewId}`, payload);
-        // 제출 성공 시 페이지 새로고침
         window.location.reload();
       } catch (error) {
         console.error("답글 등록 실패:", error);
@@ -328,10 +354,19 @@ export default {
       try {
         const payload = { content: this.newReviewContent };
         await api.post(`/lectures/${this.lectureData.lectureId}/reviews`, payload);
-        // 제출 성공 시 페이지 새로고침
         window.location.reload();
       } catch (error) {
         console.error("리뷰 추가 실패:", error);
+      }
+    },
+    async submitCart() {
+      try {
+        await api.post(`/cart`, null, {
+          params: { lectureId: String(this.lectureData.lectureId) },
+        });
+        Swal.fire("장바구니에 담겼습니다!");
+      } catch (error) {
+        console.error("카트 담기 실패 :", error);
       }
     },
   },
@@ -340,6 +375,7 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.fetchReviews();
+          this.fetchLectureLists();
         }
       },
       immediate: true,
@@ -408,7 +444,6 @@ button:disabled {
 .like-button .fa-heart.text-muted {
   color: gray;
 }
-/* Badge 기본 스타일 (예시) */
 .badge {
   display: inline-block;
   padding: 0.35em 0.65em;
@@ -440,20 +475,15 @@ button:disabled {
   background-color: #e2e3e5;
   border: 1px solid #d6d8db;
 }
-
-/* 추가: 큰 액션 버튼 스타일 */
 .large-action {
   font-size: 1rem !important;
   padding: 0.5em 1em !important;
 }
-
-/* 액션 버튼 컨테이너 모바일 스타일 */
 .action-container {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
 }
-
 @media (max-width: 768px) {
   .action-container {
     display: block;
@@ -465,25 +495,42 @@ button:disabled {
     margin-bottom: 4px;
   }
 }
-
-/* 테이블 반응형: 가로 스크롤 */
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   width: 100%;
 }
-
-/* 모바일에서 작성 시간 열 숨김 */
 @media (max-width: 576px) {
   .review-time {
     display: none;
   }
 }
-
-/* 프로필 이미지 스타일: 왜곡 없이 채우기 */
 .symbol-label {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.lecture-list-item {
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+}
+.instructor-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #3b82f6;
+  margin-bottom: 5px;
+}
+.lecture-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.lecture-description {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+.lecture-time {
+  font-size: 0.9rem;
+  color: #555;
 }
 </style>
