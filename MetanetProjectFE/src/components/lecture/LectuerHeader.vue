@@ -9,7 +9,7 @@
       <h1 class="lecture-title fw-bold text-white">{{ data.title }}</h1>
       <p class="lecture-description text-white-50 mb-2">{{ data.description || "none" }}</p>
       <div class="d-flex align-items-center">
-        <span style="font-size: 1.5rem" class="text-white fw-bold">@{{ data.teacher }}</span>
+        <span style="font-size: 1.5rem" class="text-white fw-bold">@{{ data.teacher }} 강사</span>
       </div>
     </div>
   </div>
