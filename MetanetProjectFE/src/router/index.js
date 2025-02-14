@@ -16,9 +16,9 @@ import Password_reset from "../components/password-reset/Password_reset.vue";
 import CartList from "../components/Cart/Cart_content.vue";
 import Success from "../components/Cart/toss/Success.vue";
 
-import Error403Page from "../components/error/Error403Page.vue";
-import Error404Page from "../components/error/Error404Page.vue";
-import Error500Page from "../components/error/Error500Page.vue";
+import Error403Page from "../components/Error/Error403Page.vue";
+import Error404Page from "../components/Error/Error404Page.vue";
+import Error500Page from "../components/Error/Error500Page.vue";
 
 const routes = [
   { path: "/", component: Main_main },

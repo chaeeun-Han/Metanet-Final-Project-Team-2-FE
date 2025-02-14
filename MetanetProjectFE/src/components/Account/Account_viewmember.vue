@@ -32,10 +32,10 @@
                                 <th class="min-w-100px">회원 일련번호</th>  
                                 <th class="min-w-100px">회원 ID</th>                                                                 
                                 <th class="min-w-100px">회원 이름</th>
-                                <th class="min-w-125px">Email</th>
+                                <th class="min-w-125px">이메일</th>
                                 <th class="min-w-100px">전화번호</th>
-                                <th class="min-w-50px">ROLE</th>                               
-                                <th class="text-end min-w-70px">Actions</th>
+                                <th class="min-w-50px">역할</th>                               
+                                <th class="text-end min-w-70px">활동</th>
                             </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">

@@ -6,7 +6,7 @@
       </button>
       <span>로그인을 완료하고 주소 code 의 값을 넣어주세요!!</span>
     </div>
-    <input type="text" name="code" v-model="modelValue.code" class="form-control bg-transparent" placeholder="Enter code" />
+    <input type="text" name="code" v-model="modelValue.code" class="form-control bg-transparent" placeholder="로그인을 완료하고 주소 code 의 값을 넣어주세요!" />
 
     <div v-for="(field, index) in nonListFields" :key="'nonlist-' + index" class="fv-row mb-3" style="margin-top: 20px">
       <div v-if="field.type === 'file'">
