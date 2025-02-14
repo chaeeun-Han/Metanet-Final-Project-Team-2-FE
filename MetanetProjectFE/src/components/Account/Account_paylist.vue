@@ -107,7 +107,7 @@ export default {
             });
 
             Swal.fire('환불 성공', '환불이 성공적으로 처리되었습니다.', 'success');
-            
+            window.location.reload();
         } catch (error) {            
             Swal.fire('환불 실패', '서버와의 통신에 실패하였습니다.', 'error');
         }

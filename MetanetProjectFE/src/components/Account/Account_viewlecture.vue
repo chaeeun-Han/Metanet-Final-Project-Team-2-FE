@@ -48,7 +48,7 @@
                                 <th class="min-w-125px">카테고리</th>
                                 <th class="min-w-125px">상태</th>
                                 <th class="min-w-125px">강의 기간</th>
-                                <th class="text-end min-w-70px">Actions</th>
+                                <th class="text-end min-w-70px">활동</th>
                             </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">
