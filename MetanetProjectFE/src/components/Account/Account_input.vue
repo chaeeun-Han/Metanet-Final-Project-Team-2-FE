@@ -1,12 +1,18 @@
 <template>
   <form @submit.prevent="handleSubmit" style="padding: 30px">
     <div style="display: flex; align-items: center; gap: 10px">
-      <button style="margin-bottom: 10px" class="btn btn-primary btn-sm" onclick="window.open('http://localhost:8080/zoom/auth', '_blank')">
+      <button style="margin-bottom: 10px" class="btn btn-primary btn-sm" onclick="window.open('http://bamjun.click:9000/zoom/auth', '_blank')">
         Zoom
       </button>
       <span>로그인을 완료하고 주소 code 의 값을 넣어주세요!!</span>
     </div>
-    <input type="text" name="code" v-model="modelValue.code" class="form-control bg-transparent" placeholder="로그인을 완료하고 주소 code 의 값을 넣어주세요!" />
+    <input
+      type="text"
+      name="code"
+      v-model="modelValue.code"
+      class="form-control bg-transparent"
+      placeholder="로그인을 완료하고 주소 code 의 값을 넣어주세요!"
+    />
 
     <div v-for="(field, index) in nonListFields" :key="'nonlist-' + index" class="fv-row mb-3" style="margin-top: 20px">
       <div v-if="field.type === 'file'">
@@ -234,7 +240,7 @@ export default {
 
       try {
         const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/lectures/add", formData, {
+        const response = await api.post("/lectures/add", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -304,12 +310,39 @@ export default {
       }
     },
     adjustTime(timeStr) {
-      const match = timeStr.match(/^(\d{2}):(\d{2})$/);
-      if (!match) return timeStr;
-      let hour = parseInt(match[1], 10);
-      let minute = parseInt(match[2], 10);
-      minute = Math.floor(minute / 15) * 15;
-      return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+      // 12시간제 입력(예: "오후 1:00") 또는 24시간제 입력(예: "13:00")을 모두 처리
+      // 먼저 12시간제 패턴을 확인합니다.
+      const regex12 = /^(오전|오후)\s*(\d{1,2}):(\d{2})$/;
+      let match = timeStr.match(regex12);
+      if (match) {
+        let period = match[1]; // '오전' 또는 '오후'
+        let hour = parseInt(match[2], 10);
+        const minute = parseInt(match[3], 10);
+        // 오후의 경우 12시보다 작으면 12를 더해줍니다.
+        if (period === "오후" && hour < 12) {
+          hour += 12;
+        }
+        // 오전 12시는 00시로 변환
+        if (period === "오전" && hour === 12) {
+          hour = 0;
+        }
+        // 분을 15분 단위로 반올림
+        const roundedMinute = Math.floor(minute / 15) * 15;
+        return `${hour.toString().padStart(2, "0")}:${roundedMinute.toString().padStart(2, "0")}`;
+      }
+
+      // 24시간제 입력(예: "13:00")일 경우 처리 (기존 로직)
+      const regex24 = /^(\d{1,2}):(\d{2})$/;
+      match = timeStr.match(regex24);
+      if (match) {
+        let hour = parseInt(match[1], 10);
+        const minute = parseInt(match[2], 10);
+        const roundedMinute = Math.floor(minute / 15) * 15;
+        return `${hour.toString().padStart(2, "0")}:${roundedMinute.toString().padStart(2, "0")}`;
+      }
+
+      // 위의 두 패턴에 맞지 않으면 그대로 반환
+      return timeStr;
     },
     getTags() {
       api
