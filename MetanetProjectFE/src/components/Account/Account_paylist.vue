@@ -83,35 +83,35 @@
 
 <script>
 import axios from "axios";
+import api from "../../apis/api.js";
 
 export default {
     data() {
         return {
-            lectureId: this.payListData.lectureId, // 초기 컴포넌트 설정
+            lectureId: this.payListData.lectureId, 
         }
     },
     props: {
-        payListData: Array, // 데이터가 배열임을 명시
+        payListData: Array,
     },
     methods: {
-        async refund(lectureId) { // lectureId를 인자로 받음
-        try {
-            const token = sessionStorage.getItem("accessToken");
+        async refund(lectureId) {
+            console.log('lectureId' + lectureId);
+            try {
+            
+                const response = await api.post(`/lectures/refund/${lectureId}`, {
+                    headers: {                 
+                        "Content-Type": "application/json",
+                        "Cache-Control": "no-cache, no-store, must-revalidate" 
+                    },
+                });
 
-            // 서버에서 환불 API 호출
-            const response = await axios.post(`http://localhost:8080/lectures/refund/${lectureId}`, {}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            Swal.fire('환불 성공', '환불이 성공적으로 처리되었습니다.', 'success');
-            window.location.reload();
-        } catch (error) {            
-            Swal.fire('환불 실패', '서버와의 통신에 실패하였습니다.', 'error');
+                Swal.fire('환불 성공', '환불이 성공적으로 처리되었습니다.', 'success');
+                //.then(() => window.location.reload());
+            } catch (error) {            
+                Swal.fire('환불 실패', '서버와의 통신에 실패하였습니다.', 'error');
+            }
         }
-    }
 
     }
 };

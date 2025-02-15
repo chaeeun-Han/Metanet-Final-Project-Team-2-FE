@@ -97,36 +97,24 @@ export default {
         KTMenu.createInstances();
     },
     methods: {
-        deleteMember(memberId) {
-            const token = sessionStorage.getItem("accessToken");            
-            const xhr = new XMLHttpRequest();
-            xhr.open('DELETE', 'http://localhost:8080/admin/accounts', true);
-    
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-            xhr.setRequestHeader('Content-Type', 'application/json');
+        async deleteMember(memberId) {            
+            const payload = { memberIds: [memberId]   };
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {  
-                    if (xhr.status === 200) {
-                        try {
-                            const response = JSON.parse(xhr.responseText);
-                            console.log('삭제 성공:', response); 
-                            Swal.fire('회원 삭제 성공', '회원이 삭제되었습니다.', 'success');                    
-                            window.location.reload();
-                        } catch (error) {
-                            console.error('응답 JSON 파싱 오류:', error);
-                        }
-                    } else {
-                        console.error('Error:', xhr.status, xhr.statusText); 
+            try {      
+                const response = await api.delete("/admin/accounts", payload, {
+                    headers: {          
+                        "Content-Type": "application/json",
+                        "Cache-Control": "no-cache, no-store, must-revalidate" 
+                    },
+                });
+
+                Swal.fire('회원 삭제 성공', '회원이 삭제되었습니다.', 'success');                    
+                window.location.reload();
+            } catch (error) {
+                console.error('Error:', xhr.status, xhr.statusText); 
                         Swal.fire('회원 삭제 에러', '회원 삭제에 실패하였습니다.', 'error');                                        
-                    }
-                }
-            };
-         
-            const bodyData = JSON.stringify({
-                memberIds: [memberId]  
-            });
-            xhr.send(bodyData);
+            }           
+                    
         }
     }
 }

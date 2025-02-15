@@ -164,12 +164,10 @@ export default {
     },
     // 매출 데이터 가져오기
     async fetchRevenueData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
+      try {       
         const response = await api.get(`/account/revenue`, {
           params: { month: this.selectedMonth },
-          headers: {
-            Authorization: `Bearer ${token}`,
+          headers: {           
             "Content-Type": "application/json",
           },
         });

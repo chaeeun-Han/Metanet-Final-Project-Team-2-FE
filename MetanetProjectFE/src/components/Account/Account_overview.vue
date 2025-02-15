@@ -87,24 +87,3 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    userData: {
-      type: Object,
-      required: true,
-      default: () => ({
-        password: "password123",        
-        email: "user@example.com",
-        phone: "123-456-7890",
-        name: "고범준",
-        birth: "2002-08-30",
-        role: "Developer",
-        pay :"1234-1234-123",
-        profileImage: "../../../public/assets/media/avatars/300-1.jpg",
-      }),
-    },
-  },
-};
-
-</script>

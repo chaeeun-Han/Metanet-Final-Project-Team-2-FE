@@ -33,6 +33,7 @@ import Account_viemember from "./Account_viewmember.vue";
 import Account_viewlecture from "./Account_viewlecture.vue";
 import Account_adminDashboard from "./Account_adminDashboard.vue";
 import Account_input_lecture from "./Account_input_lecture.vue";
+import api from "../../apis/api.js";
 
 export default {
   name: "Account_main",
@@ -65,11 +66,9 @@ export default {
   },
   methods: {
     async fetchToolData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/auth/toolbarmember", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/auth/toolbarmember", {
+          headers: {            
             "Content-Type": "application/json",
           },
         });
@@ -95,11 +94,9 @@ export default {
       }
     },
     async fetchMyStudyData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/account/my-study", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/account/my-study", {
+          headers: {           
             "Content-Type": "application/json",
           },
         });
@@ -110,11 +107,9 @@ export default {
       }
     },
     async fetchMystudyListData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/account/lecture", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/account/lecture", {
+          headers: {            
             "Content-Type": "application/json",
           },
         });
@@ -125,11 +120,9 @@ export default {
       }
     },
     async fetchPayListData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/account/pay-log", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {       
+        const response = await api.get("/account/pay-log", {
+          headers: {           
             "Content-Type": "application/json",
           },
         });
@@ -140,11 +133,9 @@ export default {
       }
     },
     async fetchLectureData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/account/teacher-lecture", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/account/teacher-lecture", {
+          headers: {           
             "Content-Type": "application/json",
           },
         });
@@ -155,11 +146,9 @@ export default {
       }
     },
     async fetchAccountData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/account", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/account", {
+          headers: {           
             "Content-Type": "application/json",
           },
         });
@@ -173,11 +162,9 @@ export default {
       this.currentComponent = componentName;
     },
     async fetchviewMemberData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/admin/accounts", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/admin/accounts", {
+          headers: {            
             "Content-Type": "application/json",
           },
         });
@@ -188,11 +175,9 @@ export default {
       }
     },
     async fetchviewLectureData() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/admin/lectures", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/admin/lectures", {
+          headers: {          
             "Content-Type": "application/json",
           },
         });
@@ -203,11 +188,9 @@ export default {
       }
     },
     async fetchadminDashboard() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/admin/dashboard", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await api.get("/admin/dashboard", {
+          headers: {          
             "Content-Type": "application/json",
           },
         });
