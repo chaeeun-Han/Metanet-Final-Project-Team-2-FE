@@ -13,6 +13,7 @@
 
 <script>
 import axios from "axios";
+import api from "../../apis/api.js";
 import { inject, nextTick } from "vue";
 import Login_input from "./Login_Input.vue";
 import { login } from "../../apis/apiService";
@@ -49,8 +50,8 @@ export default {
     async handleSubmit() {
       console.log("Submitting form data:", this.loginFormData.id, this.loginFormData.password);
       try {
-        const response = await axios.post(
-          "http://localhost:8080/auth/login",
+        const response = await api.post(
+          "/auth/login",
           { id: this.loginFormData.id, password: this.loginFormData.password },
           { headers: { "Content-Type": "application/json", "skipInterceptor": "true" } }
         );
@@ -62,8 +63,6 @@ export default {
           console.log("Extracted Token:", accessToken);
 
           sessionStorage.setItem("accessToken", accessToken);
-
-          axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
           await this.getMember();
           

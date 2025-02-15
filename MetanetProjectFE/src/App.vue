@@ -16,6 +16,7 @@ import { jwtDecode } from "jwt-decode";
 import Stomp from "stompjs";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import api from "./apis/api.js";
 
 export default {
   name: "App",
@@ -79,12 +80,10 @@ export default {
 
     const getMember = async () => {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        if (!token) return;
+        // const token = sessionStorage.getItem("accessToken");
+        // if (!token) return;
 
-        const response = await axios.get("http://localhost:8080/account", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get("/account");
 
         const member = response.data.data.members;
         userData.value = {
