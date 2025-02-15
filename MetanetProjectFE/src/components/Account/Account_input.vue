@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="handleSubmit" style="padding: 30px">
     <div style="display: flex; align-items: center; gap: 10px">
-      <button style="margin-bottom: 10px" class="btn btn-primary btn-sm" onclick="window.open('http://localhost:8080/zoom/auth', '_blank')">
+      <button style="margin-bottom: 10px" class="btn btn-primary btn-sm" onclick="window.open('http://bamjun.click:9000/zoom/auth', '_blank')">
         Zoom
       </button>
       <span>로그인을 완료하고 주소 code 의 값을 넣어주세요!!</span>
@@ -240,7 +240,7 @@ export default {
 
       try {
         const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/lectures/add", formData, {
+        const response = await api.post("/lectures/add", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
