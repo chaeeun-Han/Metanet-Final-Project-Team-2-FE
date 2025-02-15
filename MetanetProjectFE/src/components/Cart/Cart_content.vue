@@ -318,7 +318,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../../apis/api.js";
 
 export default {
   name: "CartList",
@@ -365,10 +365,8 @@ export default {
     },
     async deleteSelectedItems() {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.delete("http://localhost:8080/cart", {
+        const response = await api.delete("/cart", {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: {
@@ -393,10 +391,8 @@ export default {
     },
     async deleteAllItems() {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.delete("http://localhost:8080/cart", {
+        const response = await api.delete("/cart", {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: {
@@ -412,10 +408,8 @@ export default {
     },
     async fetchCartData() {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/cart", {
+        const response = await api.get("/cart", {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -427,10 +421,8 @@ export default {
 
     async fetchMemberData() {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://localhost:8080/account", {
+        const response = await api.get("/account", {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
