@@ -441,8 +441,7 @@
                   <div class="col-lg-12">
                     <div class="fv-row d-flex align-items-center">
                       <label for="currentpassword" class="form-label fs-6 fw-bold me-2 mb-0">계좌번호 입력</label>
-                      <input
-                        type="password"
+                      <input             
                         class="form-control form-control-lg form-control-solid me-2"
                         v-model="currentbank"
                         id="currentpassword"
@@ -474,7 +473,7 @@
                   <div class="col-lg-12">
                     <div class="fv-row d-flex align-items-center">
                       <label for="currentpassword" class="form-label fs-6 fw-bold me-2 mb-0">계좌번호 입력</label>
-                      <input type="password" class="form-control form-control-lg form-control-solid me-2" v-model="addbank" id="currentpassword" />
+                      <input class="form-control form-control-lg form-control-solid me-2" v-model="addbank" id="currentpassword" />
                       <button id="kt_password_submit" type="button" class="btn btn-primary me-2 px-4" @click="addBank">계좌번호 추가</button>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     </div>
@@ -578,14 +577,14 @@ export default {
       editListData: {
         members: {
           profile: this.editListData?.members?.profile || "",
-          name: this.editListData?.members?.name || "", // editListData가 없으면 빈 문자열로 초기화
+          name: this.editListData?.members?.name || "", 
           phone: this.editListData?.members?.phone || "",
           birth: this.editListData?.members?.birth || "",
           attendId: this.editListData?.members?.attendId || "",
-          profile: this.editListData?.members?.profile || "", // 프로필 이미지 URL
+          profile: this.editListData?.members?.profile || "",
         },
-        category: [], // 이 부분은 빈 배열로 초기화
-        myCategory: this.editListData?.myCategory || [], // editListData.myCategory가 없으면 빈 배열
+        category: [],
+        myCategory: this.editListData?.myCategory || [], 
       },
       email: "",
       newEmail: "",
@@ -594,7 +593,7 @@ export default {
       currentpassword: "",
       newpassword: "",
       confirmpassword: "",
-      selectedCategories: [], // 올바른 변수명으로 변경
+      selectedCategories: [], 
       profile: null,
       previewImage: null,
     };
@@ -608,14 +607,14 @@ export default {
 
   mounted() {
     if (this.editprofile && this.editprofile.members.email) {
-      this.email = this.editprofile.members.email; // editprofile.email 값을 data에 저장
+      this.email = this.editprofile.members.email; 
     }
   },
   methods: {
     handleFileChange(event) {
       const file = event.target.files[0];
       if (file) {
-        this.selectedFile = file; // 파일을 selectedFile에 할당
+        this.selectedFile = file;
         const reader = new FileReader();
         reader.onloadend = () => {
           this.previewImage = reader.result;
@@ -624,13 +623,11 @@ export default {
       }
     },
     async updateProfile() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-
+      try {     
         const formData = new FormData();
 
         if (!this.editListData.myCategory && this.editListData.myCategory.length === 0 && this.selectedCategories.length === 0) {
-          return; // myCategory나 selectedCategories가 없으면 더 이상 진행하지 않음
+        return; 
         }
 
         if (!this.selectedFile) {
@@ -644,15 +641,11 @@ export default {
         formData.append("birth", this.editListData.members.birth || this.editListData.members.birth);
         formData.append("attendId", this.editListData.members.attendId || this.editListData.members.attendId);
         formData.append("tags", this.selectedCategories.length > 0 ? this.selectedCategories.join(",") : this.editListData.myCategory.join(",")); // 관심 분야는 쉼표로 구분
-
-        // API 요청
-        const response = await axios.put("http://localhost:8080/account/update", formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        
+        const response = await api.put("/account/update", formData, { 
+          headers: { "Cache-Control": "no-cache, no-store, must-revalidate" }
         });
-
-        console.log(response.data);
+        
         Swal.fire("프로필 업데이트 성공", "프로필이 업데이트 되었습니다.", "success");
         window.location.reload();
       } catch (error) {
@@ -663,8 +656,7 @@ export default {
     handleAvatarChange(file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.avatarUrl = reader.result; // 새로 선택한 이미지 URL로 변경
-        // 'editListData.members.profile'에 값 업데이트
+        this.avatarUrl = reader.result;         
         this.editListData.members.profile = this.avatarUrl;
       };
       reader.readAsDataURL(file);
@@ -680,12 +672,11 @@ export default {
       const payload = { email: this.newEmail };
       console.log(payload);
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/email/mail-email", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {      
+        const response = await api.post("/email/mail-email", payload, {
+          headers: {           
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
           },
         });
 
@@ -705,11 +696,9 @@ export default {
 
       const payload = { email: this.newEmail, verifyCode: this.email_verify };
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/email/verify", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {      
+        const response = await api.post("/email/verify", payload, {
+          headers: {          
             "Content-Type": "application/json",
           },
         });
@@ -728,12 +717,11 @@ export default {
       }
       const payload = { email: this.newEmail };
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/auth/email", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {       
+        const response = await api.post("/auth/email", payload, {
+          headers: {            
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
           },
         });
         Swal.fire("이메일 변경 성공", "이메일 변경이 완료되었습니다.", "success");
@@ -750,11 +738,9 @@ export default {
 
       const payload = { email: this.email, password: this.newpassword };
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/auth/password", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {      
+        const response = await api.post("/auth/password", payload, {
+          headers: {            
             "Content-Type": "application/json",
           },
         });
@@ -777,12 +763,11 @@ export default {
 
       const payload = { bank: this.currentbank };
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.put("http://localhost:8080/account/edit-bank", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {       
+        const response = await api.put("/account/edit-bank", payload, {
+          headers: {            
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
           },
         });
 
@@ -793,12 +778,11 @@ export default {
       }
     },
     async deleteBank() {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.delete("http://localhost:8080/account/delete-bank", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {       
+        const response = await api.delete("/account/delete-bank", {
+          headers: {           
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
           },
         });
 
@@ -816,12 +800,11 @@ export default {
 
       const payload = { bank: this.addbank };
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.post("http://localhost:8080/account/add-bank", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {       
+        const response = await api.post("/account/add-bank", payload, {
+          headers: {        
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
           },
         });
 
@@ -838,11 +821,9 @@ export default {
         Swal.fire("체크를 진행해주세요", "탈퇴 하시려면 체크 표시를 하셔야 합니다.", "info");
       }
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-        const response = await axios.delete("http://localhost:8080/account/delete", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {        
+        const response = await axios.delete("/account/delete", {
+          headers: {           
             "Content-Type": "application/json",
           },
         });

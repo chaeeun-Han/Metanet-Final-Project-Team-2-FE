@@ -104,7 +104,7 @@ export default {
             chartData4: {
                 labels: ['학생', '선생님'],
                 datasets: [{
-                    data: [0, 0],  // 초기값
+                    data: [0, 0],  
                     backgroundColor: ['#42A5F5', '#FFA726'],
                     hoverBackgroundColor: ['#1E88E5', '#FB8C00']
                 }]
@@ -137,8 +137,8 @@ export default {
                 datasets: [{
                     label: '수수료',
                     data: [],
-                    borderColor: '#42A5F5', // 파란색 (더 차분하고 시원한 느낌)
-                    backgroundColor: 'rgba(66, 165, 245, 0.2)', // 파란색의 투명도 조절된 배경
+                    borderColor: '#42A5F5', 
+                    backgroundColor: 'rgba(66, 165, 245, 0.2)',
                     fill: true,
                 }]
             },
@@ -170,9 +170,9 @@ export default {
                 datasets: [{
                     label: '강의 수',
                     data: [0, 0, 0, 0, 0],
-                    backgroundColor: '#81C784', // 연두색 계열
-                    hoverBackgroundColor: '#66BB6A', // 호버 시 더 진한 연두색
-                    borderRadius: 5, // 모서리 둥글게
+                    backgroundColor: '#81C784', 
+                    hoverBackgroundColor: '#66BB6A',
+                    borderRadius: 5, 
                 }]
             },
             chartOptions3: {
@@ -192,11 +192,11 @@ export default {
                 datasets: [{
                     data: [0, 0, 0, 0],
                     backgroundColor: [
-                        '#FFCDD2',  // 연한 빨강
-                        '#EF9A9A',  // 연한 붉은색
-                        '#E57373',  // 붉은색
-                        '#EF5350',  // 진한 빨강
-                        '#D32F2F',  // 네이비 레드
+                        '#FFCDD2',  
+                        '#EF9A9A',  
+                        '#E57373',  
+                        '#EF5350',  
+                        '#D32F2F',  
                     ],
                 }]
             }
@@ -231,7 +231,7 @@ export default {
             this.chartData2.datasets[0].data = lectureCount;
         },
         updateChartData_3() {
-            const ageData = [0, 0, 0, 0, 0]; // 10대, 20대, 30대, 40대, 기타
+            const ageData = [0, 0, 0, 0, 0]; 
             if (this.adminData && this.adminData.memDashboard) {
                 this.adminData.memDashboard.forEach(item => {
                     if (item.year === '10대') ageData[0] = item.memNum;

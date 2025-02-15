@@ -31,30 +31,27 @@
 <script>
 export default {
   props: {
-    myStudyListData: Array, // 데이터가 배열임을 명시
+    myStudyListData: Array, 
   },
   methods: {
     async certification(lectureId) {
-      try {
-        const token = sessionStorage.getItem("accessToken");
-
-        // GET 요청으로 쿼리 파라미터로 보내기
-        const response = await axios.get(
-          `http://localhost:8080/certification?lecture_id=${lectureId}`,
+      try {       
+       
+        const response = await api.get(
+          `/certification?lecture_id=${lectureId}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
+            headers: {              
               "Content-Type": "application/json",
             },
-            responseType: 'arraybuffer' // PDF 파일을 이진 데이터로 받기 위해 설정
+            responseType: 'arraybuffer' 
           }
         );
 
         const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(pdfBlob);
-        link.download = `certification_${lectureId}.pdf`; // 다운로드할 파일명 지정
-        link.click(); // 다운로드 실행
+        link.download = `certification_${lectureId}.pdf`;
+        link.click(); 
 
         Swal.fire('수료증 발급 성공', '수료증이 발급되었습니다.', 'success');
       } catch (error) {
