@@ -4,7 +4,7 @@
       <button
         style="margin-bottom: 10px"
         class="btn btn-primary btn-sm"
-        onclick="window.open('https://bamjun.click:9000/zoom/auth', '_blank')"
+        onclick="window.open('https://bamjun.click/zoom/auth', '_blank')"
       >
         Zoom
       </button>
