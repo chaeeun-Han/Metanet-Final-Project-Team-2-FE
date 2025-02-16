@@ -1,7 +1,11 @@
 <template>
   <form @submit.prevent="handleSubmit" style="padding: 30px">
     <div style="display: flex; align-items: center; gap: 10px">
-      <button style="margin-bottom: 10px" class="btn btn-primary btn-sm" onclick="window.open('http://bamjun.click:9000/zoom/auth', '_blank')">
+      <button
+        style="margin-bottom: 10px"
+        class="btn btn-primary btn-sm"
+        onclick="window.open('https://bamjun.click:9000/zoom/auth', '_blank')"
+      >
         Zoom
       </button>
       <span>로그인을 완료하고 주소 code 의 값을 넣어주세요!!</span>
@@ -28,7 +32,14 @@
       <div v-else-if="field.type === 'tags'">
         <label style="padding-right: 30px">{{ field.placeholder }}</label>
         <div v-for="tag in tagOptions" :key="tag.tag_id" class="form-check form-check-inline">
-          <input type="checkbox" class="form-check-input" :id="'tag-' + tag.tag_id" :value="tag.tag_id" v-model="selectedTags" @change="updateTags" />
+          <input
+            type="checkbox"
+            class="form-check-input"
+            :id="'tag-' + tag.tag_id"
+            :value="tag.tag_id"
+            v-model="selectedTags"
+            @change="updateTags"
+          />
           <label :for="'tag-' + tag.tag_id" class="form-check-label">
             {{ tag.tag_name }}
           </label>
