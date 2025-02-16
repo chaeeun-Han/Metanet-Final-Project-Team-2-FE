@@ -48,10 +48,8 @@
         writer: "",
         writedTitle: "",
         writedContent: "",
+        questionId: this.$route.query.questionId,
       };
-    },
-    props: {
-      lectureData: Object,
     },
     methods: {
       openFilePicker() {
@@ -118,7 +116,6 @@
                 formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         "Content-Type": "multipart/form-data",
                     },
                 }
@@ -131,10 +128,35 @@
         } catch (error) {
             console.error("Failed to insert answer:", error.response?.data || error.message);
         }
-      }
+      },
+      async settingQuestion() {
+        const token = sessionStorage.getItem("accessToken");
+        const lectureId = this.$route.params.lectureId;
+        const questionId = this.questionId;
+
+        if (!this.questionId) {
+            console.log("새 글 작성");
+            return;
+        }
+
+        try {
+            const response = await api.get(
+                `/lectures/${lectureId}/questions/${questionId}`
+            );
+            this.writedTitle = response.data.data.questionTitle;
+            this.writedContent = response.data.data.questionContent;
+            this.previewImages = response.data.data.images || [];
+            this.lectureName = response.data.data.lectureTitle;
+            console.log(response.data.data.questionTitle);
+            console.log(response.data.data.questionContent);
+        } catch (error) {
+            console.error("Failed to get question:", error.response?.data || error.message);
+        }
+      },
     },
     mounted() {
       this.getWriter();
+      this.settingQuestion();
     }
   };
   </script>

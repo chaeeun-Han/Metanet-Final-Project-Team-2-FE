@@ -14,7 +14,7 @@
                     <span class="top-text">{{ formattedDate }}</span>
                 </div>
                 <div class="top-right" v-if="isWriter">
-                    <div class="text-button">수정</div>
+                    <div class="text-button" @click="handleUpdateClick">수정</div>
                     <div class="text-button" @click="deleteQuestion">삭제</div>
                 </div>
             </div>
@@ -98,6 +98,15 @@
         },
       },
       methods: {
+        handleUpdateClick() {
+            const questionId = this.$route.params.questionId;
+            const lectureId = this.$route.params.lectureId;
+            const token = sessionStorage.getItem("accessToken");
+            this.$router.push({
+                path: `/lectures/${lectureId}/questions/write`,
+                query: { questionId: questionId }
+            });
+        },
         async fetchQuestionDetail() {
             try {
                 const questionId = this.$route.params.questionId;
@@ -126,7 +135,6 @@
                     { content: this.newAnswer },
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
                             "Content-Type": "application/json",
                         },
                     }
@@ -150,7 +158,6 @@
                     `/lectures/${lectureId}/questions/${questionId}`,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
                             "Content-Type": "application/json",
                         },
                     }
@@ -172,7 +179,6 @@
                     `/lectures/${lectureId}/questions/${questionId}/answers/${answerId}`,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
                             "Content-Type": "application/json",
                         },
                     }
@@ -199,7 +205,6 @@
                     { content: this.updatedAnswer },
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
                             "Content-Type": "application/json",
                         },
                     }

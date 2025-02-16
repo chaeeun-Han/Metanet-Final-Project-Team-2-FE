@@ -114,7 +114,11 @@ export default {
           Swal.fire('로그인 필요', '질문을 작성하려면 로그인해주세요', 'info');
           return;
         }
-        this.$router.push(`/lectures/${lectureId}/questions/write`);
+        console.log(this.lectureData);
+        this.$router.push({
+          path: `/lectures/${lectureId}/questions/write`,
+          query: { lectureName: this.lectureData.title }
+        });
     },
   },
   mounted() {
