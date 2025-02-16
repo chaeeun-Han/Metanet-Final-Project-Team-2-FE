@@ -12,7 +12,7 @@ export default defineConfig({
     https: true,
     proxy: {
       "/ws": {
-        target: "ws://localhost:8080",
+        target: "ws://bamjun.click",
         ws: true,
         changeOrigin: true,
       },

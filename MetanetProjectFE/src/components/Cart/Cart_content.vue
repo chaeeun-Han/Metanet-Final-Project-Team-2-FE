@@ -4,7 +4,9 @@
       <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
           <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-            <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">수강바구니</h1>
+            <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
+              수강바구니
+            </h1>
           </div>
         </div>
       </div>
@@ -33,19 +35,25 @@
                     <div class="row mb-7">
                       <label class="col-lg-5 fw-semibold text-muted">이메일</label>
                       <div class="col-lg-7 fv-row">
-                        <span v-if="memberData.email" class="fw-semibold text-gray-800 fs-6">{{ memberData.email }}</span>
+                        <span v-if="memberData.email" class="fw-semibold text-gray-800 fs-6">{{
+                          memberData.email
+                        }}</span>
                       </div>
                     </div>
                     <div class="row mb-7">
                       <label class="col-lg-5 fw-semibold text-muted">휴대폰 번호</label>
                       <div class="col-lg-7 fv-row">
-                        <span v-if="memberData.phone" class="fw-semibold text-gray-800 fs-6">{{ memberData.phone }}</span>
+                        <span v-if="memberData.phone" class="fw-semibold text-gray-800 fs-6">{{
+                          memberData.phone
+                        }}</span>
                       </div>
                     </div>
                     <div class="row mb-7">
                       <label class="col-lg-5 fw-semibold text-muted">줌 이메일</label>
                       <div class="col-lg-7 fv-row">
-                        <span v-if="memberData.attendId" class="fw-semibold text-gray-800 fs-6">{{ memberData.attendId }}</span>
+                        <span v-if="memberData.attendId" class="fw-semibold text-gray-800 fs-6">{{
+                          memberData.attendId
+                        }}</span>
                       </div>
                     </div>
                   </div>
@@ -93,9 +101,11 @@
                               ></span>
                             </a>
                             <div class="ms-5">
-                              <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{
-                                item.title
-                              }}</a>
+                              <a
+                                href="apps/ecommerce/catalog/edit-product.html"
+                                class="text-gray-800 text-hover-primary fs-5 fw-bold"
+                                >{{ item.title }}</a
+                              >
                               <div class="fw-semibold fs-7">
                                 가격: ₩
                                 <span>{{ item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} 원</span>
@@ -125,18 +135,33 @@
                         placeholder="수강바구니에서 강의 검색"
                       />
                     </div>
-                    <div id="kt_ecommerce_edit_order_product_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div
+                      id="kt_ecommerce_edit_order_product_table_wrapper"
+                      class="dataTables_wrapper dt-bootstrap4 no-footer"
+                    >
                       <div class="table-responsive">
                         <div class="dataTables_scroll">
-                          <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%">
-                            <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 857.667px; padding-right: 10px">
+                          <div
+                            class="dataTables_scrollHead"
+                            style="overflow: hidden; position: relative; border: 0px; width: 100%"
+                          >
+                            <div
+                              class="dataTables_scrollHeadInner"
+                              style="box-sizing: content-box; width: 857.667px; padding-right: 10px"
+                            >
                               <table
                                 class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"
                                 style="margin-left: 0px; width: 857.667px"
                               >
                                 <thead>
                                   <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                    <th class="w-25px pe-2 sorting_disabled" rowspan="1" colspan="1" style="width: 24.9896px" aria-label=""></th>
+                                    <th
+                                      class="w-25px pe-2 sorting_disabled"
+                                      rowspan="1"
+                                      colspan="1"
+                                      style="width: 24.9896px"
+                                      aria-label=""
+                                    ></th>
                                     <th
                                       class="min-w-200px sorting"
                                       tabindex="0"
@@ -164,14 +189,20 @@
                               </table>
                             </div>
                           </div>
-                          <div class="dataTables_scrollBody" style="position: relative; overflow: auto; max-height: 400px; width: 100%">
+                          <div
+                            class="dataTables_scrollBody"
+                            style="position: relative; overflow: auto; max-height: 400px; width: 100%"
+                          >
                             <table
                               class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"
                               id="kt_ecommerce_edit_order_product_table"
                               style="width: 100%"
                             >
                               <thead>
-                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0" style="height: 0px">
+                                <tr
+                                  class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0"
+                                  style="height: 0px"
+                                >
                                   <th
                                     class="w-25px pe-2 sorting_disabled"
                                     rowspan="1"
@@ -217,7 +248,9 @@
                                       height: 0px;
                                     "
                                   >
-                                    <div class="dataTables_sizing" style="height: 0px; overflow: hidden">예약 가능 인원</div>
+                                    <div class="dataTables_sizing" style="height: 0px; overflow: hidden">
+                                      예약 가능 인원
+                                    </div>
                                   </th>
                                 </tr>
                               </thead>
@@ -252,7 +285,9 @@
                                         </span>
                                       </a>
                                       <div class="ms-5">
-                                        <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ item.title }}</a>
+                                        <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{
+                                          item.title
+                                        }}</a>
                                         <div class="fw-semibold fs-7">
                                           가격: ₩
                                           <span data-kt-ecommerce-edit-order-filter="price"
@@ -273,15 +308,21 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div>
-                        <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"></div>
+                        <div
+                          class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"
+                        ></div>
+                        <div
+                          class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"
+                        ></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="d-flex justify-content-end">
-                <button id="kt_ecommerce_edit_order_cancel" class="btn btn-light me-5" @click="deleteSelectedItems">선택 삭제</button>
+                <button id="kt_ecommerce_edit_order_cancel" class="btn btn-light me-5" @click="deleteSelectedItems">
+                  선택 삭제
+                </button>
                 <button
                   type="button"
                   id="kt_ecommerce_edit_order_submit"
@@ -293,7 +334,13 @@
                 </button>
 
                 <!-- Bootstrap 모달 -->
-                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div
+                  class="modal fade"
+                  id="confirmDeleteModal"
+                  tabindex="-1"
+                  aria-labelledby="confirmDeleteModalLabel"
+                  aria-hidden="true"
+                >
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -457,8 +504,8 @@ export default {
           orderId: "lecturebuylists_" + buyArray + "cartId_" + buyCartArray,
           orderName: this.selectedCartData[0].title + " 외 " + this.selectedCartData.length - 1 + "개",
           customerName: "박토스",
-          successUrl: "http://localhost:3000/success",
-          failUrl: "http://localhost:3000/cart",
+          successUrl: "https://bamjun.click/success",
+          failUrl: "https://bamjun.click/cart",
         })
         .catch(function (error) {
           console.error("결제 오류:", error);

@@ -13,7 +13,7 @@ function isPublicEndpoint(url) {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://bamjun.click:8080",
 });
 
 api.interceptors.request.use(
