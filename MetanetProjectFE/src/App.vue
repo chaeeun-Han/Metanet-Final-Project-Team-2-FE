@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <div class="app-wrapper flex-column flex-row-fluid ms-0 ps-0" id="kt_app_wrapper">
-      <Header :userData="userData" :isLogin="isLogin" @update-login-status="isLogin = $event" @search="updateSearchKeyword" />
+      <Header
+        :userData="userData"
+        :isLogin="isLogin"
+        @update-login-status="isLogin = $event"
+        @search="updateSearchKeyword"
+      />
       <div class="app-main flex-column flex-row-fluid" id="kt_app_main" style="overflow-x: hidden">
         <router-view :key="$route.fullPath" :searchKeyword="searchKeyword" />
       </div>
@@ -110,7 +115,7 @@ export default {
 
       if (stompClient.value) disconnectWebSocket();
 
-      const socket = new WebSocket("ws://localhost:8080/ws");
+      const socket = new WebSocket("wss://bamjun.click/ws");
       stompClient.value = Stomp.over(socket);
 
       stompClient.value.connect(
