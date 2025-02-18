@@ -81,7 +81,7 @@
             >
               <div
                 class="d-flex flex-column bgi-no-repeat rounded-top"
-                :style="{ backgroundImage: 'url(../../../public/assets/media/auth/bg7-dark.jpg)' }"
+                :style="{ backgroundImage: 'url(https://zebal-buket.s3.ap-northeast-2.amazonaws.com/bg7-dark.jpg)' }"
               >
                 <h3 class="text-white fw-semibold px-9 mt-10 mb-6">
                   알림 창 <span class="fs-8 opacity-75 ps-3">({{ notifications.length }}개)</span>
@@ -214,7 +214,7 @@
               <div class="menu-item px-3">
                 <div class="menu-content d-flex align-items-center px-3">
                   <div class="symbol symbol-50px me-5">
-                    <img :src="userData.profile || '../../public/assets/media/profile.png'" class="rounded-3" alt="프로필" />
+                    <img :src="userData.profile || 'https://zebal-buket.s3.ap-northeast-2.amazonaws.com/profile.png'" class="rounded-3" alt="프로필" />
                   </div>
                   <div class="d-flex flex-column">
                     <div class="fw-bold d-flex align-items-center fs-5">
@@ -252,7 +252,7 @@
                   <div class="menu-item px-3">
                     <a class="menu-link d-flex px-5" :class="{ active: isEnglishActive }" @click.prevent="changeLanguage('en')">
                       <span class="symbol symbol-20px me-4">
-                        <img class="rounded-1" src="../../../public/assets/media/flags/united-states.svg" alt="" />
+                        <img class="rounded-1" src="https://zebal-buket.s3.ap-northeast-2.amazonaws.com/united-states.svg" alt="" />
                       </span>
                       {{ t("header.en") }}
                     </a>
@@ -260,7 +260,7 @@
                   <div class="menu-item px-3">
                     <a class="menu-link d-flex px-5" :class="{ active: isKoreanActive }"  @click.prevent="changeLanguage('ko')">
                       <span class="symbol symbol-20px me-4">
-                        <img class="rounded-1" src="../../../public/assets/media/flags/south-korea.svg" alt="" />
+                        <img class="rounded-1" src="https://zebal-buket.s3.ap-northeast-2.amazonaws.com/south-korea.svg" alt="" />
                       </span>
                       {{ t("header.ko") }}
                     </a>

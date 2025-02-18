@@ -66,7 +66,7 @@ export default {
           dots: false,
           prevButton: `#${this.sliderId}_prev`,
           nextButton: `#${this.sliderId}_next`,
-          responsive: { 1200: { items: 3 }, 400: { items: 1 } },
+          responsive: { 1200: { items: 3 }, 900: { items: 1 }},
         });
 
         this.removeStopButton();

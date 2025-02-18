@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2"
-    style="background-image: url(../../../public/assets/media/auth/auth-bg.png)"
+    style="background-image: url(https://zebal-buket.s3.ap-northeast-2.amazonaws.com/auth-bg.png)"
   >
     <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
       <router-link to="/" class="mb-0 mb-lg-12">
@@ -9,7 +9,7 @@
       </router-link >
       <img
         class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"
-        src="../../../public/assets/media/login_img.png"
+        src="https://zebal-buket.s3.ap-northeast-2.amazonaws.com/login_img.png"
         alt=""
       />
       <h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">원하는 교육을 쉽고 빠르게 예약하고 관리하세요!</h1>

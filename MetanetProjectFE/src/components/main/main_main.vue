@@ -180,6 +180,32 @@ export default {
 </script>
 
 <style scoped>
+  /* 기본 스타일 */
+  .nav {
+    display: flex;
+    flex-wrap: wrap; /* 요소가 많으면 자동으로 줄바꿈 */
+    justify-content: center; /* 중앙 정렬 */
+    gap: 10px; /* 버튼 간 간격 */
+  }
+
+  /* 반응형 조정 */
+  @media (max-width: 768px) {
+    .nav {
+      gap: 5px; /* 버튼 간 간격 줄이기 */
+      padding: 0 10px; /* 양쪽 패딩 조정 */
+    }
+    .nav-item {
+      flex: 1 1 auto; /* 유연하게 크기 조절 */
+    }
+    .nav-link {
+      width: auto; /* 버튼 크기 자동 조정 */
+      min-width: 45px; /* 최소 크기 설정 */
+      height: 30px; /* 버튼 높이 조정 */
+      font-size: 14px; /* 글씨 크기 줄이기 */
+      padding: 5px 10px; /* 내부 패딩 조정 */
+    }
+  }
+
   .section {
     margin-bottom: 2rem;
   }
