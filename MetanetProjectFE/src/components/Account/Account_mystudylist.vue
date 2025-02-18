@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import api from '../../apis/api.js';
 export default {
   props: {
     myStudyListData: Array, 
