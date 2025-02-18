@@ -115,7 +115,7 @@ export default {
 
       if (stompClient.value) disconnectWebSocket();
 
-      const socket = new WebSocket("wss://bamjun.click/ws");
+      const socket = new WebSocket("ws://bamjun.click/ws");
       stompClient.value = Stomp.over(socket);
 
       stompClient.value.connect(
