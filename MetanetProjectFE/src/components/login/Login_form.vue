@@ -53,7 +53,8 @@ export default {
         const response = await api.post(
           "/auth/login",
           { id: this.loginFormData.id, password: this.loginFormData.password },
-          { headers: { "Content-Type": "application/json", "skipInterceptor": "true" } }
+          { headers: { "Content-Type": "application/json", "skipInterceptor": "true" },
+          withCredentials: true }
         );
         console.log("Response from server:", response.data);
 
