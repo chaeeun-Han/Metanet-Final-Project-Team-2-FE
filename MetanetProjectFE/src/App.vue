@@ -33,13 +33,13 @@ export default {
       name: "로그인 후 이용 가능",
       email: null,
       role: null,
-      profile: "../../public/assets/media/profile.png",
+      profile: "https://zebal-buket.s3.ap-northeast-2.amazonaws.com/profile.png",
     };
 
     // const userData = storedData ? JSON.parse(storedData) : initData;
     const userData = ref({
       name: "로그인 후 이용 가능",
-      profile: "../../public/assets/media/profile.png",
+      profile: "https://zebal-buket.s3.ap-northeast-2.amazonaws.com/profile.png",
     });
 
     const loadUserData = () => {
@@ -96,7 +96,7 @@ export default {
           name: member.name,
           email: member.email,
           role: member.role === "Admin" ? "관리자" : member.role === "Teacher" ? "선생님" : "학생",
-          profile: member.profile || "../../public/assets/media/profile.png",
+          profile: member.profile || "https://zebal-buket.s3.ap-northeast-2.amazonaws.com/profile.png",
         };
 
         sessionStorage.setItem("userData", JSON.stringify(userData.value));
