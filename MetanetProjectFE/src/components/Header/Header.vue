@@ -14,8 +14,8 @@
       <div class="px-6" id="" style="display: flex; align-items: center; justify-self: center">
         <!--begin::Logo image-->
         <router-link to="/">
-          <img alt="Logo" src="../../../assets/media/classpick_logo.png" class="h-35px app-sidebar-logo-default" />
-          <img alt="Logo" src="../../../assets/media/classpick_logo.png" class="h-25px app-sidebar-logo-minimize" />
+          <img alt="Logo" src="../../../public/assets/media/classpick_logo.png" class="h-35px app-sidebar-logo-default" />
+          <img alt="Logo" src="../../../public/assets/media/classpick_logo.png" class="h-25px app-sidebar-logo-minimize" />
         </router-link>
       </div>
 
