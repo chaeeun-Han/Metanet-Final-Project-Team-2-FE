@@ -16,7 +16,6 @@ import axios from "axios";
 import api from "../../apis/api.js";
 import { inject, nextTick } from "vue";
 import Login_input from "./Login_Input.vue";
-import { login } from "../../apis/apiService";
 
 export default {
   name: "Login_form",
