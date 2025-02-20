@@ -226,10 +226,10 @@ export default {
       return new Date(this.lectureData.deadlineTime) < new Date();
     },
     currentUserId() {
-      return JSON.parse(sessionStorage.getItem("userData")).id;
+      return JSON.parse(sessionStorage.getItem("userData"))?.id;
     },
     currentUserRole() {
-      return JSON.parse(sessionStorage.getItem("userData")).role;
+      return JSON.parse(sessionStorage.getItem("userData"))?.role;
     },
   },
   methods: {
