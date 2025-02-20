@@ -53,7 +53,7 @@ export default defineConfig({
       },
       // 웹소켓의 경우 별도로 wss:// 를 사용하도록 설정해야 합니다.
       "/ws": {
-        target: "ws://bamjun.click",
+        target: "wss://bamjun.click",
         ws: true,
         changeOrigin: true,
       },
