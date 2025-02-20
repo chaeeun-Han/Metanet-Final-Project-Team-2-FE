@@ -144,8 +144,9 @@ export default {
 
     watch(isLogin, (newValue) => {
       console.log("isLogin 변경됨: ", newValue);
-      if (newValue) connectWebSocket();
-      else disconnectWebSocket();
+      // if (newValue) connectWebSocket();
+      // else disconnectWebSocket();
+      if (!newValue) disconnectWebSocket();
     });
 
     provide("userData", userData);
