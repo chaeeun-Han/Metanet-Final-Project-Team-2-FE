@@ -61,12 +61,12 @@ export default {
           autoplayTimeout: 3000,
           controls: true,
           nav: false,
-          items: 2,
+          items: 1,
           center: false,
           dots: false,
           prevButton: `#${this.sliderId}_prev`,
           nextButton: `#${this.sliderId}_next`,
-          responsive: { 1200: { items: 3 }, 900: { items: 1 }},
+          responsive: { 1200: { items: 3 }, 900: { items: 2 }, 344: { items: 1 }},
         });
 
         this.removeStopButton();
