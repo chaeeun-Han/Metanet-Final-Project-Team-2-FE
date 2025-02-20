@@ -3,9 +3,9 @@ import Main_main from "../components/main/main_main.vue";
 import Account_main from "../components/Account/Account_main.vue";
 import Signup from "../components/signup/Signup.vue";
 import Login_main from "../components/login/Login_main.vue";
-import QuestionDetail from "../components/qna/QuestionDetail.vue";
+import Question_Detail from "../components/qna/Question_detail.vue";
 import Lecture_content from "../components/lecture/Lecture_content.vue";
-import QuestionWrite from "../components/qna/QuestionWrite.vue";
+import Question_Write from "../components/qna/Question_write.vue";
 import Lecture_QnA from "../components/lecture/lecture-inner/Lecture_qna.vue";
 import Lecture_file from "../components/lecture/lecture-inner/Lecture_file.vue";
 import Lecture_intro from "../components/lecture/lecture-inner/Lecture_intro.vue";
@@ -27,8 +27,8 @@ const routes = [
   { path: "/password/reset", component: Password_reset, name: "passwordReset" },
   { path: "/password/confirm", component: Password_confirm, name: "passwordConfirm" },
   { path: "/login", component: Login_main },
-  { path: "/lectures/:lectureId/questions/:questionId", component: QuestionDetail },
-  { path: "/lectures/:lectureId/questions/write", component: QuestionWrite },
+  { path: "/lectures/:lectureId/questions/:questionId", component: Question_Detail },
+  { path: "/lectures/:lectureId/questions/write", component: Question_Write },
   { path: "/cart", component: CartList },
   { path: "/success", component: Success },
   { path: "/403Page", name: "Error403Page", component: Error403Page },
