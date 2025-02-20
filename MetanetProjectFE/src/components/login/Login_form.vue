@@ -3,7 +3,7 @@
     <h1 class="text-gray-900 fw-bolder mb-3">로그인</h1>
   </div>
 
-  <Login_input :fields="loginFormFields" v-model="loginFormData" @submit="handleSubmit" />
+  <Login_input :fields="loginFormFields" v-model="loginFormData" @submit.prevent="handleSubmit" />
 
   <div class="text-gray-500 text-center fw-semibold fs-6">
     아직 회원정보가 없으시나요?
