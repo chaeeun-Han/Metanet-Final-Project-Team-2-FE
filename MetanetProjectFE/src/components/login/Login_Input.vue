@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit="handleSubmit">
+    <form @submit.prevent="handleSubmit">
       <div v-for="(field, index) in fields" :key="index" class="fv-row mb-3">
         <input
           :type="field.type"
