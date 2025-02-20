@@ -72,7 +72,7 @@
 <script>
 import Lecture_box from "../lecture-box/Lecture_box.vue";
 import Lecture_list_item from "../lecture-box/Lecture_list_item.vue";
-import api from "../../apis/apiService";
+import api from "../../apis/api.js";
 import { useI18n } from "vue-i18n";
 
 export default {
