@@ -113,7 +113,12 @@ export default {
       const decoded = jwtDecode(token);
       const userId = decoded.sub;
 
-      if (stompClient.value) disconnectWebSocket();
+      if (stompClient.value && stompClient.value.readyState === WebSocket.OPEN) {
+        console.log("웹소켓 오픈");
+      } else if (stompClient.value) {
+        console.log("기존 연결 해제");
+        disconnectWebSocket();
+      }
 
       const socket = new WebSocket("wss://bamjun.click/ws");
       stompClient.value = Stomp.over(socket);
